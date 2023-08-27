@@ -9,4 +9,6 @@ Repositório destinado ao conteúdo desenvolvido durante o curso Algaworks - Esp
 3. Spring vs Jakarta EE (Java EE)
 4. Conhecendo o Spring Boot
 5. [Criando um projeto Spring Boot com Spring Initializr](https://start.spring.io)
+6. Conhecendo o Maven e o pom.xml de um projeto Spring Boot
+7. Criando um controller com Spring MVC (Hello World!)
 </details>
