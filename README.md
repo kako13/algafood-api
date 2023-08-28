@@ -22,8 +22,8 @@ Repositório destinado ao conteúdo desenvolvido durante o curso Algaworks - Esp
 16. Ambiguidade de beans e injeção de lista de beans
 17. Desambiguação de beans com @Primary em um dos beans
 18. Desambiguação de beans com @Qualifier
-19. Desambiguação de beans com anotação customizada
-20. Mudando o comportamento da aplicação com Spring Profiles (de ambiente à seleção implementações)
+19. Desambiguação de beans com anotação customizada ⭐
+20. Mudando o comportamento da aplicação com Spring Profiles (de ambiente à seleção implementações) ⭐
 <details>
   <summary><i>21. Criando métodos de callback do ciclo de vida dos beans</i></summary>
 
@@ -76,4 +76,7 @@ public class AtivacaoClienteService implements InitializingBean, DisposableBean 
 }
 ```
 </details>
+
+22. Publicando e consumindo eventos customizados ⭐
 </details>
+
