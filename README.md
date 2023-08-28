@@ -24,4 +24,56 @@ Repositório destinado ao conteúdo desenvolvido durante o curso Algaworks - Esp
 18. Desambiguação de beans com @Qualifier
 19. Desambiguação de beans com anotação customizada
 20. Mudando o comportamento da aplicação com Spring Profiles (de ambiente à seleção implementações)
+<details>
+  <summary><i>21. Criando métodos de callback do ciclo de vida dos beans</i></summary>
+
+Existem três formas possíveis:
+
+* Através das anotações @PostConstructor e @PreDestroy:
+
+```
+    @PostConstruct
+    public void init(){
+        System.out.println("INIT " + notificador);
+    }
+    
+    @PreDestroy
+    public void destroy(){
+        System.out.println("DESTROY " + notificador);
+    }
+```
+* Através da anotações @Bean(initMethod = "init", destroyMethod = "destroy"), numa classe de configuração de um bean:
+
+```
+@Configuration
+public class ServiceConfig {
+    @Bean(initMethod = "init", destroyMethod = "destroy")
+    public AtivacaoClienteService ativacaoClienteService(){
+        return new AtivacaoClienteService();
+    }
+}
+```
+* Através da implementação das interfaces InitializingBean e DisposableBean:
+
+```
+public class AtivacaoClienteService implements InitializingBean, DisposableBean {
+
+    @TipoDoNotificador(NivelUrgencia.SEM_URGENCIA) // via SMS
+    @Autowired
+    private Notificador notificador;
+
+    @Override
+    public void afterPropertiesSet() throws Exception {
+        System.out.println("INIT " + notificador);
+        // Qualquer lógica de inicialização adicional pode ser colocada aqui
+    }
+
+    @Override
+    public void destroy() throws Exception {
+        System.out.println("DESTROY " + notificador);
+        // Qualquer lógica de destruição adicional pode ser colocada aqui
+    }
+}
+```
+</details>
 </details>
