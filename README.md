@@ -16,4 +16,5 @@ Repositório destinado ao conteúdo desenvolvido durante o curso Algaworks - Esp
 10. Conhecendo o IoC Container do Spring
 11. Definindo beans com @Component
 12. Injetando dependências (beans Spring)
+13. Usando @Configuration e @Bean para definir beans
 </details>
