@@ -78,5 +78,6 @@ public class AtivacaoClienteService implements InitializingBean, DisposableBean 
 </details>
 
 22. Publicando e consumindo eventos customizados ⭐
+23. Configurando projetos Spring Boot com o [application.properties](https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html)
 </details>
 
