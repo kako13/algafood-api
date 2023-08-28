@@ -23,4 +23,5 @@ Repositório destinado ao conteúdo desenvolvido durante o curso Algaworks - Esp
 17. Desambiguação de beans com @Primary em um dos beans
 18. Desambiguação de beans com @Qualifier
 19. Desambiguação de beans com anotação customizada
+20. Mudando o comportamento da aplicação com Spring Profiles (de ambiente à seleção implementações)
 </details>
