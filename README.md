@@ -80,5 +80,32 @@ public class AtivacaoClienteService implements InitializingBean, DisposableBean 
 22. Publicando e consumindo eventos customizados ⭐
 23. Configurando projetos Spring Boot com o [application.properties](https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html)
 24. Substituindo propriedades via linha de comando e variáveis de ambiente
+25. Criando e acessando propriedades customizadas com @Value
+26. Acessando propriedades com @ConfigurationProperties
+27. Alterando a configuração do projeto dependendo do ambiente (com Spring Profiles) ⭐
+<details>
+    <summary>28. Ativando o Spring Profile por linha de comando e variável de ambiente</summary>
+
+Linha de comando:
+```
+java -jar .\target\algafood-api-0.0.1-SNAPSHOT.jar --spring.profiles.active=development
+```
+
+Variável de ambiente:
+
+Linux:
+```
+export SPRING_PROFILES_ACTIVE=production
+```
+Windows:
+- Temporária
+```
+set SPRING_PROFILES_ACTIVE=production
+```
+- Permanente
+```
+setx SPRING_PROFILES_ACTIVE=production
+```
+</details>
 </details>
 
