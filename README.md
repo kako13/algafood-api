@@ -17,4 +17,5 @@ Repositório destinado ao conteúdo desenvolvido durante o curso Algaworks - Esp
 11. Definindo beans com @Component
 12. Injetando dependências (beans Spring)
 13. Usando @Configuration e @Bean para definir beans
+14. Conhecendo os pontos de injeção e a anotação @Autowired
 </details>
