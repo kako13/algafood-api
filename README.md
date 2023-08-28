@@ -13,4 +13,6 @@ Repositório destinado ao conteúdo desenvolvido durante o curso Algaworks - Esp
 7. Criando um controller com Spring MVC (Hello World!)
 8. Restart mais rápido da aplicação com DevTools 
 9. [O que é injeção de dependências?](https://github.com/kako13/exemplo-di)  
+10. Conhecendo o IoC Container do Spring
+11. Definindo beans com @Component
 </details>
