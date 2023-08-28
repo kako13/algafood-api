@@ -19,4 +19,5 @@ Repositório destinado ao conteúdo desenvolvido durante o curso Algaworks - Esp
 13. Usando @Configuration e @Bean para definir beans
 14. Conhecendo os pontos de injeção e a anotação @Autowired
 15. Dependência opcional com @Autowired
+16. Ambiguidade de beans e injeção de lista de beans
 </details>
