@@ -20,4 +20,6 @@ Repositório destinado ao conteúdo desenvolvido durante o curso Algaworks - Esp
 14. Conhecendo os pontos de injeção e a anotação @Autowired
 15. Dependência opcional com @Autowired
 16. Ambiguidade de beans e injeção de lista de beans
+17. Desambiguação de beans com @Primary em um dos beans
+18. Desambiguação de beans com @Qualifier
 </details>
