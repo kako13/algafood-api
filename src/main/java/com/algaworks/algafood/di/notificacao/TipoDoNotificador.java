@@ -1,4 +1,4 @@
-package com.algaworks.algafood;
+package com.algaworks.algafood.di.notificacao;
 
 import com.algaworks.algafood.di.notificacao.NivelUrgencia;
 import org.springframework.beans.factory.annotation.Qualifier;
