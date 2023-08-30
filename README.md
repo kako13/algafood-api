@@ -108,4 +108,10 @@ setx SPRING_PROFILES_ACTIVE=production
 ```
 </details>
 </details>
+<details>
+  <summary><i>03 - Introdução ao JPA e Hibernate</i></summary>
+
+1. Instalando o MySQL Server e MySQL Workbench (adotei o docker-compose.yaml)
+2. O que é JPA e Hibernate
+</details>
 
