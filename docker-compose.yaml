@@ -1,0 +1,11 @@
+version: '3.9'
+services:
+  mysql:
+    container_name: mysql-algaworks-especialista-spring-rest
+    image: mysql/mysql-server:8.0
+    ports:
+      - 3306:3306
+    environment:
+        MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - ./scripts_sql/root_privileges_manual.sh:/docker-entrypoint-initdb.d/root_privileges_manual.sh
