@@ -113,5 +113,19 @@ setx SPRING_PROFILES_ACTIVE=production
 
 1. Instalando o MySQL Server e MySQL Workbench (adotei o docker-compose.yaml)
 2. O que é JPA e Hibernate
+3. Adicionando JPA e configurando o Data Source
+4. Mapeando entidades com JPA
+5. Criando as tabelas do banco a partir das entidades
+6. Mapeando o id da entidade para autoincremento
+7. Importando dados de teste com import.sql
+8. Consultando objetos do banco de dados
+9. Adicionando um objeto no banco de dados
+10. Buscando um objeto pelo id no banco de dados
 </details>
+
+
+
+
+
+
 
