@@ -121,6 +121,10 @@ setx SPRING_PROFILES_ACTIVE=production
 8. Consultando objetos do banco de dados
 9. Adicionando um objeto no banco de dados
 10. Buscando um objeto pelo id no banco de dados
+11. Atualizando um objeto no banco de dados
+12. Excluindo um objeto do banco de dados
+13. Conhecendo o padrão Agregate do DDD
+14. Conhecendo e implementando o padrão Repository
 </details>
 
 
