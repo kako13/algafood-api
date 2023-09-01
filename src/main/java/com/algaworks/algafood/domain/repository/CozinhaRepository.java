@@ -4,6 +4,7 @@ import com.algaworks.algafood.domain.model.Cozinha;
 
 import java.util.List;
 
+
 public interface CozinhaRepository {
 
     //Orientado a persistência
