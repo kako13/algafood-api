@@ -124,7 +124,8 @@ setx SPRING_PROFILES_ACTIVE=production
 11. Atualizando um objeto no banco de dados
 12. Excluindo um objeto do banco de dados
 13. Conhecendo o padrão Agregate do DDD
-14. Conhecendo e implementando o padrão Repository
+14. Conhecendo e implementando o padrão Repository (por agregate)
+15. Conhecendo e usando o Lombok
 </details>
 
 
