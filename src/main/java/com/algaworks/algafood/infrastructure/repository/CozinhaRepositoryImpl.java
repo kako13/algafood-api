@@ -5,9 +5,11 @@ import com.algaworks.algafood.domain.repository.CozinhaRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
+@Component
 public class CozinhaRepositoryImpl implements CozinhaRepository {
     @PersistenceContext
     public EntityManager manager;
