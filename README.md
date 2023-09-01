@@ -1,5 +1,10 @@
-# algafood-api
-Repositório destinado ao conteúdo desenvolvido durante o curso Algaworks - Especialista Spring Rest
+<div align="left">
+  <a href="https://github.com/kako13">
+    <img float:left height="190em" width=500 src="https://github-readme-stats.vercel.app/api/pin?username=kako13&repo=algafood-api&card_width=250&theme=codeSTACKr&hide_border=true&bg_color=00000000"/>
+  </a>
+</div>
+
+####
 
 <details>
   <summary><i>02 - Spring e Injeção de Dependências</i></summary>
@@ -11,8 +16,8 @@ Repositório destinado ao conteúdo desenvolvido durante o curso Algaworks - Esp
 5. [Criando um projeto Spring Boot com Spring Initializr](https://start.spring.io)
 6. Conhecendo o Maven e o pom.xml de um projeto Spring Boot
 7. Criando um controller com Spring MVC (Hello World!)
-8. Restart mais rápido da aplicação com DevTools 
-9. [O que é injeção de dependências?](https://github.com/kako13/exemplo-di)  
+8. Restart mais rápido da aplicação com DevTools
+9. [O que é injeção de dependências?](https://github.com/kako13/exemplo-di)
 10. Conhecendo o IoC Container do Spring
 11. Definindo beans com @Component
 12. Injetando dependências (beans Spring)
@@ -126,11 +131,5 @@ setx SPRING_PROFILES_ACTIVE=production
 13. Conhecendo o padrão Agregate do DDD
 14. Conhecendo e implementando o padrão Repository (por agregate)
 15. Conhecendo e usando o Lombok
+16. Desafio: Lombok e repositório de restaurantes
 </details>
-
-
-
-
-
-
-
