@@ -133,4 +133,5 @@ setx SPRING_PROFILES_ACTIVE=production
 15. Conhecendo e usando o Lombok
 16. Desafio: Lombok e repositório de restaurantes
 17. Mapeando relacionamento com @ManyToOne e Dialeto
+18. A anotação @JoinColumn (para nomear coluna de FK)
 </details>

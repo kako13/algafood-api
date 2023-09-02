@@ -19,6 +19,7 @@ public class Restaurante {
     @Column(name = "taxa_frete")
     private BigDecimal taxaFrete;
 
+    @JoinColumn(name = "cozinha_id") //"num_idt_cozinha" definindo nome da coluna
     @ManyToOne
     private Cozinha cozinha;
 }
