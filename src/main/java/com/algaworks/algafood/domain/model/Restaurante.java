@@ -15,11 +15,12 @@ public class Restaurante {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(nullable = false)
     private String nome;
-    @Column(name = "taxa_frete")
+    @Column(name = "taxa_frete", nullable = false)
     private BigDecimal taxaFrete;
 
-    @JoinColumn(name = "cozinha_id") //"num_idt_cozinha" definindo nome da coluna
+    @JoinColumn(name = "cozinha_id", nullable = false) //"num_idt_cozinha" definindo nome da coluna
     @ManyToOne
     private Cozinha cozinha;
 }
