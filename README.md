@@ -132,4 +132,5 @@ setx SPRING_PROFILES_ACTIVE=production
 14. Conhecendo e implementando o padrão Repository (por agregate)
 15. Conhecendo e usando o Lombok
 16. Desafio: Lombok e repositório de restaurantes
+17. Mapeando relacionamento com @ManyToOne e Dialeto
 </details>
