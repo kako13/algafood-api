@@ -1,6 +1,6 @@
 <div align="left">
   <a href="https://github.com/kako13">
-    <img float:left height="190em" width=500 src="https://github-readme-stats.vercel.app/api/pin?username=kako13&repo=algafood-api&card_width=250&theme=codeSTACKr&hide_border=true&bg_color=00000000"/>
+    <img align=left height="190em" width=500 src="https://github-readme-stats.vercel.app/api/pin?username=kako13&repo=algafood-api&card_width=250&theme=codeSTACKr&hide_border=true&bg_color=00000000"/>
   </a>
 </div>
 
@@ -132,4 +132,5 @@ setx SPRING_PROFILES_ACTIVE=production
 14. Conhecendo e implementando o padrão Repository (por agregate)
 15. Conhecendo e usando o Lombok
 16. Desafio: Lombok e repositório de restaurantes
+17. Mapeando relacionamento com @ManyToOne e Dialeto
 </details>
