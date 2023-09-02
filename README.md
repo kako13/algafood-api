@@ -1,6 +1,6 @@
 <div align="left">
   <a href="https://github.com/kako13">
-    <img float:left height="190em" width=500 src="https://github-readme-stats.vercel.app/api/pin?username=kako13&repo=algafood-api&card_width=250&theme=codeSTACKr&hide_border=true&bg_color=00000000"/>
+    <img align=left height="190em" width=500 src="https://github-readme-stats.vercel.app/api/pin?username=kako13&repo=algafood-api&card_width=250&theme=codeSTACKr&hide_border=true&bg_color=00000000"/>
   </a>
 </div>
 
