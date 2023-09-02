@@ -4,10 +4,10 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-@Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Data
 @Entity
-public class Cozinha {
+public class Permissao {
 
     @EqualsAndHashCode.Include
     @Id
@@ -15,4 +15,6 @@ public class Cozinha {
     private Long id;
     @Column(nullable = false)
     private String nome;
+    @Column(nullable = false)
+    private String descricao;
 }

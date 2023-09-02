@@ -135,4 +135,5 @@ setx SPRING_PROFILES_ACTIVE=production
 17. Mapeando relacionamento com @ManyToOne e Dialeto
 18. A anotação @JoinColumn (para nomear coluna de FK)
 19. Propriedade nullable de @Column e @JoinColumn
+20. Desafio: mapeando entidades (Forma Pagamento, Permissão, Cidade e Estado)
 </details>
