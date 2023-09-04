@@ -167,6 +167,7 @@ setx SPRING_PROFILES_ACTIVE=production
 12. Representações de recursos e content negotiation
 13. Implementando content negotiation para retornar JSON e/ou XML
 14. Consultando Singleton Resource com GET e @PathVariable
+15. Customizando as representações XML e JSON com @JsonIgnore, @JsonProperty e @JsonRootName (para XML)
 
 </details>
 
