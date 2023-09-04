@@ -1,6 +1,6 @@
 <div align="left">
   <a href="https://github.com/kako13">
-    <img float=left height="190em" width=500 src="https://github-readme-stats.vercel.app/api/pin?username=kako13&repo=algafood-api&card_width=250&theme=codeSTACKr&hide_border=true&bg_color=00000000"/>
+    <img height="190em" width=500 src="https://github-readme-stats.vercel.app/api/pin?username=kako13&repo=algafood-api&card_width=250&theme=codeSTACKr&hide_border=true&bg_color=00000000"/>
   </a>
 </div>
 
@@ -137,3 +137,37 @@ setx SPRING_PROFILES_ACTIVE=production
 19. Propriedade nullable de @Column e @JoinColumn
 20. Desafio: mapeando entidades (Forma Pagamento, Permissão, Cidade e Estado)
 </details>
+<details>
+  <summary><i>04 - REST com Spring</i></summary>
+
+1. O que é REST?
+<details>
+    <summary>2. Conhecendo as constraints do REST</summary>
+
+- Cliente-servidor
+- Sistema em camadas (desconhecida pelo cliente)
+- Stateless
+- Cache
+- Interface uniforme
+- Código sob demanda
+
+</details>
+
+3. Diferença entre REST e RESTful
+4. Desenvolvedores de REST APIs puristas e pragmáticos
+5. Conhecendo o protocolo HTTP
+6. Usando o protocolo HTTP
+7. Instalando e testando o Postman
+<details>
+    <summary>8. Entendendo o que são Recursos REST</summary>
+
+- Singleton Resource
+- Collection Resource
+
+</details>
+
+9. Identificando recursos REST
+10. Modelando e requisitando um Collection Resource com GET
+
+</details>
+
