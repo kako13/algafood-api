@@ -169,6 +169,9 @@ setx SPRING_PROFILES_ACTIVE=production
 14. Consultando Singleton Resource com GET e @PathVariable
 15. Customizando as representações XML e JSON com @JsonIgnore, @JsonProperty e @JsonRootName (Jackson para JSON e XML)
 16. Customizando a representação em XML com Wrapper e anotações do Jackson
+17. Conhecendo os métodos HTTP
+18. Conhecendo os códigos de status HTTP
+19. Definindo o status da resposta HTTP com @ResponseStatus
 
 </details>
 
