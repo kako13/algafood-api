@@ -168,6 +168,7 @@ setx SPRING_PROFILES_ACTIVE=production
 
 9. Identificando recursos REST
 10. Modelando e requisitando um Collection Resource com GET
+11. Desafio: collection resource de estados
 
 </details>
 
