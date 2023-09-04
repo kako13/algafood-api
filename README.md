@@ -173,6 +173,7 @@ setx SPRING_PROFILES_ACTIVE=production
 18. Conhecendo os códigos de status HTTP
 19. Definindo o status da resposta HTTP com @ResponseStatus
 20. Manipulando a resposta HTTP com ResponseEntity
+21. Corrigindo o Status HTTP para resource inexistente
 
 </details>
 
