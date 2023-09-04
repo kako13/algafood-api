@@ -1,9 +1,4 @@
-<div align="left">
-  <a href="https://github.com/kako13">
-    <img height="190em" width=500 src="https://github-readme-stats.vercel.app/api/pin?username=kako13&repo=algafood-api&card_width=250&theme=codeSTACKr&hide_border=true&bg_color=00000000"/>
-  </a>
-</div>
-
+![Readme Card](https://github-readme-stats.vercel.app/api/pin?username=kako13&repo=algafood-api&show_icons=true&theme=codeSTACKr&hide_border=true&bg_color=00000000)
 ####
 
 <details>
@@ -171,6 +166,7 @@ setx SPRING_PROFILES_ACTIVE=production
 11. Desafio: collection resource de estados
 12. Representações de recursos e content negotiation
 13. Implementando content negotiation para retornar JSON e/ou XML
+14. Consultando Singleton Resource com GET e @PathVariable
 
 </details>
 
