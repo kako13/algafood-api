@@ -169,6 +169,8 @@ setx SPRING_PROFILES_ACTIVE=production
 9. Identificando recursos REST
 10. Modelando e requisitando um Collection Resource com GET
 11. Desafio: collection resource de estados
+12. Representações de recursos e content negotiation
+13. Implementando content negotiation para retornar JSON e/ou XML
 
 </details>
 
