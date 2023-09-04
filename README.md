@@ -172,6 +172,7 @@ setx SPRING_PROFILES_ACTIVE=production
 17. Conhecendo os métodos HTTP
 18. Conhecendo os códigos de status HTTP
 19. Definindo o status da resposta HTTP com @ResponseStatus
+20. Manipulando a resposta HTTP com ResponseEntity
 
 </details>
 
