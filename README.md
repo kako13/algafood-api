@@ -178,6 +178,7 @@ setx SPRING_PROFILES_ACTIVE=production
 23. Modelando e implementando a inclusão de recursos com POST
 24. Negociando o media type do payload do POST com Content-Type
 25. Modelando e implementando a atualização de recursos com PUT
+26. Modelando e implementando a exclusão de recursos com DELETE
 
 </details>
 
