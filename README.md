@@ -174,6 +174,8 @@ setx SPRING_PROFILES_ACTIVE=production
 19. Definindo o status da resposta HTTP com @ResponseStatus
 20. Manipulando a resposta HTTP com ResponseEntity
 21. Corrigindo o Status HTTP para resource inexistente
+22. Status HTTP para collection resource vazia: qual usar?
+23. Modelando e implementando a inclusão de recursos com POST
 
 </details>
 
