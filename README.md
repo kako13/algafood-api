@@ -176,6 +176,8 @@ setx SPRING_PROFILES_ACTIVE=production
 21. Corrigindo o Status HTTP para resource inexistente
 22. Status HTTP para collection resource vazia: qual usar?
 23. Modelando e implementando a inclusão de recursos com POST
+24. Negociando o media type do payload do POST com Content-Type
+25. Modelando e implementando a atualização de recursos com PUT
 
 </details>
 
