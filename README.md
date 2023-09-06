@@ -186,6 +186,7 @@ setx SPRING_PROFILES_ACTIVE=production
 31. Desafio: Modelando e implementando a atualização de recursos de restaurantes
 32. Desafio: implementando serviços REST de cidades e estados
 33. Analisando solução para atualização parcial de recursos com PATCH
+34. Finalizando a atualização parcial com a API de Reflections do Spring
 
 </details>
 
