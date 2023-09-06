@@ -5,6 +5,7 @@ import com.algaworks.algafood.domain.repository.CidadeRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -32,8 +33,10 @@ public class CidadeRepositoryImpl implements CidadeRepository {
 
     @Override
     @Transactional
-    public void remover(Cidade cidade) {
-        cidade = buscar(cidade.getId());
+    public void remover(Long id) {
+        Cidade cidade = buscar(id);
+        if(cidade == null)
+            throw new EmptyResultDataAccessException(1); // esperado ao menos uma cozinha
         manager.remove(cidade);
     }
 }
