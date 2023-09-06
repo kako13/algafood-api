@@ -50,8 +50,8 @@ public class CozinhaController {
             BeanUtils.copyProperties(cozinha, cozinhaAtual, "id");
             cadastroCozinha.salvar(cozinhaAtual);
             return ResponseEntity.ok(cozinhaAtual);
-        } else
-            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
