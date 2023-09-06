@@ -187,6 +187,11 @@ setx SPRING_PROFILES_ACTIVE=production
 32. Desafio: implementando serviços REST de cidades e estados
 33. Analisando solução para atualização parcial de recursos com PATCH
 34. Finalizando a atualização parcial com a API de Reflections do Spring
+35. Introdução ao Modelo de Maturidade de Richardson (RMM)
+36. Conhecendo o nível 0 do RMM (POX - Plain Old XML; podendo ser também em JSON)
+37. Conhecendo o nível 1 do RMM (identificação de recursos)
+38. Conhecendo o nível 2 do RMM (nível 1 + Verbos e códigos de Status HTTP; é o mais comum no mercado)
+39. Conhecendo o nível 3 do RMM (nível 2 + HATEOS)
 
 </details>
 
