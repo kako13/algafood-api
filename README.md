@@ -184,6 +184,8 @@ setx SPRING_PROFILES_ACTIVE=production
 29. Desafio: modelando e implementando a consulta de recursos de restaurantes
 30. Modelando e implementando a inclusão de recursos de restaurantes
 31. Desafio: Modelando e implementando a atualização de recursos de restaurantes
+32. Desafio: implementando serviços REST de cidades e estados
+33. Analisando solução para atualização parcial de recursos com PATCH
 
 </details>
 
