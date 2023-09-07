@@ -6,8 +6,9 @@ import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.repository.EstadoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class CadastroEstadoService {
@@ -21,9 +22,10 @@ public class CadastroEstadoService {
 
     public void excluir(Long id) {
         try {
+            Optional<Estado> estado = estadoRepository.findById(id);
+            if (estado.isEmpty())
+                throw new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de Estado com o código '%d'", id));
             estadoRepository.deleteById(id);
-        } catch (EmptyResultDataAccessException e) {
-            throw new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de Estado com o código '%d'", id));
         } catch (DataIntegrityViolationException e) {
             throw new EntidadeEmUsoException(String.format("Estado de código '%d' não pode ser removido, pois está em uso", id));
         }

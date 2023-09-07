@@ -32,6 +32,7 @@ public class CadastroCidadeService {
         Optional<Cidade> cidade = cidadeRepository.findById(id);
         if (cidade.isEmpty())
             throw new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de Estado com o código '%d'", id));
-        cidadeRepository.delete(cidade.get());
+        cidadeRepository.deleteById(id);
+
     }
 }
