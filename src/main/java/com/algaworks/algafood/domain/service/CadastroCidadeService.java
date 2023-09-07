@@ -24,12 +24,12 @@ public class CadastroCidadeService {
         if (estado == null)
             throw new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de Estado com o código '%d'", id));
         cidade.setEstado(estado);
-        return cidadeRepository.salvar(cidade);
+        return cidadeRepository.save(cidade);
     }
 
     public void excluir(Long id) {
         try {
-            cidadeRepository.remover(id);
+            cidadeRepository.deleteById(id);
         } catch (EmptyResultDataAccessException e) {
             throw new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de Estado com o código '%d'", id));
         }
