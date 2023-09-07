@@ -54,9 +54,9 @@ public class CidadeController {
         try {
             Optional<Cidade> cidadeAtual = cidadeRepository.findById(id);
             if (cidadeAtual.isPresent()) {
-                BeanUtils.copyProperties(cidade, cidadeAtual, "id");
+                BeanUtils.copyProperties(cidade, cidadeAtual.get(), "id");
                 cadastroCidade.salvar(cidadeAtual.get());
-                return ResponseEntity.ok(cidadeAtual);
+                return ResponseEntity.ok(cidadeAtual.get());
             }
             return ResponseEntity.notFound().build();
         } catch (EntidadeNaoEncontradaException e) {
