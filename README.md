@@ -195,10 +195,13 @@ setx SPRING_PROFILES_ACTIVE=production
 
 </details>
 
-<details>
+<details open>
     <summary>05. Super poderes do Spring Data JPA</summary>
 
 1. Implementando consultas JPQL em repositórios
+2. Conhecendo o projeto Spring Data JPA (SDJ)
+3. Criando um repositório com Spring Data JPA (SDJ)
+4. Refatorando o código do projeto para usar o repositório do SDJ
 
 </details>
 
