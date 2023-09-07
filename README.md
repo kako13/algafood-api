@@ -203,6 +203,7 @@ setx SPRING_PROFILES_ACTIVE=production
 3. Criando um repositório com Spring Data JPA (SDJ)
 4. Refatorando o código do projeto para usar o repositório do SDJ
 5. Desafio: refatorando todos os repositórios para usar SDJ
+6. Criando consultas com query methods
 
 </details>
 
