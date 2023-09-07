@@ -195,3 +195,10 @@ setx SPRING_PROFILES_ACTIVE=production
 
 </details>
 
+<details>
+    <summary>05. Super poderes do Spring Data JPA</summary>
+
+1. Implementando consultas JPQL em repositórios
+
+</details>
+
