@@ -216,7 +216,40 @@ setx SPRING_PROFILES_ACTIVE=production
 </details>
 
 9. Usando queries JPQL customizadas com @Query
-10. Externalizando consultas JPQL para um arquivo XML
+10. Externalizando consultas JPQL para um arquivo XML ⭐
+
+
+<details>
+<summary>11. Implementando um repositório SDJ customizado ⭐</summary>
+    
+1. Criar uma classe com o mesmo nome da interface SDJ Repository utilizada e adicionar o sufixo 'Impl', ex:
+```
+RestauranteRepository
+```
+criar classe:
+```
+RestauranteRepositoryImpl
+```
+
+2. Implementar consultas utilizando EntityManager, aplicando as logicas desejadas
+3. Extrair uma interface desta nova classe adotando nomenclatura com prefixo Customized ou sufixo Queries, ex:
+```
+CustomizedRestauranteRepository
+```
+ou:
+```
+RestauranteRepositoryQueries
+```
+4. E na interface SDJ Repository em questão, herdar a nova interface
+
+Desta forma o Spring conseguirá resolver e vincular a interface SDJ a implementação em tempo de compilação. 
+Possibilitando que o dev note possíveis erros.
+
+</details>
+
+
+#
+###### *Utilizando o Spring na versão 3.1.3 e Java na versão 17, não é possível capturar a exception 'EmptyResultDataAccessException' ao tentar excluir uma entidade inexistente. Ajustes foram necessários.*
 
 </details>
 
