@@ -204,6 +204,7 @@ setx SPRING_PROFILES_ACTIVE=production
 4. Refatorando o código do projeto para usar o repositório do SDJ
 5. Desafio: refatorando todos os repositórios para usar SDJ
 6. Criando consultas com query methods
+7. [Usando as keywords para definir critérios de query methods](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods.query-creation)
 
 </details>
 
