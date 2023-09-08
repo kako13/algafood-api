@@ -205,6 +205,16 @@ setx SPRING_PROFILES_ACTIVE=production
 5. Desafio: refatorando todos os repositórios para usar SDJ
 6. Criando consultas com query methods
 7. [Usando as keywords para definir critérios de query methods](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods.query-creation)
+<details>
+<summary>8. Conhecendo os prefixos de query methods</summary>
+
+- prefixos de consulta (find, get, read, stream, query)
+- prefixo booleano (exists)
+- totalizador (count)
+- flags de limite (first, last, top2)
+
+
+</details>
 
 </details>
 
