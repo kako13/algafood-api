@@ -213,8 +213,9 @@ setx SPRING_PROFILES_ACTIVE=production
 - totalizador (count)
 - flags de limite (first, last, top2)
 
-
 </details>
+
+9. Usando queries JPQL customizadas com @Query
 
 </details>
 
