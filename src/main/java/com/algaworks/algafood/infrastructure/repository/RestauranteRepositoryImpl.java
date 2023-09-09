@@ -23,7 +23,7 @@ public class RestauranteRepositoryImpl implements RestauranteRepositoryQueries {
     private EntityManager manager;
 
     @Override
-    public List<Restaurante> consultar(String nome, BigDecimal taxaFreteInicial, BigDecimal taxaFreteFinal) {
+    public List<Restaurante> find(String nome, BigDecimal taxaFreteInicial, BigDecimal taxaFreteFinal) {
 
         CriteriaBuilder builder = manager.getCriteriaBuilder();
 
