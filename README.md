@@ -249,6 +249,7 @@ Possibilitando que o dev note possíveis erros.
 
 12. Implementando uma consulta dinâmica com JPQL
 13. Implementando uma consulta simples com Criteria API
+14. Adicionando restrições na cláusula where com Criteria API
 
 #
 ###### *Utilizando o Spring na versão 3.1.3 e Java na versão 17, não é possível capturar a exception 'EmptyResultDataAccessException' ao tentar excluir uma entidade inexistente. Ajustes foram necessários.*
