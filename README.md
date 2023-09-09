@@ -255,6 +255,7 @@ Possibilitando que o dev note possíveis erros.
 17. Implementando Specifications com SDJ ⭐
 18. Criando uma fábrica de Specifications ⭐
 19. Injetando o próprio repositório na implementação customizada e a anotação @Lazy ⭐
+20. Estendendo o JpaRepository para customizar o repositório base ⭐
 
 #
 ###### *Utilizando o Spring na versão 3.1.3 e Java na versão 17, não é possível capturar a exception 'EmptyResultDataAccessException' ao tentar excluir uma entidade inexistente. Ajustes foram necessários.*
