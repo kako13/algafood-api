@@ -251,8 +251,9 @@ Possibilitando que o dev note possíveis erros.
 13. Implementando uma consulta simples com Criteria API
 14. Adicionando restrições na cláusula where com Criteria API
 15. Tornando a consulta com Criteria API com filtros dinâmicos ⭐
-16. Conhecendo o uso do padrão Specifications (DDD) com SDJ
-17. Implementando Specifications com SDJ
+16. Conhecendo o uso do padrão Specifications (DDD) com SDJ ⭐
+17. Implementando Specifications com SDJ ⭐
+18. Criando uma fábrica de Specifications ⭐
 
 #
 ###### *Utilizando o Spring na versão 3.1.3 e Java na versão 17, não é possível capturar a exception 'EmptyResultDataAccessException' ao tentar excluir uma entidade inexistente. Ajustes foram necessários.*
