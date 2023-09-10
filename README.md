@@ -266,6 +266,7 @@ Possibilitando que o dev note possíveis erros.
     <summary>06. Explorando mais do JPA e Hibernate</summary>
 
 1. Mapeando relacionamento bidirecional com @OneToMany
+2. Mapeando relacionamento muitos-para-muitos com @ManyToMany
 
 </details>
 
