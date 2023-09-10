@@ -23,14 +23,18 @@ public class Restaurante {
     @Column(name = "taxa_frete", nullable = false)
     private BigDecimal taxaFrete;
 
-    @JsonIgnore
+//    @JsonIgnore
     @JoinColumn(name = "cozinha_id", nullable = false) //"num_idt_cozinha" definindo nome da coluna
     @ManyToOne
     private Cozinha cozinha;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(name = "relacao_restaurante_forma_pagamento",
             joinColumns = @JoinColumn(name = "restaurante"),
             inverseJoinColumns = @JoinColumn(name = "forma_pagamento"))
-    private List<FormaPagamento> formaPagamento = new ArrayList<>();
+    private List<FormaPagamento> formasPagamento = new ArrayList<>();
+
+    @Embedded
+    private Endereco endereco;
 }
