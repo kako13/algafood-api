@@ -7,17 +7,13 @@ insert into forma_pagamento (id, descricao) values (2, "Crédito")
 insert into forma_pagamento (id, descricao) values (3, "Débito")
 insert into forma_pagamento (id, descricao) values (4, "Vale refeição")
 
---insert into restaurante (nome, taxa_frete, cozinha_id, forma_pagamento_id) values ('Rancho da vovó', 15.20, 3, 1)
---insert into restaurante (nome, taxa_frete, cozinha_id, forma_pagamento_id) values ('Cantinho da pamonha', 5.30, 3, 3)
---insert into restaurante (nome, taxa_frete, cozinha_id, forma_pagamento_id) values ('Thai Gourmet', 10, 1, 4)
---insert into restaurante (nome, taxa_frete, cozinha_id, forma_pagamento_id) values ('Thai Delivery', 9.50, 1, 2)
---insert into restaurante (nome, taxa_frete, cozinha_id, forma_pagamento_id) values ('Tuk Tuk Comida Indiana', 15, 2, 1)
-
 insert into restaurante (nome, taxa_frete, cozinha_id) values ('Rancho da vovó', 0, 3)
 insert into restaurante (nome, taxa_frete, cozinha_id) values ('Cantinho da pamonha', 0, 3)
 insert into restaurante (nome, taxa_frete, cozinha_id) values ('Thai Gourmet', 10, 1)
 insert into restaurante (nome, taxa_frete, cozinha_id) values ('Thai Delivery', 9.50, 1)
 insert into restaurante (nome, taxa_frete, cozinha_id) values ('Tuk Tuk Comida Indiana', 15, 2)
+
+insert into relacao_restaurante_forma_pagamento (restaurante, forma_pagamento) values (1, 1), (1, 3), (2, 1), (2, 2), (2, 4), (3, 1), (3, 3), (3, 4), (4, 1), (4, 2), (4, 3), (5, 1), (5, 2), (5, 4)
 
 insert into permissao (id, nome, descricao) values (1, "Cadastro Produtos", "Permite cadastrar produtos")
 insert into permissao (id, nome, descricao) values (2, "Cadastro Restaurantes", "Permite cadastrar restaurantes")

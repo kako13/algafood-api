@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
@@ -26,7 +28,9 @@ public class Restaurante {
     @ManyToOne
     private Cozinha cozinha;
 
-//    @JoinColumn(nullable = false)
-//    @ManyToOne
-//    private FormaPagamento formaPagamento;
+    @ManyToMany
+    @JoinTable(name = "relacao_restaurante_forma_pagamento",
+            joinColumns = @JoinColumn(name = "restaurante"),
+            inverseJoinColumns = @JoinColumn(name = "forma_pagamento"))
+    private List<FormaPagamento> formaPagamento = new ArrayList<>();
 }
