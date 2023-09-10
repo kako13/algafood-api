@@ -3,6 +3,7 @@
 
 <details>
   <summary><i>02 - Spring e Injeção de Dependências</i></summary>
+<dir>
 
 1. Por que aprender e usar Spring?
 2. Conhecendo o ecossistema Spring
@@ -26,7 +27,7 @@
 20. Mudando o comportamento da aplicação com Spring Profiles (de ambiente à seleção implementações) ⭐
 <details>
   <summary><i>21. Criando métodos de callback do ciclo de vida dos beans</i></summary>
-
+<dir>
 Existem três formas possíveis:
 
 * Através das anotações @PostConstructor e @PreDestroy:
@@ -75,6 +76,7 @@ public class AtivacaoClienteService implements InitializingBean, DisposableBean 
     }
 }
 ```
+</dir>
 </details>
 
 22. Publicando e consumindo eventos customizados ⭐
@@ -85,6 +87,7 @@ public class AtivacaoClienteService implements InitializingBean, DisposableBean 
 27. Alterando a configuração do projeto dependendo do ambiente (com Spring Profiles) ⭐
 <details>
     <summary>28. Ativando o Spring Profile por linha de comando e variável de ambiente</summary>
+<dir>
 
 Linha de comando:
 ```
@@ -106,10 +109,13 @@ set SPRING_PROFILES_ACTIVE=production
 ```
 setx SPRING_PROFILES_ACTIVE=production
 ```
+</dir>
 </details>
+</dir>
 </details>
 <details>
   <summary><i>03 - Introdução ao JPA e Hibernate</i></summary>
+<dir>
 
 1. Instalando o MySQL Server e MySQL Workbench (adotei o docker-compose.yaml)
 2. O que é JPA e Hibernate
@@ -131,13 +137,17 @@ setx SPRING_PROFILES_ACTIVE=production
 18. A anotação @JoinColumn (para nomear coluna de FK)
 19. Propriedade nullable de @Column e @JoinColumn
 20. Desafio: mapeando entidades (Forma Pagamento, Permissão, Cidade e Estado)
+</dir>
 </details>
 <details>
   <summary><i>04 - REST com Spring</i></summary>
 
+<dir>
+
 1. O que é REST?
 <details>
     <summary>2. Conhecendo as constraints do REST</summary>
+<dir>
 
 - Cliente-servidor
 - Sistema em camadas (desconhecida pelo cliente)
@@ -146,6 +156,7 @@ setx SPRING_PROFILES_ACTIVE=production
 - Interface uniforme
 - Código sob demanda
 
+</dir>
 </details>
 
 3. Diferença entre REST e RESTful
@@ -155,10 +166,12 @@ setx SPRING_PROFILES_ACTIVE=production
 7. Instalando e testando o Postman
 <details>
     <summary>8. Entendendo o que são Recursos REST</summary>
+<dir>
 
 - Singleton Resource
 - Collection Resource
 
+</dir>
 </details>
 
 9. Identificando recursos REST
@@ -193,10 +206,12 @@ setx SPRING_PROFILES_ACTIVE=production
 38. Conhecendo o nível 2 do RMM (nível 1 + Verbos e códigos de Status HTTP; é o mais comum no mercado)
 39. Conhecendo o nível 3 do RMM (nível 2 + HATEOS)
 
+</dir>
 </details>
 
 <details>
     <summary>05. Super poderes do Spring Data JPA</summary>
+<dir>
 
 1. Implementando consultas JPQL em repositórios
 2. Conhecendo o projeto Spring Data JPA (SDJ)
@@ -207,12 +222,14 @@ setx SPRING_PROFILES_ACTIVE=production
 7. [Usando as keywords para definir critérios de query methods](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods.query-creation)
 <details>
 <summary>8. Conhecendo os prefixos de query methods</summary>
+<dir>
 
 - prefixos de consulta (find, get, read, stream, query)
 - prefixo booleano (exists)
 - totalizador (count)
 - flags de limite (first, last, top2)
 
+</dir>
 </details>
 
 9. Usando queries JPQL customizadas com @Query
@@ -221,7 +238,8 @@ setx SPRING_PROFILES_ACTIVE=production
 
 <details>
 <summary>11. Implementando um repositório SDJ customizado ⭐</summary>
-    
+<dir>
+
 1. Criar uma classe com o mesmo nome da interface SDJ Repository utilizada e adicionar o sufixo 'Impl', ex:
 ```
 RestauranteRepository
@@ -244,7 +262,7 @@ RestauranteRepositoryQueries
 
 Desta forma o Spring conseguirá resolver e vincular a interface SDJ a implementação em tempo de compilação. 
 Possibilitando que o dev note possíveis erros.
-
+</dir>
 </details>
 
 12. Implementando uma consulta dinâmica com JPQL
@@ -257,16 +275,38 @@ Possibilitando que o dev note possíveis erros.
 19. Injetando o próprio repositório na implementação customizada e a anotação @Lazy ⭐
 20. Estendendo o JpaRepository para customizar o repositório base ⭐
 
-#
+###
 ###### *Utilizando o Spring na versão 3.1.3 e Java na versão 17, não é possível capturar a exception 'EmptyResultDataAccessException' ao tentar excluir uma entidade inexistente. Ajustes foram necessários.*
 
+</dir>
 </details>
 
 <details open>
     <summary>06. Explorando mais do JPA e Hibernate</summary>
+<dir>
 
 1. Mapeando relacionamento bidirecional com @OneToMany
 2. Mapeando relacionamento muitos-para-muitos com @ManyToMany
 
+<details>
+    <summary>3. Analisando o impacto do relacionamento muitos-para-muitos na REST API</summary>
+<samp>
+<sub>
+<dir>
+Por se tratar de um relacionamento, ao desenvolver a alteração de um recurso, devemos considerar se estas relações devem ou não ser alteradas
+
+Além disso, em no nosso caso temos um acúmulo de função por parte do Modelo de Representação de Domínio, pois ele também cumpre o papel de Modelo de Representação de Recurso.
+E isso não é bom, pois como os modelos estão associados e temos diversos recursos, cada recurso tem sua própria necessidade ao utilizar um Modelo de Representação.
+
+Ou seja, as mudanças nos modelos pensando no domínio, podeão impactar o comportamento de nossas APIs.
+</dir>
+</sub>
+</samp>
+
+</details>
+
+
+
+</dir>
 </details>
 
