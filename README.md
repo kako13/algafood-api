@@ -195,7 +195,7 @@ setx SPRING_PROFILES_ACTIVE=production
 
 </details>
 
-<details open>
+<details>
     <summary>05. Super poderes do Spring Data JPA</summary>
 
 1. Implementando consultas JPQL em repositórios
@@ -259,6 +259,13 @@ Possibilitando que o dev note possíveis erros.
 
 #
 ###### *Utilizando o Spring na versão 3.1.3 e Java na versão 17, não é possível capturar a exception 'EmptyResultDataAccessException' ao tentar excluir uma entidade inexistente. Ajustes foram necessários.*
+
+</details>
+
+<details open>
+    <summary>06. Explorando mais do JPA e Hibernate</summary>
+
+1. Mapeando relacionamento bidirecional com @OneToMany
 
 </details>
 
