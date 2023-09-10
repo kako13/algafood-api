@@ -3,31 +3,31 @@
 
 <details>
   <summary><i>02 - Spring e Injeção de Dependências</i></summary>
-<dir>
+<ol>
 
-1. Por que aprender e usar Spring?
-2. Conhecendo o ecossistema Spring
-3. Spring vs Jakarta EE (Java EE)
-4. Conhecendo o Spring Boot
-5. [Criando um projeto Spring Boot com Spring Initializr](https://start.spring.io)
-6. Conhecendo o Maven e o pom.xml de um projeto Spring Boot
-7. Criando um controller com Spring MVC (Hello World!)
-8. Restart mais rápido da aplicação com DevTools
-9. [O que é injeção de dependências?](https://github.com/kako13/exemplo-di)
-10. Conhecendo o IoC Container do Spring
-11. Definindo beans com @Component
-12. Injetando dependências (beans Spring)
-13. Usando @Configuration e @Bean para definir beans
-14. Conhecendo os pontos de injeção e a anotação @Autowired
-15. Dependência opcional com @Autowired
-16. Ambiguidade de beans e injeção de lista de beans
-17. Desambiguação de beans com @Primary em um dos beans
-18. Desambiguação de beans com @Qualifier
-19. Desambiguação de beans com anotação customizada ⭐
-20. Mudando o comportamento da aplicação com Spring Profiles (de ambiente à seleção implementações) ⭐
-<details>
-  <summary><i>21. Criando métodos de callback do ciclo de vida dos beans</i></summary>
-<dir>
+<li>Por que aprender e usar Spring?</li>
+<li>Conhecendo o ecossistema Spring</li>
+<li>Spring vs Jakarta EE (Java EE)</li>
+<li>Conhecendo o Spring Boot</li>
+<li>[Criando um projeto Spring Boot com Spring Initializr](https://start.spring.io)</li>
+<li>Conhecendo o Maven e o pom.xml de um projeto Spring Boot</li>
+<li>Criando um controller com Spring MVC (Hello World!)</li>
+<li>Restart mais rápido da aplicação com DevTools</li>
+<li>[O que é injeção de dependências?](https://github.com/kako13/exemplo-di)</li>
+<li> Conhecendo o IoC Container do Spring</li>
+<li> Definindo beans com @Component</li>
+<li> Injetando dependências (beans Spring)</li>
+<li> Usando @Configuration e @Bean para definir beans</li>
+<li> Conhecendo os pontos de injeção e a anotação @Autowired</li>
+<li> Dependência opcional com @Autowired</li>
+<li> Ambiguidade de beans e injeção de lista de beans</li>
+<li> Desambiguação de beans com @Primary em um dos beans</li>
+<li> Desambiguação de beans com @Qualifier</li>
+<li> Desambiguação de beans com anotação customizada ⭐</li>
+<li> Mudando o comportamento da aplicação com Spring Profiles (de ambiente à seleção implementações) ⭐</li>
+<li><details>
+  <summary><i>Criando métodos de callback do ciclo de vida dos beans</i></summary>
+<ol>
 Existem três formas possíveis:
 
 * Através das anotações @PostConstructor e @PreDestroy:
@@ -76,18 +76,18 @@ public class AtivacaoClienteService implements InitializingBean, DisposableBean 
     }
 }
 ```
-</dir>
-</details>
+</ol>
+</details></li>
 
-22. Publicando e consumindo eventos customizados ⭐
-23. Configurando projetos Spring Boot com o [application.properties](https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html)
-24. Substituindo propriedades via linha de comando e variáveis de ambiente
-25. Criando e acessando propriedades customizadas com @Value
-26. Acessando propriedades com @ConfigurationProperties
-27. Alterando a configuração do projeto dependendo do ambiente (com Spring Profiles) ⭐
-<details>
-    <summary>28. Ativando o Spring Profile por linha de comando e variável de ambiente</summary>
-<dir>
+<li>Publicando e consumindo eventos customizados ⭐</li>
+<li>Configurando projetos Spring Boot com o [application.properties](https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html)</li>
+<li>Substituindo propriedades via linha de comando e variáveis de ambiente</li>
+<li>Criando e acessando propriedades customizadas com @Value</li>
+<li>Acessando propriedades com @ConfigurationProperties</li>
+<li>Alterando a configuração do projeto dependendo do ambiente (com Spring Profiles) ⭐</li>
+<li><details>
+    <summary>Ativando o Spring Profile por linha de comando e variável de ambiente</summary>
+<ol>
 
 Linha de comando:
 ```
@@ -109,45 +109,45 @@ set SPRING_PROFILES_ACTIVE=production
 ```
 setx SPRING_PROFILES_ACTIVE=production
 ```
-</dir>
-</details>
-</dir>
+</ol>
+</details></li>
+</ol>
 </details>
 <details>
   <summary><i>03 - Introdução ao JPA e Hibernate</i></summary>
-<dir>
+<ol>
 
-1. Instalando o MySQL Server e MySQL Workbench (adotei o docker-compose.yaml)
-2. O que é JPA e Hibernate
-3. Adicionando JPA e configurando o Data Source
-4. Mapeando entidades com JPA
-5. Criando as tabelas do banco a partir das entidades
-6. Mapeando o id da entidade para autoincremento
-7. Importando dados de teste com import.sql
-8. Consultando objetos do banco de dados
-9. Adicionando um objeto no banco de dados
-10. Buscando um objeto pelo id no banco de dados
-11. Atualizando um objeto no banco de dados
-12. Excluindo um objeto do banco de dados
-13. Conhecendo o padrão Agregate do DDD
-14. Conhecendo e implementando o padrão Repository (por agregate)
-15. Conhecendo e usando o Lombok
-16. Desafio: Lombok e repositório de restaurantes
-17. Mapeando relacionamento com @ManyToOne e Dialeto
-18. A anotação @JoinColumn (para nomear coluna de FK)
-19. Propriedade nullable de @Column e @JoinColumn
-20. Desafio: mapeando entidades (Forma Pagamento, Permissão, Cidade e Estado)
-</dir>
+<li>Instalando o MySQL Server e MySQL Workbench (adotei o docker-compose.yaml)</li>
+<li>O que é JPA e Hibernate</li>
+<li>Adicionando JPA e configurando o Data Source</li>
+<li>Mapeando entidades com JPA</li>
+<li>Criando as tabelas do banco a partir das entidades</li>
+<li>Mapeando o id da entidade para autoincremento</li>
+<li>Importando dados de teste com import.sql</li>
+<li>Consultando objetos do banco de dados</li>
+<li>Adicionando um objeto no banco de dados</li>
+<li>Buscando um objeto pelo id no banco de dados</li>
+<li>Atualizando um objeto no banco de dados</li>
+<li>Excluindo um objeto do banco de dados</li>
+<li>Conhecendo o padrão Agregate do DDD</li>
+<li>Conhecendo e implementando o padrão Repository (por agregate)</li>
+<li>Conhecendo e usando o Lombok</li>
+<li>Desafio: Lombok e repositório de restaurantes</li>
+<li>Mapeando relacionamento com @ManyToOne e Dialeto</li>
+<li>A anotação @JoinColumn (para nomear coluna de FK)</li>
+<li>Propriedade nullable de @Column e @JoinColumn</li>
+<li>Desafio: mapeando entidades (Forma Pagamento, Permissão, Cidade e Estado)</li>
+</ol>
 </details>
 <details>
   <summary><i>04 - REST com Spring</i></summary>
 
-<dir>
+<ol>
 
-1. O que é REST?
-<details>
-    <summary>2. Conhecendo as constraints do REST</summary>
-<dir>
+<li>O que é REST?</li>
+<li><details>
+    <summary>Conhecendo as constraints do REST</summary>
+<ol>
 
 - Cliente-servidor
 - Sistema em camadas (desconhecida pelo cliente)
@@ -156,89 +156,89 @@ setx SPRING_PROFILES_ACTIVE=production
 - Interface uniforme
 - Código sob demanda
 
-</dir>
-</details>
+</ol>
+</details></li>
 
-3. Diferença entre REST e RESTful
-4. Desenvolvedores de REST APIs puristas e pragmáticos
-5. Conhecendo o protocolo HTTP
-6. Usando o protocolo HTTP
-7. Instalando e testando o Postman
-<details>
+<li>Diferença entre REST e RESTful</li>
+<li>Desenvolvedores de REST APIs puristas e pragmáticos</li>
+<li>Conhecendo o protocolo HTTP</li>
+<li>Usando o protocolo HTTP</li>
+<li>Instalando e testando o Postman</li>
+<li><details>
     <summary>8. Entendendo o que são Recursos REST</summary>
-<dir>
+<ol>
 
 - Singleton Resource
 - Collection Resource
 
-</dir>
-</details>
+</ol>
+</details></li>
 
-9. Identificando recursos REST
-10. Modelando e requisitando um Collection Resource com GET
-11. Desafio: collection resource de estados
-12. Representações de recursos e content negotiation
-13. Implementando content negotiation para retornar JSON e/ou XML
-14. Consultando Singleton Resource com GET e @PathVariable
-15. Customizando as representações XML e JSON com @JsonIgnore, @JsonProperty e @JsonRootName (Jackson para JSON e XML)
-16. Customizando a representação em XML com Wrapper e anotações do Jackson
-17. Conhecendo os métodos HTTP
-18. Conhecendo os códigos de status HTTP
-19. Definindo o status da resposta HTTP com @ResponseStatus
-20. Manipulando a resposta HTTP com ResponseEntity
-21. Corrigindo o Status HTTP para resource inexistente
-22. Status HTTP para collection resource vazia: qual usar?
-23. Modelando e implementando a inclusão de recursos com POST
-24. Negociando o media type do payload do POST com Content-Type
-25. Modelando e implementando a atualização de recursos com PUT
-26. Modelando e implementando a exclusão de recursos com DELETE
-27. Implementando a camada de domain services (e a importância da linguagem ubíqua)
-28. Refatorando a exclusão de cozinhas para usar domain services
-29. Desafio: modelando e implementando a consulta de recursos de restaurantes
-30. Modelando e implementando a inclusão de recursos de restaurantes
-31. Desafio: Modelando e implementando a atualização de recursos de restaurantes
-32. Desafio: implementando serviços REST de cidades e estados
-33. Analisando solução para atualização parcial de recursos com PATCH
-34. Finalizando a atualização parcial com a API de Reflections do Spring
-35. Introdução ao Modelo de Maturidade de Richardson (RMM)
-36. Conhecendo o nível 0 do RMM (POX - Plain Old XML; podendo ser também em JSON)
-37. Conhecendo o nível 1 do RMM (identificação de recursos)
-38. Conhecendo o nível 2 do RMM (nível 1 + Verbos e códigos de Status HTTP; é o mais comum no mercado)
-39. Conhecendo o nível 3 do RMM (nível 2 + HATEOS)
+<li>Identificando recursos REST</li>
+<li>Modelando e requisitando um Collection Resource com GET</li>
+<li>Desafio: collection resource de estados</li>
+<li>Representações de recursos e content negotiation</li>
+<li>Implementando content negotiation para retornar JSON e/ou XML</li>
+<li>Consultando Singleton Resource com GET e @PathVariable</li>
+<li>Customizando as representações XML e JSON com @JsonIgnore, @JsonProperty e @JsonRootName (Jackson para JSON e XML)</li>
+<li>Customizando a representação em XML com Wrapper e anotações do Jackson</li>
+<li>Conhecendo os métodos HTTP</li>
+<li>Conhecendo os códigos de status HTTP</li>
+<li>Definindo o status da resposta HTTP com @ResponseStatus</li>
+<li>Manipulando a resposta HTTP com ResponseEntity</li>
+<li>Corrigindo o Status HTTP para resource inexistente</li>
+<li>Status HTTP para collection resource vazia: qual usar?</li>
+<li>Modelando e implementando a inclusão de recursos com POST</li>
+<li>Negociando o media type do payload do POST com Content-Type</li>
+<li>Modelando e implementando a atualização de recursos com PUT</li>
+<li>Modelando e implementando a exclusão de recursos com DELETE</li>
+<li>Implementando a camada de domain services (e a importância da linguagem ubíqua)</li>
+<li>Refatorando a exclusão de cozinhas para usar domain services</li>
+<li>Desafio: modelando e implementando a consulta de recursos de restaurantes</li>
+<li>Modelando e implementando a inclusão de recursos de restaurantes</li>
+<li>Desafio: Modelando e implementando a atualização de recursos de restaurantes</li>
+<li>Desafio: implementando serviços REST de cidades e estados</li>
+<li>Analisando solução para atualização parcial de recursos com PATCH</li>
+<li>Finalizando a atualização parcial com a API de Reflections do Spring</li>
+<li>Introdução ao Modelo de Maturidade de Richardson (RMM)</li>
+<li>Conhecendo o nível 0 do RMM (POX - Plain Old XML; podendo ser também em JSON)</li>
+<li>Conhecendo o nível 1 do RMM (identificação de recursos)</li>
+<li>Conhecendo o nível 2 do RMM (nível 1 + Verbos e códigos de Status HTTP; é o mais comum no mercado)</li>
+<li>Conhecendo o nível 3 do RMM (nível 2 + HATEOS)</li>
 
-</dir>
+</ol>
 </details>
 
 <details>
     <summary>05. Super poderes do Spring Data JPA</summary>
-<dir>
+<ol>
 
-1. Implementando consultas JPQL em repositórios
-2. Conhecendo o projeto Spring Data JPA (SDJ)
-3. Criando um repositório com Spring Data JPA (SDJ)
-4. Refatorando o código do projeto para usar o repositório do SDJ
-5. Desafio: refatorando todos os repositórios para usar SDJ
-6. Criando consultas com query methods
-7. [Usando as keywords para definir critérios de query methods](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods.query-creation)
-<details>
-<summary>8. Conhecendo os prefixos de query methods</summary>
-<dir>
+<li>Implementando consultas JPQL em repositórios</li>
+<li>Conhecendo o projeto Spring Data JPA (SDJ)</li>
+<li>Criando um repositório com Spring Data JPA (SDJ)</li>
+<li>Refatorando o código do projeto para usar o repositório do SDJ</li>
+<li>Desafio: refatorando todos os repositórios para usar SDJ</li>
+<li>Criando consultas com query methods</li>
+<li>[Usando as keywords para definir critérios de query methods](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods.query-creation)</li>
+<li><details>
+<summary>Conhecendo os prefixos de query methods</summary>
+<ol>
 
 - prefixos de consulta (find, get, read, stream, query)
 - prefixo booleano (exists)
 - totalizador (count)
 - flags de limite (first, last, top2)
 
-</dir>
-</details>
+</ol>
+</details></li>
 
-9. Usando queries JPQL customizadas com @Query
-10. Externalizando consultas JPQL para um arquivo XML ⭐
+<li>Usando queries JPQL customizadas com @Query</li>
+<li>Externalizando consultas JPQL para um arquivo XML ⭐</li>
 
 
-<details>
-<summary>11. Implementando um repositório SDJ customizado ⭐</summary>
-<dir>
+<li><details>
+<summary>Implementando um repositório SDJ customizado ⭐</summary>
+<ol>
 
 1. Criar uma classe com o mesmo nome da interface SDJ Repository utilizada e adicionar o sufixo 'Impl', ex:
 ```
@@ -262,51 +262,52 @@ RestauranteRepositoryQueries
 
 Desta forma o Spring conseguirá resolver e vincular a interface SDJ a implementação em tempo de compilação. 
 Possibilitando que o dev note possíveis erros.
-</dir>
+</ol>
 </details>
 
-12. Implementando uma consulta dinâmica com JPQL
-13. Implementando uma consulta simples com Criteria API
-14. Adicionando restrições na cláusula where com Criteria API
-15. Tornando a consulta com Criteria API com filtros dinâmicos ⭐
-16. Conhecendo o uso do padrão Specifications (DDD) com SDJ ⭐
-17. Implementando Specifications com SDJ ⭐
-18. Criando uma fábrica de Specifications ⭐
-19. Injetando o próprio repositório na implementação customizada e a anotação @Lazy ⭐
-20. Estendendo o JpaRepository para customizar o repositório base ⭐
+<li>Implementando uma consulta dinâmica com JPQL</li>
+<li>Implementando uma consulta simples com Criteria API</li>
+<li>Adicionando restrições na cláusula where com Criteria API</li>
+<li>Tornando a consulta com Criteria API com filtros dinâmicos ⭐</li>
+<li>Conhecendo o uso do padrão Specifications (DDD) com SDJ ⭐</li>
+<li>Implementando Specifications com SDJ ⭐</li>
+<li>Criando uma fábrica de Specifications ⭐</li>
+<li>Injetando o próprio repositório na implementação customizada e a anotação @Lazy ⭐</li>
+<li>Estendendo o JpaRepository para customizar o repositório base ⭐</li>
 
 ###
 ###### *Utilizando o Spring na versão 3.1.3 e Java na versão 17, não é possível capturar a exception 'EmptyResultDataAccessException' ao tentar excluir uma entidade inexistente. Ajustes foram necessários.*
 
-</dir>
+</ol>
 </details>
 
 <details open>
     <summary>06. Explorando mais do JPA e Hibernate</summary>
-<dir>
+<ol>
 
-1. Mapeando relacionamento bidirecional com @OneToMany
-2. Mapeando relacionamento muitos-para-muitos com @ManyToMany
+<li>Mapeando relacionamento bidirecional com @OneToMany</li>
+<li>Mapeando relacionamento muitos-para-muitos com @ManyToMany</li>
 
-<details>
-    <summary>3. Analisando o impacto do relacionamento muitos-para-muitos na REST API</summary>
+<li><details>
+    <summary>Analisando o impacto do relacionamento muitos-para-muitos na REST API</summary>
 <samp>
 <sub>
-<dir>
+
 Por se tratar de um relacionamento, ao desenvolver a alteração de um recurso, devemos considerar se estas relações devem ou não ser alteradas
 
 Além disso, em no nosso caso temos um acúmulo de função por parte do Modelo de Representação de Domínio, pois ele também cumpre o papel de Modelo de Representação de Recurso.
 E isso não é bom, pois como os modelos estão associados e temos diversos recursos, cada recurso tem sua própria necessidade ao utilizar um Modelo de Representação.
 
 Ou seja, as mudanças nos modelos pensando no domínio, podeão impactar o comportamento de nossas APIs.
-</dir>
+
 </sub>
 </samp>
 
-</details>
+</details></li>
+
+<li>Mapeando classes incorporáveis com @Embedded e @Embeddable</li>
 
 
-
-</dir>
+</ol>
 </details>
 

@@ -34,4 +34,7 @@ public class Restaurante {
             joinColumns = @JoinColumn(name = "restaurante"),
             inverseJoinColumns = @JoinColumn(name = "forma_pagamento"))
     private List<FormaPagamento> formasPagamento = new ArrayList<>();
+
+    @Embedded
+    private Endereco endereco;
 }
