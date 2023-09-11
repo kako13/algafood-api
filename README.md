@@ -210,7 +210,7 @@ setx SPRING_PROFILES_ACTIVE=production
 </details>
 
 <details>
-    <summary>05. Super poderes do Spring Data JPA</summary>
+    <summary><i>05. Super poderes do Spring Data JPA</i></summary>
 <ol>
 
 <li>Implementando consultas JPQL em repositórios</li>
@@ -282,7 +282,7 @@ Possibilitando que o dev note possíveis erros.
 </details>
 
 <details open>
-    <summary>06. Explorando mais do JPA e Hibernate</summary>
+    <summary><i>06. Explorando mais do JPA e Hibernate</i></summary>
 <ol>
 
 <li>Mapeando relacionamento bidirecional com @OneToMany</li>
@@ -291,16 +291,12 @@ Possibilitando que o dev note possíveis erros.
 <li><details>
     <summary>Analisando o impacto do relacionamento muitos-para-muitos na REST API</summary>
 
-<sub>
-
 Por se tratar de um relacionamento, ao desenvolver a alteração de um recurso, devemos considerar se estas relações devem ou não ser alteradas
 
 Além disso, em no nosso caso temos um acúmulo de função por parte do Modelo de Representação de Domínio, pois ele também cumpre o papel de Modelo de Representação de Recurso.
 E isso não é bom, pois como os modelos estão associados e temos diversos recursos, cada recurso tem sua própria necessidade ao utilizar um Modelo de Representação.
 
 Ou seja, as mudanças nos modelos pensando no domínio, podeão impactar o comportamento de nossas APIs.
-
-</sub>
 
 
 </details></li>
@@ -311,6 +307,22 @@ Ou seja, as mudanças nos modelos pensando no domínio, podeão impactar o compo
 <li>Desafio: mapeando relacionamento muitos-para-um</li>
 <li>Desafio: mapeando relacionamento um-para-muitos</li>
 <li>Desafio: mapeando relacionamentos muitos-para-muitos</li>
+<li><details>
+    <summary>Entendendo o Eager Loading</summary>
+
+Carregamento ansioso. Relacionamentos terminados em 'One'.
+
+Eager Loading é o comportamento de carregar entidades relaciondas ao carregar a entidade em questão,
+e não determina o número de consultas que serão realizadas, este será definindo pela inplementação JPA
+
+Uma observação importante sobre o comportamento da anotação @JoinColumn(name = "cozinha_id", nullable = false) (not null ao criar a tabela), 
+é que ela também possui a finallidade de alterar a forma que a implementção JPA irá gerar a consulta. Como realizar um join (inner join) ao invés de um left join,
+já que é certo que a outra tabela possui um registro relacionado.
+
+A idéia primeiramente é compreender o comportamento para que mais à frente a gente possa customizar de ocordo com nossa necessidade.
+
+</details></li>
+
 
 </ol>
 </details>
