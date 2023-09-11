@@ -308,6 +308,7 @@ Ou seja, as mudanças nos modelos pensando no domínio, podeão impactar o compo
 <li>Mapeando classes incorporáveis com @Embedded e @Embeddable</li>
 <li>Testando e analisando o impacto da incorporação de classe na REST API</li>
 <li>Mapeando propriedades com @CreationTimestamp e @UpdateTimestamp</li>
+<li>Desafio: mapeando relacionamento muitos-para-um</li>
 
 </ol>
 </details>

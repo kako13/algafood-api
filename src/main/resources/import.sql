@@ -28,3 +28,8 @@ insert into restaurante_forma_pagamento (restaurante_id, forma_pagamento_id) val
 insert into permissao (id, nome, descricao) values (1, "Cadastro Produtos", "Permite cadastrar produtos")
 insert into permissao (id, nome, descricao) values (2, "Cadastro Restaurantes", "Permite cadastrar restaurantes")
 insert into permissao (id, nome, descricao) values (3, "Cadastro Forma de Pagamento", "Permite cadastrar fornas de pagamento")
+
+insert into produto (nome, descricao, preco, ativo, restaurante_id) values ("Lasanha", "prato italiano", 37.65, true, 1)
+insert into produto (nome, descricao, preco, ativo, restaurante_id) values ("Kibe", "prato árabe", 27.87, true, 2)
+insert into produto (nome, descricao, preco, ativo, restaurante_id) values ("Acarajé", "prato brasileiro", 67.44, true, 3)
+insert into produto (nome, descricao, preco, ativo) values ("Feijoada", "prato clássico", 47.38, true)
