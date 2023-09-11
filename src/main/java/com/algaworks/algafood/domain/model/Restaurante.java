@@ -26,9 +26,9 @@ public class Restaurante {
     @Column(name = "taxa_frete", nullable = false)
     private BigDecimal taxaFrete;
 
-//    @JsonIgnore
-    @JoinColumn(name = "cozinha_id", nullable = false) //"num_idt_cozinha" definindo nome da coluna
+    @JsonIgnore
     @ManyToOne
+    @JoinColumn(name = "cozinha_id", nullable = false) //"num_idt_cozinha" definindo nome da coluna
     private Cozinha cozinha;
 
     @JsonIgnore
@@ -37,12 +37,12 @@ public class Restaurante {
 
     @JsonIgnore
     @CreationTimestamp
-    @Column(nullable = false, columnDefinition = "dateTime")
+    @Column(nullable = false, columnDefinition = "datetime")
     private LocalDateTime dataCadastro;
 
     @JsonIgnore
     @UpdateTimestamp
-    @Column(nullable = false, columnDefinition = "dateTime")
+    @Column(nullable = false, columnDefinition = "datetime")
     private LocalDateTime dataAtualizacao;
 
     @JsonIgnore
