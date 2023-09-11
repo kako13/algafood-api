@@ -309,6 +309,8 @@ Ou seja, as mudanças nos modelos pensando no domínio, podeão impactar o compo
 <li>Testando e analisando o impacto da incorporação de classe na REST API</li>
 <li>Mapeando propriedades com @CreationTimestamp e @UpdateTimestamp</li>
 <li>Desafio: mapeando relacionamento muitos-para-um</li>
+<li>Desafio: mapeando relacionamento um-para-muitos</li>
+<li>Desafio: mapeando relacionamentos muitos-para-muitos</li>
 
 </ol>
 </details>
