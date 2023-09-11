@@ -32,4 +32,4 @@ insert into permissao (id, nome, descricao) values (3, "Cadastro Forma de Pagame
 insert into produto (nome, descricao, preco, ativo, restaurante_id) values ("Lasanha", "prato italiano", 37.65, true, 1)
 insert into produto (nome, descricao, preco, ativo, restaurante_id) values ("Kibe", "prato árabe", 27.87, true, 2)
 insert into produto (nome, descricao, preco, ativo, restaurante_id) values ("Acarajé", "prato brasileiro", 67.44, true, 3)
-insert into produto (nome, descricao, preco, ativo) values ("Feijoada", "prato clássico", 47.38, true)
+insert into produto (nome, descricao, preco, ativo, restaurante_id) values ("Feijoada", "prato clássico", 47.38, true, 4)
