@@ -30,7 +30,18 @@ public class RestauranteController {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public List<Restaurante> listar() {
-        return restauranteRepository.findAll();
+
+        List<Restaurante> restaurantes = restauranteRepository.findAll();
+        System.out.println(restaurantes.get(0).getNome());
+        restaurantes.get(0).getFormasPagamento().forEach(System.out::println);
+
+        System.out.println(restaurantes.get(1).getNome());
+        restaurantes.get(1).getFormasPagamento().forEach(System.out::println);
+
+        System.out.println(restaurantes.get(0).getNome());
+        restaurantes.get(0).getFormasPagamento().forEach(System.out::println);
+
+        return restaurantes;
     }
 
     @GetMapping("/{id}")

@@ -322,7 +322,19 @@ já que é certo que a outra tabela possui um registro relacionado.
 A idéia primeiramente é compreender o comportamento para que mais à frente a gente possa customizar de ocordo com nossa necessidade.
 
 </details></li>
+<li><details>
+    <summary>Entendendo o Lazy Loading</summary>
 
+Carregamento preguiçoso. Relacionamentos terminados em 'Many'.
+
+Many Loading é o comportamento de **não carregar** entidades relaciondas ao carregar a entidade em questão,
+e não determina o número de consultas que serão realizadas, este será definindo pela inplementação JPA
+
+As consultas dos relacionamentos são carregos conforme o uso, ou seja, sob demanda.
+
+Mais à frente iremos customizar este comportamento de ocordo com nossa necessidade.
+
+</details></li>
 
 </ol>
 </details>
