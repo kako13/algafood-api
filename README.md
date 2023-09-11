@@ -290,7 +290,7 @@ Possibilitando que o dev note possíveis erros.
 
 <li><details>
     <summary>Analisando o impacto do relacionamento muitos-para-muitos na REST API</summary>
-<samp>
+
 <sub>
 
 Por se tratar de um relacionamento, ao desenvolver a alteração de um recurso, devemos considerar se estas relações devem ou não ser alteradas
@@ -301,12 +301,12 @@ E isso não é bom, pois como os modelos estão associados e temos diversos recu
 Ou seja, as mudanças nos modelos pensando no domínio, podeão impactar o comportamento de nossas APIs.
 
 </sub>
-</samp>
+
 
 </details></li>
 
 <li>Mapeando classes incorporáveis com @Embedded e @Embeddable</li>
-
+<li>Testando e analisando o impacto da incorporação de classe na REST API</li>
 
 </ol>
 </details>
