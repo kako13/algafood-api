@@ -335,6 +335,7 @@ As consultas dos relacionamentos são carregos conforme o uso, ou seja, sob dema
 Mais à frente iremos customizar este comportamento de ocordo com nossa necessidade.
 
 </details></li>
+<li>Alterando a estratégia de fetching para Lazy Loading</li>
 
 </ol>
 </details>
