@@ -341,8 +341,12 @@ Para atender e a configuração @ManyToOne(fetch = FetchType.LAZY) que colocamos
 @JsonIgnoreProperties({"hibernateLazyInitializer"}), que corresponde a ignorar a propriedade "hibernateLazyInitializer" do proxy Cozinha$HibernateProxy$
 criado em tempo de execução pelo hibernate.  
 </details></li>
-
-
+<li><details>
+    <summary>Alterando a estratégia de fetching para Eager Loading</summary>
+Não é recomendado alterar a propriedade de um relacionamento que por padrão é Lazy (OneTomany e ManyToMany) para Eager. 
+É importante avaliar com cautela se esta alteração é realmente necessária. Tenha cuidado ao utilizar, pois será feita 
+uma nova consulta para cada registro de relacionamento que a entidade em questão possua, mesmo que não seja utilizado algum campo do relacionamento.
+</details></li>
 </ol>
 </details>
 
