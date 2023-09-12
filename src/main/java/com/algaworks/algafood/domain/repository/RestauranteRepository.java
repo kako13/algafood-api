@@ -2,6 +2,7 @@ package com.algaworks.algafood.domain.repository;
 
 import com.algaworks.algafood.domain.model.Restaurante;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
@@ -15,9 +16,7 @@ public interface RestauranteRepository extends CustomJpaRepository<Restaurante, 
 
     List<Restaurante> findByTaxaFreteBetween(BigDecimal taxaInicial, BigDecimal taxaFinal);
 
-//    @Query("from Restaurante where nome like %:nome% and cozinha.id = :id ")
     List<Restaurante> consultarPorNome(String nome, @Param("id") Long cozinha); // utilizando orm.xml
-//    List<Restaurante> streamByNomeContainingAndCozinhaId(String nome, Long cozinha);
 
     Optional<Restaurante> findFirstByNomeContaining(String nome);
 
@@ -25,4 +24,7 @@ public interface RestauranteRepository extends CustomJpaRepository<Restaurante, 
 
     int countByCozinhaId(Long id);
 
+    @Override
+    @Query("FROM Restaurante r JOIN FETCH r.cozinha JOIN FETCH r.formasPagamento")
+    List<Restaurante> findAll();
 }

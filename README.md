@@ -294,9 +294,9 @@ Possibilitando que o dev note possíveis erros.
 Por se tratar de um relacionamento, ao desenvolver a alteração de um recurso, devemos considerar se estas relações devem ou não ser alteradas
 
 Além disso, em no nosso caso temos um acúmulo de função por parte do Modelo de Representação de Domínio, pois ele também cumpre o papel de Modelo de Representação de Recurso.
-E isso não é bom, pois como os modelos estão associados e temos diversos recursos, cada recurso tem sua própria necessidade ao utilizar um Modelo de Representação.
+E isso não é bom, pois como os modelos estão associados e temos diversos recursos, cada recurso tem a sua própria necessidade ao utilizar um Modelo de Representação.
 
-Ou seja, as mudanças nos modelos pensando no domínio, podeão impactar o comportamento de nossas APIs.
+Ou seja, as mudanças nos modelos pensando no domínio, podeão impactar o comportamento das APIs.
 
 
 </details></li>
@@ -319,7 +319,7 @@ Uma observação importante sobre o comportamento da anotação @JoinColumn(name
 é que ela também possui a finallidade de alterar a forma que a implementção JPA irá gerar a consulta. Como realizar um join (inner join) ao invés de um left join,
 já que é certo que a outra tabela possui um registro relacionado.
 
-A idéia primeiramente é compreender o comportamento para que mais à frente a gente possa customizar de ocordo com nossa necessidade.
+A ideia primeiramente é compreender o comportamento para que mais adiante a gente possa customizar de ocordo a necessidade.
 
 </details></li>
 <li><details>
@@ -332,21 +332,35 @@ e não determina o número de consultas que serão realizadas, este será defini
 
 As consultas dos relacionamentos são carregos conforme o uso, ou seja, sob demanda.
 
-Mais à frente iremos customizar este comportamento de ocordo com nossa necessidade.
+Mais adiante iremos customizar este comportamento de ocordo com a necessidade.
 
 </details></li>
 <li><details>
     <summary>Alterando a estratégia de fetching para Lazy Loading</summary>
+
 Para atender e a configuração @ManyToOne(fetch = FetchType.LAZY) que colocamos no atributo Cozinha da Classe Restaurante, tivemos que utilizar a anotação 
 @JsonIgnoreProperties({"hibernateLazyInitializer"}), que corresponde a ignorar a propriedade "hibernateLazyInitializer" do proxy Cozinha$HibernateProxy$
 criado em tempo de execução pelo hibernate.  
 </details></li>
 <li><details>
     <summary>Alterando a estratégia de fetching para Eager Loading</summary>
-Não é recomendado alterar a propriedade de um relacionamento que por padrão é Lazy (OneTomany e ManyToMany) para Eager. 
+
+Não é recomendado alterar a propriedade de um relacionamento que por padrão é Lazy (OneToMany e ManyToMany) para Eager. 
 É importante avaliar com cautela se esta alteração é realmente necessária. Tenha cuidado ao utilizar, pois será feita 
 uma nova consulta para cada registro de relacionamento que a entidade em questão possua, mesmo que não seja utilizado algum campo do relacionamento.
 </details></li>
+<li><details>
+    <summary>Resolvendo o Problema do N+1 com fetch join na JPQL</summary>
+ 
+Para reduzir o número de consultas desta situação, devemos utilizar o `JOIN FETCH` para carregar as relações `nullable = false` (`NOT NULL`), seja ManyToOne ou ManyToMany. 
+E desta forma fazer apenas uma consulta para trazer os relacionamentos.
+Para entidades `nullable = true`, devemos utilizar o `LEFT JOIN FETCH`.
+
+_Quando utilizamos este tipo de abordagem em relacionamentos ManyToMany o resultado da consulta é um produto cartesiano, 
+que é considerado e tratado pelo JPA, ou seja, devido à combinação a consulta gerada no banco de dados retorna um número 
+maior de registros do que objetos retornados na API._
+</details></li>
+
 </ol>
 </details>
 
