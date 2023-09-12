@@ -335,6 +335,13 @@ As consultas dos relacionamentos são carregos conforme o uso, ou seja, sob dema
 Mais à frente iremos customizar este comportamento de ocordo com nossa necessidade.
 
 </details></li>
+<li><details>
+    <summary>Alterando a estratégia de fetching para Lazy Loading</summary>
+Para atender e a configuração @ManyToOne(fetch = FetchType.LAZY) que colocamos no atributo Cozinha da Classe Restaurante, tivemos que utilizar a anotação 
+@JsonIgnoreProperties({"hibernateLazyInitializer"}), que corresponde a ignorar a propriedade "hibernateLazyInitializer" do proxy Cozinha$HibernateProxy$
+criado em tempo de execução pelo hibernate.  
+</details></li>
+
 
 </ol>
 </details>
