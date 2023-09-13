@@ -386,7 +386,22 @@ a depender da solução adotada.
 <li>Adicionando o Flyway no projeto e criando a primeira migração</li>
 <li>Evoluindo o banco de dados com novas migrações</li>
 <li>Criando migrações complexas com remanejamento de dados</li>
+<li>Criando migração a partir de DDL gerado por schema generation</li>
+<li><details>
+    <summary>Adicionando dados de testes com callback do Flyway</summary>
 
+`insert ignore` é um recurso do MySql com similarem em outros bancos de dados, ele ignora os erro durante os inserts do 
+afterMigrate.sql de forma que, caso sejam inseridos novos dados de teste eles não serão excluídos quando iniciar a aplicação e rodar as migrations.
+
+Já no nosso caso, adotamos o contole manual, para que a massa de testes esteja sempre no mesmo estado e o comportamento fique parecido
+com quando utlilizamos o import.sql.
+
+</details>
+</li>
+
+
+_*Não devemos utilizar dados de testes nas migrations, comandos DML são utilizados **apenas em casos de migração de dados 
+por conta de alguma alteração**_
 
 </ol>
 </details>
