@@ -8,4 +8,4 @@ services:
     environment:
         MYSQL_ROOT_PASSWORD: root
     volumes:
-      - ./scripts_sql/root_privileges_manual.sh:/docker-entrypoint-initdb.d/root_privileges_manual.sh
+      - ./root_privileges_manual.sh:/docker-entrypoint-initdb.d/root_privileges_manual.sh
