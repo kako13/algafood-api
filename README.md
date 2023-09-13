@@ -385,6 +385,7 @@ a depender da solução adotada.
 <li>Flyway: ferramenta de versionamento de schemas de banco de dados (incremental)</li>
 <li>Adicionando o Flyway no projeto e criando a primeira migração</li>
 <li>Evoluindo o banco de dados com novas migrações</li>
+<li>Criando migrações complexas com remanejamento de dados</li>
 
 
 </ol>
