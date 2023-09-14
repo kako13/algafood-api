@@ -386,7 +386,37 @@ a depender da solução adotada.
 <li>Adicionando o Flyway no projeto e criando a primeira migração</li>
 <li>Evoluindo o banco de dados com novas migrações</li>
 <li>Criando migrações complexas com remanejamento de dados</li>
+<li><details>
+    <summary>Criando migração a partir de DDL gerado por schema generation</summary>
 
+_*Ao utilizar este recurso deve-se revisar com cautela o tamanho dos campos gerados automaticamente.*_
+</details>
+</li>
+<li><details>
+    <summary>Adicionando dados de testes com callback do Flyway</summary>
+
+`insert ignore` é um recurso do MySql com similarem em outros bancos de dados, ele ignora os erro durante os inserts do 
+afterMigrate.sql de forma que, caso sejam inseridos novos dados de teste eles não serão excluídos quando iniciar a aplicação e rodar as migrations.
+
+Já no nosso caso, adotamos o contole manual, para que a massa de testes esteja sempre no mesmo estado e o comportamento fique parecido
+com quando utlilizamos o import.sql.
+</details>
+</li>
+<li><details>
+    <summary>Reparando migrações com erros</summary>
+
+Em ambiente de desenvolvimento, basta excluir o registro da migration com que falhou da tabela do Flyway, corrigir o 
+ponto com erro e iniciar/reiniciar a aplicação.
+
+Em produção caso ocorra algum problema no meio de uma migration, é necessário desfazer o que já foi realizado pelos 
+scripts que não apresentaram erro, além dos passos anteriores.
+
+Caso não tenha acesso à base de dados, é possível utilizar o puglin do flyway através do maven.
+</details>
+</li>
+
+_*Não se deve utilizar dados de testes em migrations, comandos DML são utilizados **apenas em casos de migração de dados 
+por conta de alguma alteração.**_
 
 </ol>
 </details>
