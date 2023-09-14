@@ -19,11 +19,11 @@ public class Pedido {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false, precision = 10, scale = 2)
+    @Column(nullable = false)
     private BigDecimal subtotal;
-    @Column(nullable = false, precision = 10, scale = 2)
+    @Column(nullable = false)
     private BigDecimal taxaFrete;
-    @Column(nullable = false, precision = 10, scale = 2)
+    @Column(nullable = false)
     private BigDecimal valorTotal;
     @Column(nullable = false)
     @CreationTimestamp
@@ -31,7 +31,7 @@ public class Pedido {
     private LocalDateTime dataConfirmacao;
     private LocalDateTime dataCancelamento;
     private LocalDateTime dataEntrega;
-    @Column(nullable = false, length = 10)
+    @Column(nullable = false)
     private StatusPedido status;
 
     @Embedded

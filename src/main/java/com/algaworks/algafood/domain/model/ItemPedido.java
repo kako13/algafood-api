@@ -17,17 +17,17 @@ public class ItemPedido {
     private Long id;
     @Column(nullable = false)
     private Integer quantidade;
-    @Column(nullable = false, precision = 10, scale = 2)
+    @Column(nullable = false)
     private BigDecimal precoUnitario;
-    @Column(nullable = false, precision = 10, scale = 2)
+    @Column(nullable = false)
     private BigDecimal precoTotal;
     private String observacao;
 
-    @JoinColumn(nullable = false, unique = true)
+    @JoinColumn(nullable = false)
     @ManyToOne
     private Pedido pedido;
 
-    @JoinColumn(nullable = false, unique = true)
+    @JoinColumn(nullable = false)
     @ManyToOne
     private Produto produto;
 }
