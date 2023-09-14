@@ -281,7 +281,7 @@ Possibilitando que o dev note possíveis erros.
 </ol>
 </details>
 
-<details open>
+<details>
     <summary><i>06. Explorando mais do JPA e Hibernate</i></summary>
 <ol>
 
@@ -360,6 +360,31 @@ _Quando utilizamos este tipo de abordagem em relacionamentos ManyToMany o result
 que é considerado e tratado pelo JPA, ou seja, devido à combinação a consulta gerada no banco de dados retorna um número 
 maior de registros do que objetos retornados na API._
 </details></li>
+
+
+</ol>
+</details>
+
+<details>
+    <summary><i>07. Pool de conexões e Flyway</i></summary>
+<ol>
+<li><details>
+    <summary>Entendendo o funcionamento de um pool de conexões</summary>
+    
+Componente de software que gerencia um conjunto de conexões com o banco de dados para reutilização, onde é possível 
+determinar o mínimo e máximo de conexões ativas. Ao iniciar a aplicação o pool já disponibiliza um conjunto de conexões, 
+e após isso apenas gerencia, sem encerrar as conexões, apenas quando estas são excedentes. Isso reduz o tempo e 
+processamento que seriam gastos com a abertura e fechamento de conexões. Existem mais configurações e particularidades 
+a depender da solução adotada.
+ 
+</details>
+</li>
+<li>Conhecendo o Hikari: a solução padrão de pool de conexões no Spring Boot</li>
+<li>Configurando o pool de conexões do Hikari</li>
+<li>Schema generation em produção não é uma boa prática</li>
+<li>Flyway: ferramenta de versionamento de schemas de banco de dados (incremental)</li>
+<li>Adicionando o Flyway no projeto e criando a primeira migração</li>
+
 
 </ol>
 </details>
