@@ -1,6 +1,5 @@
 package com.algaworks.algafood.api.controller;
 
-import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
 import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.repository.CozinhaRepository;
@@ -10,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ServerWebInputException;
 
 import java.util.List;
 import java.util.Optional;
@@ -70,7 +70,12 @@ public class CozinhaController {
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remover(@PathVariable Long id) {
-        cadastroCozinha.excluir(id);
+        try {
+            cadastroCozinha.excluir(id);
+        } catch (EntidadeNaoEncontradaException e) {
+//            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+            throw new ServerWebInputException(e.getMessage()); // 400 - BAD REQUEST, ja manda o codigo 404
+        }
     }
 
 
