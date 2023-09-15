@@ -9,6 +9,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class CadastroCozinhaService {
 
@@ -21,7 +23,9 @@ public class CadastroCozinhaService {
 
     public void excluir(Long id) {
         try {
-            cozinhaRepository.deleteById(id);
+            Optional.of(cozinhaRepository.findById(id)
+                        .orElseThrow(() -> new EmptyResultDataAccessException(1)))
+                    .ifPresent(n -> cozinhaRepository.delete(n));
         } catch (EmptyResultDataAccessException e) {
             throw new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de cozinha com o código '%d'", id));
         } catch (DataIntegrityViolationException e) {
