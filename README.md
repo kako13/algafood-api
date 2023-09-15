@@ -447,7 +447,7 @@ por conta de alguma alteração.** Consultar aulas 8 e 10._
 
 Esta abordagem separa as anotações de ResponseStatus entre a possíveis exceptions e o controller. Para um poc pode fazer 
 sentido. Mas tem como ponto negativo a mistura (o contato) de classes de negócio com a camada web, além de não podermos 
-incluir uma mensagem no Representation Model padrão do nosso recurso quando cair em alguma das exceptions anotadas. 
+incluir um body quando cair em alguma das exceptions anotadas. 
 
 
 Foi necessário alterar o método de exclusão do serviço de cozinhas, pois aparentemente o Spring framework nesta versão `3.1.3` não
@@ -469,17 +469,20 @@ o código de retorno da requisição.
     <summary>Estendendo ResponseStatusException ⭐</summary>
 
 A vantagem desta abordagem é que quem lança a exception consegue definir o código HTTP de retorno. Podendo até mesmo 
-apenas uma classe de excessão ficar responsável por qualquer retorno com código HTTP, vez que ele pode ser passado.
-A desvantagem é que a passagem do código ficaria numa classe de serviço/negócio. 
-
+apenas uma classe de exceção ficar responsável por qualquer retorno com código HTTP, de forma centralizada, vez que ele 
+pode ser passado.
+A desvantagem é que a passagem do código ficaria numa classe de serviço/negócio.
+_Mas essa não será a aboradagem do curso_
 </details>
 </li>
+<li>Simplificando o código com o uso de @ResponseStatus em exceptions</li>
 
 
-Resumo:
-Já sabemos como devolver codigo de Status HTTP e a mensagem a partir de exceptions de duas formas: 
-- utilizando a anotação `@ResponseStatus` nas exceptions
-- Utilizando as classes de excessão `ResponseStatusException`, vide `Ctrl+h`
+###### Resumo:
+
+###### Já sabemos como devolver codigo de Status HTTP e a mensagem a partir de exceptions de duas formas: 
+###### - Utilizando a anotação `@ResponseStatus` nas exceptions
+###### - Utilizando as classes de exceção `ResponseStatusException`, vide `Ctrl+h`
 
 </ol>
 </details>
