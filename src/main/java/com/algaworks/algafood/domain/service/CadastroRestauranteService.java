@@ -10,22 +10,24 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class CadastroRestauranteService {
+    public static final String MSG_RESTAURANTE_NAO_ENCONTRADO = "Não existe cadastro de restaurante com o código %d";
 
     @Autowired
     private RestauranteRepository restauranteRepository;
     @Autowired
     private CozinhaRepository cozinhaRepository;
 
+    @Autowired
+    private CadastroCozinhaService cadastroCozinhaService;
+
     public Restaurante salvar(Restaurante restaurante) {
-        validaCozinha(restaurante);
+        Cozinha cozinha = cadastroCozinhaService.buscarOuFalhar(restaurante.getCozinha().getId());
+        restaurante.setCozinha(cozinha);
         return restauranteRepository.save(restaurante);
     }
 
-    private void validaCozinha(Restaurante restaurante) {
-        Long cozinhaId = restaurante.getCozinha().getId();
-        Cozinha cozinha = cozinhaRepository.findById(cozinhaId)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException(
-                        String.format("Não existe cadastro de cozinha com o código %d", cozinhaId)));
-        restaurante.setCozinha(cozinha);
+    public Restaurante buscarOuFalhar(Long id) {
+        return restauranteRepository.findById(id)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException(String.format(MSG_RESTAURANTE_NAO_ENCONTRADO, id)));
     }
 }

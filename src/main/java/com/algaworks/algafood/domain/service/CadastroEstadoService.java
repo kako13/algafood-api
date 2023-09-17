@@ -13,6 +13,8 @@ import java.util.Optional;
 @Service
 public class CadastroEstadoService {
 
+    public static final String MSG_ESTADO_NAO_ENCONTRADO = "Não existe um cadastro de Estado com o código '%d'";
+    public static final String MSG_ESTADO_EM_USO = "Estado de código '%d' não pode ser removido, pois está em uso";
     @Autowired
     private EstadoRepository estadoRepository;
 
@@ -22,12 +24,15 @@ public class CadastroEstadoService {
 
     public void excluir(Long id) {
         try {
-            Optional<Estado> estado = estadoRepository.findById(id);
-            if (estado.isEmpty())
-                throw new EntidadeNaoEncontradaException(String.format("Não existe um cadastro de Estado com o código '%d'", id));
-            estadoRepository.deleteById(id);
+            Optional.of(this.buscarOuFalhar(id))
+                    .ifPresent(e -> estadoRepository.deleteById(id));
         } catch (DataIntegrityViolationException e) {
-            throw new EntidadeEmUsoException(String.format("Estado de código '%d' não pode ser removido, pois está em uso", id));
+            throw new EntidadeEmUsoException(String.format(MSG_ESTADO_EM_USO, id));
         }
+    }
+
+    public Estado buscarOuFalhar(Long id) {
+        return estadoRepository.findById(id)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException(String.format(MSG_ESTADO_NAO_ENCONTRADO, id)));
     }
 }
