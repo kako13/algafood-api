@@ -437,4 +437,18 @@ por conta de alguma alteração.** Consultar aulas 8 e 10._
 
 </ol>
 </details>
+<details open>
+    <summary><i>08. Tratamento e modelagem de erros da API</i></summary>
+<ol>
 
+<li>Introdução ao tratamento e modelagem de erros</li>
+<li><details>
+    <summary>Lançando exceções customizadas anotadas com @ResponseStatus ⭐</summary>
+
+Foi necessário alterar o método de exclusão do serviço de cozinhas, pois aparentemente o Spring framework nesta versão `3.1.3` não
+lança a exception `EmptyResultDataAccessException`.
+
+</details>
+</li>
+</ol>
+</details>
