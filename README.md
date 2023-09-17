@@ -476,13 +476,23 @@ _Mas essa não será a aboradagem do curso_
 </details>
 </li>
 <li>Simplificando o código com o uso de @ResponseStatus em exceptions</li>
+<li>Desafio: refatorando os serviços REST</li>
+<li>Analisando os impactos da refatoração</li>
+<li><details>
+    <summary>Criando a exception NegocioException</summary>
 
+Foi criada uma nova exception `NegocioException` anotada com `@ResponseStatus(code = HttpStatus.BAD_REQUEST)`, agora 
+ciente das possíveis exceptions dos serviços de cada entidade, é na camada web (controllers) que devemos **pensar melhor** 
+nos códigos de retorno da API e determinar se é um erro de negócio.
+</details></li>
 
+#
 ###### Resumo:
 
 ###### Já sabemos como devolver codigo de Status HTTP e a mensagem a partir de exceptions de duas formas: 
 ###### - Utilizando a anotação `@ResponseStatus` nas exceptions
 ###### - Utilizando as classes de exceção `ResponseStatusException`, vide `Ctrl+h`
+###### - 
 
 </ol>
 </details>
