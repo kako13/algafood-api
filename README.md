@@ -445,10 +445,26 @@ por conta de alguma alteração.** Consultar aulas 8 e 10._
 <li><details>
     <summary>Lançando exceções customizadas anotadas com @ResponseStatus ⭐</summary>
 
+Esta abordagem separa as anotações de ResponseStatus entre a possíveis exceptions e o controller. Para um poc pode fazer 
+sentido. Mas tem como ponto negativo a mistura (o contato) de classes de negócio com a camada web, além de não podermos incluir um 
+body no retorno do nosso recurso quando cair em alguma das exceptions anotadas. 
+
+
 Foi necessário alterar o método de exclusão do serviço de cozinhas, pois aparentemente o Spring framework nesta versão `3.1.3` não
 lança a exception `EmptyResultDataAccessException`.
 
 </details>
 </li>
+<li><details>
+    <summary>Lançando exceções do tipo ResponseStatusException ⭐</summary>
+
+Estas exceptions já contém o código de retorno imbutido, como a `ServerWebInputException`, elas são úties para ganhar 
+agilidade no desenvolvimento para não ter que criar as exceptions customizadas. E utilizando a `ResponseStatusException`, que é mais genérica, pode-se determinar 
+o código de retorno da requisição. 
+
+
+</details>
+</li>
+
 </ol>
 </details>
