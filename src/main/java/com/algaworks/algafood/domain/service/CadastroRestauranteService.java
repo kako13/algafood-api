@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class CadastroRestauranteService {
 
+    public static final String MSG_COZINHA_NAO_ENCONTRADA = "Não existe cadastro de cozinha com o código %d";
     @Autowired
     private RestauranteRepository restauranteRepository;
     @Autowired
@@ -23,9 +24,17 @@ public class CadastroRestauranteService {
 
     private void validaCozinha(Restaurante restaurante) {
         Long cozinhaId = restaurante.getCozinha().getId();
-        Cozinha cozinha = cozinhaRepository.findById(cozinhaId)
+        cozinhaRepository.findById(cozinhaId)
+                .map(e -> {
+                    restaurante.setCozinha(e);
+                    return null;
+                })
                 .orElseThrow(() -> new EntidadeNaoEncontradaException(
-                        String.format("Não existe cadastro de cozinha com o código %d", cozinhaId)));
-        restaurante.setCozinha(cozinha);
+                        String.format(MSG_COZINHA_NAO_ENCONTRADA, cozinhaId)));
+    }
+
+    public Restaurante buscarOuFalhar(Long id) {
+        return restauranteRepository.findById(id)
+                .orElseThrow(() -> new EntidadeNaoEncontradaException(String.format(MSG_COZINHA_NAO_ENCONTRADA, id)));
     }
 }
