@@ -45,6 +45,7 @@ public class CidadeController {
     }
 
     @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void remover(@PathVariable Long id) {
         cadastroCidade.excluir(id);
     }

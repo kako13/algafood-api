@@ -10,9 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/restaurantes")
@@ -58,12 +58,12 @@ public class RestauranteController {
     private static void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino) {
         ObjectMapper objectMapper = new ObjectMapper();
         Restaurante restauranteOrigem = objectMapper.convertValue(dadosOrigem, Restaurante.class);
-        System.out.println(restauranteOrigem);
-        dadosOrigem.forEach((nomePropriedade, valorPropriedade) -> {
-            Field field = ReflectionUtils.findField(Restaurante.class, nomePropriedade);
-            field.setAccessible(true);
-            Object novoValor = ReflectionUtils.getField(field, restauranteOrigem);
-            ReflectionUtils.setField(field, restauranteDestino, novoValor);
-        });
+        dadosOrigem.forEach((nomePropriedade, valorPropriedade) ->
+                Optional.ofNullable(ReflectionUtils.findField(Restaurante.class, nomePropriedade))
+                .ifPresent(e -> {
+                    e.setAccessible(true);
+                    Object novoValor = ReflectionUtils.getField(e, restauranteOrigem);
+                    ReflectionUtils.setField(e, restauranteDestino, novoValor);
+                }));
     }
 }

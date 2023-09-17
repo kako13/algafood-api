@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 public class CadastroEstadoService {
 
@@ -22,12 +24,8 @@ public class CadastroEstadoService {
 
     public void excluir(Long id) {
         try {
-            estadoRepository.findById(id)
-                    .map(e -> {
-                        estadoRepository.deleteById(id);
-                        return null;
-                    })
-                    .orElseThrow(() -> new EntidadeNaoEncontradaException(String.format(MSG_ESTADO_NAO_ENCONTRADO, id)));
+            Optional.of(this.buscarOuFalhar(id))
+                    .ifPresent(e -> estadoRepository.deleteById(id));
         } catch (DataIntegrityViolationException e) {
             throw new EntidadeEmUsoException(String.format(MSG_ESTADO_EM_USO, id));
         }
