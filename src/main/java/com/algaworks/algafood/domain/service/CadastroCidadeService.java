@@ -13,8 +13,6 @@ import java.util.Optional;
 
 @Service
 public class CadastroCidadeService {
-
-    public static final String MSG_ESTADO_NAO_ENCONTRADO = "Não existe um cadastro de Estado com o código '%d'";
     public static final String MSG_CIDADE_EM_USO = "Cidade de codigo '%d' não pode ser removida, pois está em uso";
     public static final String MSG_CIDADE_NAO_ENCONTRADA = "Não existe um cadastro de Cidade com o código '%d'";
     @Autowired
