@@ -303,7 +303,7 @@ Ou seja, as mudanças nos modelos pensando no domínio, podeão impactar o compo
 
 <li>Mapeando classes incorporáveis com @Embedded e @Embeddable</li>
 <li>Testando e analisando o impacto da incorporação de classe na REST API</li>
-<li>Mapeando propriedades com @CreationTimestamp e @UpdateTimestamp</li>
+<li>Mapeando propriedades com @CreationTimestamp e @UpdateTimestamp ⭐</li>
 <li>Desafio: mapeando relacionamento muitos-para-um</li>
 <li>Desafio: mapeando relacionamento um-para-muitos</li>
 <li>Desafio: mapeando relacionamentos muitos-para-muitos</li>
@@ -380,43 +380,60 @@ a depender da solução adotada.
 </details>
 </li>
 <li>Conhecendo o Hikari: a solução padrão de pool de conexões no Spring Boot</li>
-<li>Configurando o pool de conexões do Hikari</li>
+<li>Configurando o pool de conexões do Hikari ⭐</li>
 <li>Schema generation em produção não é uma boa prática</li>
 <li>Flyway: ferramenta de versionamento de schemas de banco de dados (incremental)</li>
 <li>Adicionando o Flyway no projeto e criando a primeira migração</li>
 <li>Evoluindo o banco de dados com novas migrações</li>
-<li>Criando migrações complexas com remanejamento de dados</li>
+<li>Criando migrações complexas com remanejamento de dados ⭐</li>
 <li><details>
-    <summary>Criando migração a partir de DDL gerado por schema generation</summary>
+    <summary>Criando migração a partir de DDL gerado por schema generation ⭐</summary>
 
-_*Ao utilizar este recurso deve-se revisar com cautela o tamanho dos campos gerados automaticamente.*_
+_*Ao utilizar este recurso deve-se editar o tamanho dos campos gerados automaticamente no `ddl.sql`. Tem melhor 
+utilizadade como template, criando uma estrutura com os nomes, obrigatoriedades, chaves unicas, entre outros.*_
 </details>
 </li>
 <li><details>
-    <summary>Adicionando dados de testes com callback do Flyway</summary>
+    <summary>Adicionando dados de testes com callback do Flyway ⭐</summary>
 
 `insert ignore` é um recurso do MySql com similarem em outros bancos de dados, ele ignora os erro durante os inserts do 
-afterMigrate.sql de forma que, caso sejam inseridos novos dados de teste eles não serão excluídos quando iniciar a aplicação e rodar as migrations.
+afterMigrate.sql de forma que, caso sejam inseridos novos dados de teste eles não serão excluídos quando iniciar a aplicação e rodar as migrações.
 
 Já no nosso caso, adotamos o contole manual, para que a massa de testes esteja sempre no mesmo estado e o comportamento fique parecido
 com quando utlilizamos o import.sql.
 </details>
 </li>
 <li><details>
-    <summary>Reparando migrações com erros</summary>
+    <summary>Reparando migrações com erros ⭐</summary>
 
 Em ambiente de desenvolvimento, basta excluir o registro da migration com que falhou da tabela do Flyway, corrigir o 
 ponto com erro e iniciar/reiniciar a aplicação.
+Caso não tenha acesso à base de dados, é possível utilizar o plugin do flyway através do maven.
 
-Em produção caso ocorra algum problema no meio de uma migration, é necessário desfazer o que já foi realizado pelos 
-scripts que não apresentaram erro, além dos passos anteriores.
+**Em produção, caso ocorra algum problema no meio de uma migration, é necessário desfazer o que já foi realizado pelos
+scripts que não apresentaram erro, além dos passos anteriores.**
 
-Caso não tenha acesso à base de dados, é possível utilizar o puglin do flyway através do maven.
+</details>
+</li>
+<li><details>
+    <summary>Desafio: Criando migrações e mapeando as entidades Pedido e ItemPedido ⭐</summary>
+
+As entidades foram mapeadas e as anotações foram utilizadas para aproveitar a estrutura do DDL generation para migrações.
+Através das seguintes configurações:
+
+    #Criar scripts DDL com base no 'mapeamento das classes', e popular banco com base no import.sql ou afterMigrate.sql
+    spring.jpa.properties.javax.persistence.schema-generation.scripts.action=create
+    spring.jpa.properties.javax.persistence.schema-generation.scripts.create-target=src/main/resources/db/ddl.sql
+
+Após concluir as migrações, as anotações de definição dos campos foram retiradas, permanecendo apenas anotações de nomenclatura, 
+que precisam mapear as tabela sem alterar o nome do atributo da classe. Isso mantém a semântica do código e o estado da tabela. 
+E também foram preservadas as definições de obrigatoriedade, já que a configuração `nullable=true`, influencia nas consultas geradas pelo framework. 
+
 </details>
 </li>
 
-_*Não se deve utilizar dados de testes em migrations, comandos DML são utilizados **apenas em casos de migração de dados 
-por conta de alguma alteração.**_
+_*Não se deve utilizar dados de testes em migrações, comandos DML são utilizados **apenas em casos de migração de dados 
+por conta de alguma alteração.** Consultar aulas 8 e 10._
 
 </ol>
 </details>
