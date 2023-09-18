@@ -502,8 +502,8 @@ para definirmos qual o código HTTP será retornado.
 Agora é possível atribuir um body combinando com o código de retorno que desejarmos.
 O ExceptionHandler de EntidadeNaoEncontradaException só considera a hierarquia da exception declarada na sua anotação para tratar dentro do seu método, 
 quando a "causa" (Throwable `cause`) é utilizada no dentro `catch`. Do contrário, ele vai desconsiderar a exception e 
-vai seguir o fluxo dentro do `catch`, ou seja, retornando o código de retorno determinado na anotação da classe 
-NegocioException e usando a representação padrão do Spring.
+vai seguir o fluxo dentro do `catch`, ou seja, retornando o código determinado na anotação da classe 
+NegocioException e utilizando o modelo de representação padrão do Spring.
 
 Por isso, para não deixar de utilizar a "causa" (Throwable `cause`), criamos um ExceptionHandler de NegocioException.
 Desta forma poderemos atribuir um body customizado, o que não era possível até então, e determinar no método o código de retorno,
@@ -511,7 +511,7 @@ que antes estava na anotação da exception.
 
 Foi criado um modelo de representação de nome Problema para os erros da API
 </details></li>
-
+<li>Tratando exceções globais com @ExceptionHandler e @ControllerAdvice ⭐</li>
 
 #
 ###### Resumo:
@@ -522,7 +522,9 @@ Foi criado um modelo de representação de nome Problema para os erros da API
 ###
 ###### Abordando as exceptions:
 ###### - Afinamos a granularidade e definimos uma hierarquia das exceptions de negócio
-###### - Foi criado um modelo de representação de nome Problema para os erros da API 
+###### - Utilizamos @ExceptionHandler em métodos para tratar exceções em nível de controlador
+###### - Foi criado um modelo de representação de nome Problema para os erros da API
+###### - Utilizamos @ControllerAdvice na classe ApiExceptionHandler para tratar exceções em nível **global**
 
 </ol>
 </details>
