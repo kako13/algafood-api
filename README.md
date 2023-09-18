@@ -549,7 +549,7 @@ E neste caso pode ou não retornar um modelo de representação padrão, a depen
 }
 ```
 </details></li>
-
+<li>Customizando o corpo da resposta padrão de ResponseEntityExceptionHandler ⭐ ⭐</li>
 
 #
 ###### Resumo:
