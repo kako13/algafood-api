@@ -512,6 +512,7 @@ que antes estava na anotação da exception.
 Foi criado um modelo de representação de nome Problema para os erros da API
 </details></li>
 <li>Tratando exceções globais com @ExceptionHandler e @ControllerAdvice ⭐</li>
+<li>Desafio: implementando exception handler ⭐</li>
 
 #
 ###### Resumo:
@@ -525,6 +526,7 @@ Foi criado um modelo de representação de nome Problema para os erros da API
 ###### - Utilizamos @ExceptionHandler em métodos para tratar exceções em nível de controlador
 ###### - Foi criado um modelo de representação de nome Problema para os erros da API
 ###### - Utilizamos @ControllerAdvice na classe ApiExceptionHandler para tratar exceções em nível **global**
+###### - Criamos ExceptionHandler para exceptions que não são customizadas
 
 </ol>
 </details>
