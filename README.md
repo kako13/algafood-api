@@ -513,6 +513,43 @@ Foi criado um modelo de representação de nome Problema para os erros da API
 </details></li>
 <li>Tratando exceções globais com @ExceptionHandler e @ControllerAdvice ⭐</li>
 <li>Desafio: implementando exception handler ⭐</li>
+<li><details>
+    <summary>Criando um exception handler global com ResponseEntityExceptionHandler ⭐</summary>
+
+Global neste caso, por conta de cobrir diversas exceptions diferenctes:
+
+
+- `HttpRequestMethodNotSupportedException`
+- `HttpMediaTypeNotSupportedException`
+- `HttpMediaTypeNotAcceptableException`
+- `MissingPathVariableException`
+- `MissingServletRequestParameterException`
+- `MissingServletRequestPartException`
+- `ServletRequestBindingException`
+- `MethodArgumentNotValidException`
+- `NoHandlerFoundException`
+- `AsyncRequestTimeoutException`
+- `ErrorResponseException`
+- `ConversionNotSupportedException`
+- `TypeMismatchException`
+- `HttpMessageNotReadableException`
+- `HttpMessageNotWritableException`
+- `BindException`
+
+E neste caso pode ou não retornar um modelo de representação padrão, a depender da versão do framework. O curso propõe a versão 
+2.1.7 do Spring Boot, e o corpo da resposta retorna vazio. Enquanto no meu caso, usando a versão 3.1.3 já existem o seguinte modelo padrão:
+
+```
+{
+"type": "about:blank",
+"title": "Unsupported Media Type",
+"status": 415,
+"detail": "Content-Type 'application/xml;charset=UTF-8' is not supported.",
+"instance": "/cidades/5"
+}
+```
+</details></li>
+
 
 #
 ###### Resumo:
@@ -527,6 +564,7 @@ Foi criado um modelo de representação de nome Problema para os erros da API
 ###### - Foi criado um modelo de representação de nome Problema para os erros da API
 ###### - Utilizamos @ControllerAdvice na classe ApiExceptionHandler para tratar exceções em nível **global**
 ###### - Criamos ExceptionHandler para exceptions que não são customizadas
+###### - Criamos um exception handler global com ResponseEntityExceptionHandler
 
 </ol>
 </details>
