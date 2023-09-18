@@ -481,18 +481,30 @@ _Mas essa não será a aboradagem do curso_
 <li><details>
     <summary>Criando a exception NegocioException</summary>
 
-Foi criada uma nova exception `NegocioException` anotada com `@ResponseStatus(code = HttpStatus.BAD_REQUEST)`, agora 
+Agora com uma nova exception `NegocioException` anotada com `@ResponseStatus(code = HttpStatus.BAD_REQUEST)`, agora 
 ciente das possíveis exceptions dos serviços de cada entidade, é na camada web (controllers) que devemos **pensar melhor** 
 nos códigos de retorno da API e determinar se é um erro de negócio.
 </details></li>
 <li>Desafio: usando a exception NegocioException</li>
+<li><details>
+    <summary>Afinando a granularidade e definindo a hierarquia das exceptions de negócios</summary>
+
+Para sabermos qual a melhor granularidade das exceptions do projeto devemos saber se, quem vai consumir os métodos da classe 
+de serviço (controller) precisa saber reagir de forma diferente caso o método falhe e gere uma exception. Se sim, é o caso 
+de aumentar a granularidade e gerar exceptions mais específicas. No nosso caso, precisamos saber qual foi o problema de forma específica, 
+para definirmos qual o código HTTP será retornado.
+
+</details></li>
 
 #
 ###### Resumo:
 
-###### Já sabemos como devolver codigo de Status HTTP e a mensagem a partir de exceptions de duas formas: 
+###### Como devolver codigo de Status HTTP e a mensagem a partir de exceptions de duas formas: 
 ###### - Utilizando a anotação `@ResponseStatus` nas exceptions
 ###### - Utilizando as classes de exceção `ResponseStatusException`, vide `Ctrl+h`
+###
+###### Abordando as exceptions:
+###### - Afinamos a granularidade e definimos uma hierarquia das exceptions de negócio
 
 </ol>
 </details>
