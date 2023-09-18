@@ -495,6 +495,7 @@ de aumentar a granularidade e gerar exceptions mais específicas. No nosso caso,
 para definirmos qual o código HTTP será retornado.
 
 </details></li>
+<li>Desafio: lançando exceptions de granularidade fina</li>
 
 #
 ###### Resumo:
