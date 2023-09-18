@@ -1,7 +1,7 @@
 package com.algaworks.algafood.domain.service;
 
+import com.algaworks.algafood.domain.exception.CidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
-import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.repository.CidadeRepository;
@@ -14,7 +14,6 @@ import java.util.Optional;
 @Service
 public class CadastroCidadeService {
     public static final String MSG_CIDADE_EM_USO = "Cidade de codigo '%d' não pode ser removida, pois está em uso";
-    public static final String MSG_CIDADE_NAO_ENCONTRADA = "Não existe um cadastro de Cidade com o código '%d'";
     @Autowired
     private CidadeRepository cidadeRepository;
 
@@ -38,6 +37,6 @@ public class CadastroCidadeService {
 
     public Cidade buscarOuFalhar(Long id) {
         return cidadeRepository.findById(id)
-                .orElseThrow(() -> new EntidadeNaoEncontradaException(String.format(MSG_CIDADE_NAO_ENCONTRADA, id)));
+                .orElseThrow(() -> new CidadeNaoEncontradaException(id));
     }
 }
