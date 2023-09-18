@@ -479,7 +479,7 @@ _Mas essa não será a aboradagem do curso_
 <li>Desafio: refatorando os serviços REST</li>
 <li>Analisando os impactos da refatoração</li>
 <li><details>
-    <summary>Criando a exception NegocioException</summary>
+    <summary>Criando a exception NegocioException ⭐</summary>
 
 Agora com uma nova exception `NegocioException` anotada com `@ResponseStatus(code = HttpStatus.BAD_REQUEST)`, agora 
 ciente das possíveis exceptions dos serviços de cada entidade, é na camada web (controllers) que devemos **pensar melhor** 
@@ -487,7 +487,7 @@ nos códigos de retorno da API e determinar se é um erro de negócio.
 </details></li>
 <li>Desafio: usando a exception NegocioException</li>
 <li><details>
-    <summary>Afinando a granularidade e definindo a hierarquia das exceptions de negócios</summary>
+    <summary>Afinando a granularidade e definindo a hierarquia das exceptions de negócios ⭐</summary>
 
 Para sabermos qual a melhor granularidade das exceptions do projeto devemos saber se, quem vai consumir os métodos da classe 
 de serviço (controller) precisa saber reagir de forma diferente caso o método falhe e gere uma exception. Se sim, é o caso 
@@ -496,6 +496,22 @@ para definirmos qual o código HTTP será retornado.
 
 </details></li>
 <li>Desafio: lançando exceptions de granularidade fina</li>
+<li><details>
+    <summary>Tratando exceções em nível de controlador com @ExceptionHandler ⭐</summary>
+
+Agora é possível atribuir um body combinando com o código de retorno que desejarmos.
+O ExceptionHandler de EntidadeNaoEncontradaException só considera a hierarquia da exception declarada na sua anotação para tratar dentro do seu método, 
+quando a "causa" (Throwable `cause`) é utilizada no dentro `catch`. Do contrário, ele vai desconsiderar a exception e 
+vai seguir o fluxo dentro do `catch`, ou seja, retornando o código de retorno determinado na anotação da classe 
+NegocioException e usando a representação padrão do Spring.
+
+Por isso, para não deixar de utilizar a "causa" (Throwable `cause`), criamos um ExceptionHandler de NegocioException.
+Desta forma poderemos atribuir um body customizado, o que não era possível até então, e determinar no método o código de retorno,
+que antes estava na anotação da exception.
+
+Foi criado um modelo de representação de nome Problema para os erros da API
+</details></li>
+
 
 #
 ###### Resumo:
@@ -506,6 +522,7 @@ para definirmos qual o código HTTP será retornado.
 ###
 ###### Abordando as exceptions:
 ###### - Afinamos a granularidade e definimos uma hierarquia das exceptions de negócio
+###### - Foi criado um modelo de representação de nome Problema para os erros da API 
 
 </ol>
 </details>
