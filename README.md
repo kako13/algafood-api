@@ -611,6 +611,25 @@ Especificações:
 <li>Padronizando o formato de problemas no corpo de respostas com a RFC 7807 ⭐ ⭐</li>
 <li>Desafio: usando o formato de problemas no corpo de respostas</li>
 <li>Customizando exception handlers de ResponseEntityExceptionHandler ⭐ ⭐</li>
+<li><details>
+    <summary>Tratando a exception InvalidFormatException na desserialização ⭐ ⭐ ⭐ ⭐</summary>
+
+Foi a adicionada a dependência `commons-lang3` do apache:
+```
+<dependency>
+    <groupId>org.apache.commons</groupId>
+    <artifactId>commons-lang3</artifactId>
+</dependency>
+```
+
+Desta forma foi possível utilizar o método `ExceptionUtils.getRootCause(ex)` que devolve um `Throwable`, e caso ele seja
+do tipo `InvalidFormatException` (o caso de preenchimento de tipo de dado inválido) é chamado o método que trata esta 
+exception. E nele recuperamos do rootCause, ou seja, da exception, o campo em questão atravé do método `ex.getPath()` e `reference.getFieldName()`.
+Então iteramos para formar a hierarquia dos campos intercalando com ponto `'.'`, quando existente, para preencher 
+na mensagem de erro.
+</details></li>
+
+
 
 #
 ###### Resumo:
@@ -626,7 +645,9 @@ Especificações:
 ###### - Utilizamos @ControllerAdvice na classe ApiExceptionHandler para tratar exceções em nível **global**
 ###### - Criamos ExceptionHandler para exceptions que não são customizadas (do 'framework')
 ###### - Criamos um exception handler global com ResponseEntityExceptionHandler
-###### - Customizamos o corpo de resposta padrão através ResponseEntityExceptionHandler
+###### - Customizamos o corpo de resposta de erro padrão através ResponseEntityExceptionHandler
+###### - Padronizamos o formato de problemas no corpo de respostas com a RFC 7807
+###### - Tratamos a exception InvalidFormatException na desserialização de forma mais específica 
 
 </ol>
 </details>
