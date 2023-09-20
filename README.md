@@ -629,7 +629,7 @@ Então iteramos para formar a hierarquia dos campos intercalando com ponto `'.'`
 na mensagem de erro.
 </details></li>
 <li><details>
-    <summary>Habilitando erros na desserialização de propriedades inexistentes ou ignoradas</summary>
+    <summary>Habilitando erros na desserialização de propriedades inexistentes ou ignoradas ⭐ ⭐</summary>
 
 Por padrão a jackson ignora o envio de campos inexistentes no modelo. Este comportamento pode ser alterado adicionado a 
 configuração `spring.jackson.deserialization.fail-on-unknown-properties=true` no application.properties. Desta forma será
@@ -640,7 +640,14 @@ Este comportamento pode ser alterado com a configuração `spring.jackson.deseri
 ser ignorado for enviado será lançada a exception `HttpMessageNotReadableException`.
 
 Ambos os casos são tratados pelo nosso `ApiExceptionHandler`.
+</details></li>
 
+<li><details>
+    <summary>Desafio: tratando a PropertyBindingException na desserialização ⭐</summary>
+
+
+Foi implementado o método `handlePropertyBindingException` que tratará da mesma forma os campos com `@JsonIgnore` e
+campos inexistentes, caso sejam enviados.
 </details></li>
 
 
