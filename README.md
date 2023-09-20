@@ -609,6 +609,7 @@ Especificações:
 
 </details></li>
 <li>Padronizando o formato de problemas no corpo de respostas com a RFC 7807</li>
+<li>Desafio: usando o formato de problemas no corpo de respostas</li>
 
 #
 ###### Resumo:
