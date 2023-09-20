@@ -9,11 +9,16 @@
 <li>Conhecendo o ecossistema Spring</li>
 <li>Spring vs Jakarta EE (Java EE)</li>
 <li>Conhecendo o Spring Boot</li>
-<li>[Criando um projeto Spring Boot com Spring Initializr](https://start.spring.io)</li>
+<li>
+
+[Criando um projeto Spring Boot com Spring Initializr](https://start.spring.io)</li>
 <li>Conhecendo o Maven e o pom.xml de um projeto Spring Boot</li>
 <li>Criando um controller com Spring MVC (Hello World!)</li>
 <li>Restart mais rápido da aplicação com DevTools</li>
-<li>[O que é injeção de dependências?](https://github.com/kako13/exemplo-di)</li>
+<li>
+
+[O que é injeção de dependências?](https://github.com/kako13/exemplo-di)</li>
+
 <li> Conhecendo o IoC Container do Spring</li>
 <li> Definindo beans com @Component</li>
 <li> Injetando dependências (beans Spring)</li>
@@ -80,7 +85,9 @@ public class AtivacaoClienteService implements InitializingBean, DisposableBean 
 </details></li>
 
 <li>Publicando e consumindo eventos customizados ⭐</li>
-<li>Configurando projetos Spring Boot com o [application.properties](https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html)</li>
+<li>
+
+Configurando projetos Spring Boot com o [application.properties](https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html)</li>
 <li>Substituindo propriedades via linha de comando e variáveis de ambiente</li>
 <li>Criando e acessando propriedades customizadas com @Value</li>
 <li>Acessando propriedades com @ConfigurationProperties</li>
@@ -219,7 +226,9 @@ setx SPRING_PROFILES_ACTIVE=production
 <li>Refatorando o código do projeto para usar o repositório do SDJ</li>
 <li>Desafio: refatorando todos os repositórios para usar SDJ</li>
 <li>Criando consultas com query methods</li>
-<li>[Usando as keywords para definir critérios de query methods](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods.query-creation)</li>
+<li>
+
+[Usando as keywords para definir critérios de query methods](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/#jpa.query-methods.query-creation)</li>
 <li><details>
 <summary>Conhecendo os prefixos de query methods</summary>
 <ol>
@@ -330,7 +339,7 @@ Carregamento preguiçoso. Relacionamentos terminados em 'Many'.
 Many Loading é o comportamento de **não carregar** entidades relaciondas ao carregar a entidade em questão,
 e não determina o número de consultas que serão realizadas, este será definindo pela inplementação JPA
 
-As consultas dos relacionamentos são carregos conforme o uso, ou seja, sob demanda.
+As consultas dos relacionamentos são feitas conforme o uso, ou seja, sob demanda.
 
 Mais adiante iremos customizar este comportamento de ocordo com a necessidade.
 
@@ -550,6 +559,56 @@ E neste caso pode ou não retornar um modelo de representação padrão, a depen
 ```
 </details></li>
 <li>Customizando o corpo da resposta padrão de ResponseEntityExceptionHandler ⭐ ⭐</li>
+<li><details>
+    <summary> Conhecendo a RFC 7807 (Problem Details for HTTP APIs) ⭐</summary>
+
+ Tem como benefício indicar ao cliente de form 
+Especificações:
+- [JSON:API](https://jsonapi.org)
+```
+{
+  "errors": [
+    {
+      "status": "422",
+      "source": { "pointer": "/data/attributes/firstName" },
+      "title":  "Invalid Attribute",
+      "detail": "First name must contain at least two characters."
+    }
+  ]
+}
+```
+- [vnd.error](https://github.com/blongden/vnd.error)
+```
+{
+    "message": "Validation failed",
+    "path": "/username",
+    "logref": 42,
+    "_links": {
+        "about": {
+            "href": "http://path.to/user/resource/1"
+        },
+        "describes": {
+            "href": "http://path.to/describes"
+        },
+        "help": {
+            "href": "http://path.to/help"
+        }
+    }
+}
+```
+- [Problem Details for HTTP APIs](https://datatracker.ietf.org/doc/html/rfc7807) (RFC 7807)
+```
+{
+  "status": 400,
+  "type": "https://algafood.com.br/recurso-em-uso"
+  "title": "Recurso em uso"
+  "detail": "Não foi possivel excluir a cozinha de código 8, porque ela está em uso"
+  "instance": "/cozinhas/8/erros/98204983'
+}
+```
+
+</details></li>
+<li>Padronizando o formato de problemas no corpo de respostas com a RFC 7807</li>
 
 #
 ###### Resumo:
@@ -563,8 +622,9 @@ E neste caso pode ou não retornar um modelo de representação padrão, a depen
 ###### - Utilizamos @ExceptionHandler em métodos para tratar exceções em nível de controlador
 ###### - Foi criado um modelo de representação de nome Problema para os erros da API
 ###### - Utilizamos @ControllerAdvice na classe ApiExceptionHandler para tratar exceções em nível **global**
-###### - Criamos ExceptionHandler para exceptions que não são customizadas
+###### - Criamos ExceptionHandler para exceptions que não são customizadas (do 'framework')
 ###### - Criamos um exception handler global com ResponseEntityExceptionHandler
+###### - Customizamos o corpo de resposta padrão através ResponseEntityExceptionHandler
 
 </ol>
 </details>
