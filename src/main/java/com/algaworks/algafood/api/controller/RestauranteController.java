@@ -1,7 +1,7 @@
 package com.algaworks.algafood.api.controller;
 
 import com.algaworks.algafood.domain.exception.CozinhaNaoEncontradaException;
-import com.algaworks.algafood.domain.exception.NegocioExceptionException;
+import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.model.Restaurante;
 import com.algaworks.algafood.domain.repository.RestauranteRepository;
 import com.algaworks.algafood.domain.service.CadastroRestauranteService;
@@ -48,7 +48,7 @@ public class RestauranteController {
         try {
             return cadastroService.salvar(restaurante);
         } catch (CozinhaNaoEncontradaException e) {
-            throw new NegocioExceptionException(e.getMessage(), e.getCause());
+            throw new NegocioException(e.getMessage(), e.getCause());
         }
     }
 
@@ -59,7 +59,7 @@ public class RestauranteController {
         try {
             return cadastroService.salvar(restauranteAtual);
         } catch (CozinhaNaoEncontradaException e) {
-            throw new NegocioExceptionException(e.getMessage(), e.getCause());
+            throw new NegocioException(e.getMessage(), e.getCause());
         }
     }
 
