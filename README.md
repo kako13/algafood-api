@@ -612,7 +612,7 @@ Especificações:
 <li>Desafio: usando o formato de problemas no corpo de respostas</li>
 <li>Customizando exception handlers de ResponseEntityExceptionHandler ⭐ ⭐</li>
 <li><details>
-    <summary>Tratando a exception InvalidFormatException na desserialização ⭐ ⭐ ⭐ ⭐</summary>
+    <summary>Tratando a exception InvalidFormatException na desserialização ⭐ ⭐ ⭐</summary>
 
 Foi a adicionada a dependência `commons-lang3` do apache:
 ```
@@ -629,7 +629,7 @@ Então iteramos para formar a hierarquia dos campos intercalando com ponto `'.'`
 na mensagem de erro.
 </details></li>
 <li><details>
-    <summary>Habilitando erros na desserialização de propriedades inexistentes ou ignoradas</summary>
+    <summary>Habilitando erros na desserialização de propriedades inexistentes ou ignoradas ⭐ ⭐</summary>
 
 Por padrão a jackson ignora o envio de campos inexistentes no modelo. Este comportamento pode ser alterado adicionado a 
 configuração `spring.jackson.deserialization.fail-on-unknown-properties=true` no application.properties. Desta forma será
@@ -640,9 +640,64 @@ Este comportamento pode ser alterado com a configuração `spring.jackson.deseri
 ser ignorado for enviado será lançada a exception `HttpMessageNotReadableException`.
 
 Ambos os casos são tratados pelo nosso `ApiExceptionHandler`.
-
 </details></li>
 
+<li><details>
+    <summary>Desafio: tratando a PropertyBindingException na desserialização ⭐</summary>
+
+
+Foi implementado o método `handlePropertyBindingException` que tratará da mesma forma os campos com `@JsonIgnore` e
+com campos inexistentes, caso sejam enviados. Ou seja trata tanto quando a causa é `IgnoredPropertyException` quanto 
+`UnrecognizedPropertyException`. 
+</details></li>
+
+<li><details>
+    <summary>Lançando exception de desserialização na atualização parcial (PATCH) ⭐ ⭐ ⭐</summary>
+
+Este método utiliza o ObjectMapper para deserializar o corpo da requisição, então para deixar com o mesmo 
+comportamento dos demais foram feitas adaptações.
+
+Primeiramento parametrizamos o ObjectMapper para passar a falhar (retornar cod 500) quando for 
+informado um campo anotado com `@JsonIgnore`:
+- `objectMapper.configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, true);`
+
+Para falhar ao passar um campo que não faz parte do nosso modelo de representação, este já é o comportamento padrão, foi 
+declarado para deixar explícito o comportamento:
+
+- `objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);`  
+
+Quanto ao fluxo de exception:
+
+Após as alterações acima, ao passarmos um campo desconhecido ou ignorado, retorna 500. E ainda que apresente a exception 
+`IgnoredPropertyException`, a causa na stack de retorno é uma `IllegalArgumentException`. Portanto, fizemos a tradução, 
+para que fosse lançada a `HttpMessageNotReadableException`. Desta forma é seguido o fluxo da `PropertyBindingException` 
+(super classe das exceptions `IgnoredPropertyException` e `UnrecognizedPropertyException`) no ControllerAdvice (Exception Handler).
+
+Benefício:
+- Desta forma não foi necessário criar mais um handler para tratar este caso em especial.
+
+Foi necessário também uma instância de `ServletServerHttpRequest` com base numa request recuperada do framework, para atender
+a assinatura não depreciada da exception `HttpMessageNotReadableException`.
+
+</details></li>
+<li><details open>
+<summary>Desafio: tratando exception de parâmetro de URL inválido</summary>
+
+TypeMismatchException é lançada em caso de erros em propriedades para instanciação de beans.
+MethodArgumentTypeMismatchException é mais específica, é lançada em caso de erros de tipo de parâmetros em métodos.
+
+1. MethodArgumentTypeMismatchException é um subtipo de TypeMismatchException
+
+2. ResponseEntityExceptionHandler já trata TypeMismatchException de forma mais abrangente
+
+3. Então, especializamos o método handleTypeMismatch e verificamos se a exception
+   é uma instância de MethodArgumentTypeMismatchException
+
+4. Se for, chamamos um método especialista em tratar esse tipo de exception
+
+5. Poderíamos fazer tudo dentro de handleTypeMismatch, mas preferi separar em outro método
+
+</details></li>
 
 #
 ###### Resumo:
