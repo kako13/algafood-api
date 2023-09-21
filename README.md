@@ -680,6 +680,24 @@ Foi necessário também uma instância de `ServletServerHttpRequest` com base nu
 a assinatura não depreciada da exception `HttpMessageNotReadableException`.
 
 </details></li>
+<li><details open>
+<summary>Desafio: tratando exception de parâmetro de URL inválido</summary>
+
+TypeMismatchException é lançada em caso de erros em propriedades para instanciação de beans.
+MethodArgumentTypeMismatchException é mais específica, é lançada em caso de erros de tipo de parâmetros em métodos.
+
+1. MethodArgumentTypeMismatchException é um subtipo de TypeMismatchException
+
+2. ResponseEntityExceptionHandler já trata TypeMismatchException de forma mais abrangente
+
+3. Então, especializamos o método handleTypeMismatch e verificamos se a exception
+   é uma instância de MethodArgumentTypeMismatchException
+
+4. Se for, chamamos um método especialista em tratar esse tipo de exception
+
+5. Poderíamos fazer tudo dentro de handleTypeMismatch, mas preferi separar em outro método
+
+</details></li>
 
 #
 ###### Resumo:

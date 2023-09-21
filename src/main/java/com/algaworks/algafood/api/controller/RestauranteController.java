@@ -37,9 +37,9 @@ public class RestauranteController {
         return restauranteRepository.findAll();
     }
 
-    @GetMapping("/{id}")
-    public Restaurante buscar(@PathVariable Long id) {
-        return cadastroService.buscarOuFalhar(id);
+    @GetMapping("/{restauranteId}")
+    public Restaurante buscar(@PathVariable Long restauranteId) {
+        return cadastroService.buscarOuFalhar(restauranteId);
     }
 
     @PostMapping
@@ -52,9 +52,9 @@ public class RestauranteController {
         }
     }
 
-    @PutMapping("/{id}")
-    public Restaurante atualizar(@PathVariable Long id, @RequestBody Restaurante restaurante) {
-            Restaurante restauranteAtual = cadastroService.buscarOuFalhar(id);
+    @PutMapping("/{restauranteId}")
+    public Restaurante atualizar(@PathVariable Long restauranteId, @RequestBody Restaurante restaurante) {
+            Restaurante restauranteAtual = cadastroService.buscarOuFalhar(restauranteId);
             BeanUtils.copyProperties(restaurante, restauranteAtual, "id", "formasPagamento", "endereco", "dataCadastro");
         try {
             return cadastroService.salvar(restauranteAtual);
@@ -63,11 +63,11 @@ public class RestauranteController {
         }
     }
 
-    @PatchMapping("/{id}")
-    public Restaurante atualizarParcial(@PathVariable Long id, @RequestBody Map<String, Object> campos, HttpServletRequest request) {
-        Restaurante restauranteAtual = cadastroService.buscarOuFalhar(id);
+    @PatchMapping("/{restauranteId}")
+    public Restaurante atualizarParcial(@PathVariable Long restauranteId, @RequestBody Map<String, Object> campos, HttpServletRequest request) {
+        Restaurante restauranteAtual = cadastroService.buscarOuFalhar(restauranteId);
         merge(campos, restauranteAtual, request);
-        return atualizar(id, restauranteAtual);
+        return atualizar(restauranteId, restauranteAtual);
     }
 
     private static void merge(Map<String, Object> dadosOrigem, Restaurante restauranteDestino, HttpServletRequest request) {
