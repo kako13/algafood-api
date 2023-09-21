@@ -29,8 +29,8 @@ public class CidadeController {
     }
 
     @GetMapping("/{id}")
-    public Cidade buscar(@PathVariable Long id) {
-        return cadastroCidade.buscarOuFalhar(id);
+    public Cidade buscar(@PathVariable Long cidadeId) {
+        return cadastroCidade.buscarOuFalhar(cidadeId);
     }
 
     @PostMapping
@@ -43,10 +43,10 @@ public class CidadeController {
         }
     }
 
-    @PutMapping("/{id}")
-    public Cidade atualizar(@PathVariable Long id, @RequestBody Cidade cidade) {
+    @PutMapping("/{cidadeId}")
+    public Cidade atualizar(@PathVariable Long cidadeId, @RequestBody Cidade cidade) {
         try {
-            Cidade cidadeAtual = cadastroCidade.buscarOuFalhar(id);
+            Cidade cidadeAtual = cadastroCidade.buscarOuFalhar(cidadeId);
             BeanUtils.copyProperties(cidade, cidadeAtual, "id");
             return cadastroCidade.salvar(cidadeAtual);
         } catch (EstadoNaoEncontradoException e) {
@@ -54,9 +54,9 @@ public class CidadeController {
         }
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{cidadeId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void remover(@PathVariable Long id) {
-        cadastroCidade.excluir(id);
+    public void remover(@PathVariable Long cidadeId) {
+        cadastroCidade.excluir(cidadeId);
     }
 }
