@@ -1,7 +1,7 @@
 package com.algaworks.algafood.api.controller;
 
 import com.algaworks.algafood.domain.exception.EstadoNaoEncontradoException;
-import com.algaworks.algafood.domain.exception.NegocioExceptionException;
+import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.repository.CidadeRepository;
 import com.algaworks.algafood.domain.service.CadastroCidadeService;
@@ -39,7 +39,7 @@ public class CidadeController {
         try {
             return cadastroCidade.salvar(cidade);
         } catch (EstadoNaoEncontradoException e) {
-            throw new NegocioExceptionException(e.getMessage(), e);
+            throw new NegocioException(e.getMessage(), e);
         }
     }
 
@@ -50,7 +50,7 @@ public class CidadeController {
             BeanUtils.copyProperties(cidade, cidadeAtual, "id");
             return cadastroCidade.salvar(cidadeAtual);
         } catch (EstadoNaoEncontradoException e) {
-            throw new NegocioExceptionException(e.getMessage(), e);
+            throw new NegocioException(e.getMessage(), e);
         }
     }
 
