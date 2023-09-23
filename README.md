@@ -680,7 +680,7 @@ Foi necessário também uma instância de `ServletServerHttpRequest` com base nu
 a assinatura não depreciada da exception `HttpMessageNotReadableException`.
 
 </details></li>
-<li><details open>
+<li><details>
 <summary>Desafio: tratando exception de parâmetro de URL inválido</summary>
 
 TypeMismatchException é lançada em caso de erros em propriedades para instanciação de beans.
@@ -698,6 +698,8 @@ MethodArgumentTypeMismatchException é mais específica, é lançada em caso de 
 5. Poderíamos fazer tudo dentro de handleTypeMismatch, mas preferi separar em outro método
 
 </details></li>
+<li>Desafio: tratando a exceção NoHandlerFoundException</li>
+
 
 #
 ###### Resumo:
