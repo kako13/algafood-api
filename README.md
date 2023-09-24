@@ -716,6 +716,7 @@ Agora é possível passar uma indicação mais específica ao consumidor caso oc
 Foi adicionada a propriedade userMessage ao Problem. E para o caso em que a mensagem já está explicativa o bastante para
 o consumidor da API, foi definido como userMessage o mesmo conteúdo do detail.
 </details></li>
+<li>Desafio: estendendo o formato do problema</li>
 
 
 #
