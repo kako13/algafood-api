@@ -699,6 +699,7 @@ MethodArgumentTypeMismatchException é mais específica, é lançada em caso de 
 
 </details></li>
 <li>Desafio: tratando a exceção NoHandlerFoundException</li>
+<li>Desafio: tratando outras exceções não capturadas</li>
 
 
 #
