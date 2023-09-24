@@ -28,18 +28,14 @@ public class CidadeController {
         return cidadeRepository.findAll();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{cidadeId}")
     public Cidade buscar(@PathVariable Long cidadeId) {
         return cadastroCidade.buscarOuFalhar(cidadeId);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Cidade adicionar(@RequestBody Cidade cidade) throws IllegalAccessException {
-
-        if (true)
-            throw new IllegalAccessException();
-
+    public Cidade adicionar(@RequestBody Cidade cidade) {
         try {
             return cadastroCidade.salvar(cidade);
         } catch (EstadoNaoEncontradoException e) {

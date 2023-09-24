@@ -699,7 +699,23 @@ MethodArgumentTypeMismatchException é mais específica, é lançada em caso de 
 
 </details></li>
 <li>Desafio: tratando a exceção NoHandlerFoundException</li>
-<li>Desafio: tratando outras exceções não capturadas</li>
+<li><details>
+<summary>Desafio: tratando outras exceções não capturadas</summary>
+
+É importante colocar o printStackTrace (pelo menos por enquanto, que não estamos fazendo logging) para mostrar a 
+stacktrace no console. Se não fizer isso, você não vai ver a stacktrace de exceptions que seriam importantes para você, 
+especialmente durante a fase de desenvolvimento
+
+A exception foi estimulada e lançada propositadamente via controller para fins de teste no método POST de cidades.
+</details></li>
+<li><details>
+<summary>Estendendo o formato do problema para adicionar novas propriedades</summary>
+
+Agora é possível passar uma indicação mais específica ao consumidor caso ocorra algum erro.
+
+Foi adicionada a propriedade userMessage ao Problem. E para o caso em que a mensagem já está explicativa o bastante para
+o consumidor da API, foi definido como userMessage o mesmo conteúdo do detail.
+</details></li>
 
 
 #
