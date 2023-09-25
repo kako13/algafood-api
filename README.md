@@ -446,8 +446,8 @@ por conta de alguma alteração.** Consultar aulas 8 e 10._
 
 </ol>
 </details>
-<details open>
-    <summary><i>08. Tratamento e modelagem de erros da API</i></summary>
+<details>
+    <summary><i>08. Tratamento e modelagem de erros da API ⭐</i></summary>
 <ol>
 
 <li>Introdução ao tratamento e modelagem de erros</li>
@@ -681,7 +681,7 @@ a assinatura não depreciada da exception `HttpMessageNotReadableException`.
 
 </details></li>
 <li><details>
-<summary>Desafio: tratando exception de parâmetro de URL inválido</summary>
+<summary>Desafio: tratando exception de parâmetro de URL inválido ⭐</summary>
 
 TypeMismatchException é lançada em caso de erros em propriedades para instanciação de beans.
 MethodArgumentTypeMismatchException é mais específica, é lançada em caso de erros de tipo de parâmetros em métodos.
@@ -698,9 +698,9 @@ MethodArgumentTypeMismatchException é mais específica, é lançada em caso de 
 5. Poderíamos fazer tudo dentro de handleTypeMismatch, mas preferi separar em outro método
 
 </details></li>
-<li>Desafio: tratando a exceção NoHandlerFoundException</li>
+<li>Desafio: tratando a exceção NoHandlerFoundException ⭐</li>
 <li><details>
-<summary>Desafio: tratando outras exceções não capturadas</summary>
+<summary>Desafio: tratando outras exceções não capturadas ⭐</summary>
 
 É importante colocar o printStackTrace (pelo menos por enquanto, que não estamos fazendo logging) para mostrar a 
 stacktrace no console. Se não fizer isso, você não vai ver a stacktrace de exceptions que seriam importantes para você, 
@@ -709,14 +709,14 @@ especialmente durante a fase de desenvolvimento
 A exception foi estimulada e lançada propositadamente via controller para fins de teste no método POST de cidades.
 </details></li>
 <li><details>
-<summary>Estendendo o formato do problema para adicionar novas propriedades</summary>
+<summary>Estendendo o formato do problema para adicionar novas propriedades ⭐</summary>
 
 Agora é possível passar uma indicação mais específica ao consumidor caso ocorra algum erro.
 
 Foi adicionada a propriedade userMessage ao Problem. E para o caso em que a mensagem já está explicativa o bastante para
 o consumidor da API, foi definido como userMessage o mesmo conteúdo do detail.
 </details></li>
-<li>Desafio: estendendo o formato do problema</li>
+<li>Desafio: estendendo o formato do problema ⭐</li>
 
 
 #
@@ -735,7 +735,34 @@ o consumidor da API, foi definido como userMessage o mesmo conteúdo do detail.
 ###### - Criamos um exception handler global com ResponseEntityExceptionHandler
 ###### - Customizamos o corpo de resposta de erro padrão através ResponseEntityExceptionHandler
 ###### - Padronizamos o formato de problemas no corpo de respostas com a RFC 7807
-###### - Tratamos a exception InvalidFormatException na desserialização de forma mais específica 
+###### - Tratamos a exception InvalidFormatException na desserialização de forma mais específica
+###### - Tratamos as possíveis exceptions forma mais específica
+###### - "Estendemos" a especificação do Problem Details adicionando uma nova propriedade 
+
+
+</ol>
+</details>
+<details>
+    <summary><i>09. Validações com Bean Validation</i></summary>
+<ol>
+
+<li>Validação do modelo com Bean Validation</li>
+<li><details>
+<summary>Estendendo o formato do problema para adicionar novas propriedades ⭐</summary>
+
+A partir da versão 2.3.x do Spring, o Bean Validation (e outras bibliotecas de validação) não é adicionado automaticamente 
+como dependência do pacote spring-boot-starter-web. Logo, deve-se adicionar o starter da dependência em questão manualemnte.
+
+```
+<dependency>
+   <groupId>org.springframework.boot</groupId>
+   <artifactId>spring-boot-starter-validation</artifactId>
+</dependency>
+```
+
+</details></li>
+<li>Adicionando constraints e validando no controller com @Valid</li>
+
 
 </ol>
 </details>
