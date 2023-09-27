@@ -37,7 +37,9 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         ProblemType problemType = ProblemType.DADOS_INVALIDOS;
         String detail = "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.";
         HttpStatus httpStatus = (HttpStatus) status;
-        Problem problem = createProblemBuilder(httpStatus, problemType, detail).build();
+        Problem problem = createProblemBuilder(httpStatus, problemType, detail)
+                .userMessage(detail)
+                .build();
         return handleExceptionInternal(ex, problem, headers, httpStatus, request);
     }
 
