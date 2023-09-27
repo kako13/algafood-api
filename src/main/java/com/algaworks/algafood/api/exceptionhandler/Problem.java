@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 @Getter
@@ -18,4 +19,12 @@ public class Problem {
 
     private String userMessage;
     private LocalDateTime timeStamp;
+    private List<Field> fields;
+
+    @Getter
+    @Builder
+    public static class Field {
+        private String name;
+        private String userMessage;
+    }
 }
