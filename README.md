@@ -761,8 +761,23 @@ como dependência do pacote spring-boot-starter-web. Logo, deve-se adicionar o s
 ```
 
 </details></li>
-<li>Adicionando constraints e validando no controller com @Valid</li>
+<li><details>
+<summary>Adicionando constraints e validando no controller com @Valid ⭐</summary>
 
+Quando tentamos adicionar um novo Restaurante, através do verbo POST, sem informar o campo 'nome' ou infomando como 'null'.
+Recebemos o código de retorno 500 e a exception DataIntegrityViolationException é lançada, por conta do campo ser obrigatório (not null)
+no banco.
+Quando adicionamos @NotNull na propriedade 'nome' do Problem e fazemos a mesma requisição, recebemos como código de retorno
+500 e a exception lançada é a DataIntegrityViolationException.
+Então ao anotarmos o parâmetro Restaurante, que é RequestBody do método do controller, com o @Valid, passamos a receber o 
+código 400
+
+</details></li>
+<li><details>
+<summary>Desafio: tratando exception de violação de constraints de validação ⭐</summary>
+
+Foi implementado o método `handleMethodArgumentNotValid` da interface `ResponseEntityExceptionHandler`.
+</details></li>
 
 </ol>
 </details>
