@@ -778,6 +778,31 @@ código 400
 
 Foi implementado o método `handleMethodArgumentNotValid` da interface `ResponseEntityExceptionHandler`.
 </details></li>
+<li><details>
+<summary>Estendendo o Problem Details para adicionar as propriedades com constraints violadas ⭐</summary>
+
+Foi incluída a seguinte propriedade e inner class no Problem:
+
+```
+    private List<Field> fields;
+
+    @Getter
+    @Builder
+    public static class Field {
+        private String name;
+        private String userMessage;
+    }
+```
+
+A exception `MethodArgumentNotValidException` nos fornece um `BindingResult` através do método `ex.getBindingResult()`,
+e este armazena dados sobre as propriedades violadas, como o nome do campo, valor e etc.
+
+Desta forma é possível preencher o novo atributo do Problem, uma lista de Fields, com o que obtemos do bindingResults:
+```
+List<FieldError> fieldErrors = bindingResult.getFieldErrors();
+```
+
+</details></li>
 
 </ol>
 </details>
