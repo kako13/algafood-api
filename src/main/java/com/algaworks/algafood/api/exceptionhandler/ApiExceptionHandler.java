@@ -146,9 +146,9 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleUncaught(Exception ex, WebRequest request) {
-        HttpStatus status = HttpStatus.BAD_REQUEST;
+        HttpStatus status = HttpStatus.INTERNAL_SERVER_ERROR;
         ProblemType problemType = ProblemType.ERRO_DE_SISTEMA;
-        String detail = String.format(MSG_ERRO_GENERICA_USUARIO_FINAL);
+        String detail = MSG_ERRO_GENERICA_USUARIO_FINAL;
         Problem problem = createProblemBuilder(status, problemType, detail)
                 .userMessage(detail)
                 .build();
@@ -161,12 +161,14 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
         if (body == null)
             body = Problem.builder()
+                    .timeStamp(LocalDateTime.now())
                     .title(status.getReasonPhrase())
                     .status(status.value())
                     .userMessage(MSG_ERRO_GENERICA_USUARIO_FINAL)
                     .build();
         else if (body instanceof String)
             body = Problem.builder()
+                    .timeStamp(LocalDateTime.now())
                     .title((String) body)
                     .status(status.value())
                     .userMessage(MSG_ERRO_GENERICA_USUARIO_FINAL)
