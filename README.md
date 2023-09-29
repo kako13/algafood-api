@@ -893,5 +893,50 @@ com `Groups.CozinhaId.class` na Cozinha.
 </details></li>
 <li>Desafio: adicionando constraints de validação no modelo</li>
 <li>Customizando mensagens de validação na anotação da constraint</li>
+<li><details>
+<summary>Customizando e resolvendo mensagens de validação globais em Resource Bundle ⭐ ⭐ ⭐</summary>
+
+Criamos um `messages.properties` para centralizar as mensagens de erro de validação de modelo.
+
+Nesta abordagem a precedência é por especificidade, e podemos utilizar placeholders:
+
+```
+//Mais específico
+NotBlank.restaurante.nome=Nome do restaurante é obrigatório
+NotBlank.cozinha.nome=Nome de cozinha é obrigatório
+NotBlank.nome=Informe um nome, pois o campo é obrigatório
+
+//Menos especifico
+NotBlank={0} é obrigatório
+
+//Placeholders menos específico
+nome=O campo nome
+
+//Placeholders mais específico
+restaurante.nome=Nome do restaurante
+cozinha.nome=Nome da cozinha
+estado.nome=Nome do estado
+```
+
+E no método handle do bean validation `handleMethodArgumentNotValid` montamos a mensagem para passar no 
+userMessage da seguinte forma:
+
+```
+List<Problem.Field> fields = fieldErrors.stream()
+       .map(fieldError -> {
+
+           String message = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale());
+
+           return Problem.Field.builder()
+               .name(fieldError.getField())
+               .userMessage(message)
+               .build();
+       })
+       .collect(Collectors.toList());
+```
+
+
+
+</details></li>
 </ol>
 </details>
