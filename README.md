@@ -746,9 +746,8 @@ o consumidor da API, foi definido como userMessage o mesmo conteúdo do detail.
     <summary><i>09. Validações com Bean Validation</i></summary>
 <ol>
 
-<li>Validação do modelo com Bean Validation</li>
 <li><details>
-<summary>Estendendo o formato do problema para adicionar novas propriedades ⭐</summary>
+<summary>Validação do modelo com Bean Validation ⭐</summary>
 
 A partir da versão 2.3.x do Spring, o Bean Validation (e outras bibliotecas de validação) não é adicionado automaticamente 
 como dependência do pacote spring-boot-starter-web. Logo, deve-se adicionar o starter da dependência em questão manualemnte.
@@ -801,8 +800,24 @@ Desta forma é possível preencher o novo atributo do Problem, uma lista de Fiel
 ```
 List<FieldError> fieldErrors = bindingResult.getFieldErrors();
 ```
-
 </details></li>
+<li><details>
+<summary>Conhecendo e adicionando mais constraints de validação no modelo ⭐</summary>
+
+Existe uma implementação Hibernate do Bean Validation, [Hibernate Validator](https://docs.jboss.org/hibernate/stable/validator/reference/en-US/html_single/#preface)
+que possui algumas funcionalidades depreciadas, já que nas versões atuais o Bean Validation ja trazia algumas funcionalidades
+que só existiam no hibernate.
+Melhor priorizar as funcionalidades do Bean Validation do Spring.
+
+Conhecemos as notações:
+
+- `@NotNull`
+- `@NotEmpty` 
+- `@NotBlank`
+- `@PositiveOrZero`
+- `@DecimalMin("1")`
+</details></li>
+
 
 </ol>
 </details>
