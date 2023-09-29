@@ -825,5 +825,59 @@ Conhecemos as notações:
 Adicionada a anotação `@Valid` na propriedade que também possui atributos anotados para serem validados.
 
 </details></li>
+<li><details>
+<summary>Agrupando e restringindo constraints que devem ser usadas na validação ⭐</summary>
+
+A ideia de agrupar validações, funciona como uma "marcação" em nossas anotações.
+
+Para criar um grupo de validação basta criar um interface e nela declarar uma nova interface:
+```
+public interface Groups {
+
+    interface CadastroRestaurante {}
+}
+```
+
+Podemos agrupar validações através dos 'Groups' que podem ser informados nas anotações de validação como `@NotNull`, 
+`@NotBlank` e afins, exceto o `@Valid`. Como no exemplo:
+
+```
+    @NotBlank(groups = Groups.CadastroRestaurante.class)
+    @Column(nullable = false)
+    private String nome;
+
+    @PositiveOrZero(groups = Groups.CadastroRestaurante.class)
+    @Column(name = "taxa_frete", nullable = false)
+    private BigDecimal taxaFrete;
+
+    @Valid
+    @NotNull(groups = Groups.CadastroRestaurante.class)
+    @ManyToOne
+    @JoinColumn(name = "cozinha_id", nullable = false) //"num_idt_cozinha" definindo nome da coluna
+    private Cozinha cozinha;
+```
+
+E depois no controller **ao invés** de anotar o parâmetro do RequestBody com ~~`@Valid`~~, utilizaremos o `@Validated` passando
+o Groups como parâmetro:
+
+```
+ @PostMapping
+ @ResponseStatus(HttpStatus.CREATED)
+ public Restaurante adicionar(@RequestBody @Validated(Groups.CadastroRestaurante.class) Restaurante restaurante) {
+     try {
+         return cadastroService.salvar(restaurante);
+     } catch (CozinhaNaoEncontradaException e) {
+         throw new NegocioException(e.getMessage(), e.getCause());
+     }
+ }
+```
+Isso quer dizer que ao validar o representation model recebido na requisição, o fluxo de validação ocorrerá apenas nas 
+propriedades anotadas com o mesmo Group da anotação `@Validated` um nível acima, ou seja, no controller.
+
+Nos casos em que **não for informado** um `@Validated` e o grupo, a aplicação irá adotar um grupo `Default.class` por padrão.
+Logo, qualquer anotação bean validation por padrão utiliza o grupo `Default.class`.
+
+
+</details></li>
 </ol>
 </details>
