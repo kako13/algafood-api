@@ -934,9 +934,7 @@ List<Problem.Field> fields = fieldErrors.stream()
        })
        .collect(Collectors.toList());
 ```
-
-
-
 </details></li>
+<li>Desafio: customizando mensagens de validação</li>
 </ol>
 </details>
