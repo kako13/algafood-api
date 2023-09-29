@@ -936,5 +936,27 @@ List<Problem.Field> fields = fieldErrors.stream()
 ```
 </details></li>
 <li>Desafio: customizando mensagens de validação</li>
+<li><details>
+<summary>Resolvendo mensagens de validação com Resource Bundle do Bean Validation ⭐ ⭐ ⭐</summary>
+
+O Bean Validation ao lançar a exception de validação busca a mensagem num resource bundle. O `messages.properties` é o resource
+bundle do **Spring**, já os arquivos de propriedades localizados na dependência `Maven: org.hibernate.validator:hibernate-validator:8.0.1.Final`:
+- `ValidationMessages.properties` (Inglês)
+- `ValidationMessages_pt.properties` (Português)
+- `ValidationMessages_pt_BR.properties` (Complemento pt-br)
+
+São 'resource bundle' do **Bean Validation**.
+
+Desta forma a mensagem é primeiramente resolvida nos arquivos `ValidationMessages`, e depois é resolvida e sobrescrita (caso necessário) no 
+`messages.properties`, o que resulta num **efeito de precedência do properties do Spring**. Mesmo sobrescrevendo o arquivo `ValidationMessages.properties`.
+
+Da mesma forma, passar a chave da mensagem (independente arquivo properties) no parâmetro da anotação `@PositiveOrZero(message = "{TaxaFrete.invalida}")`, 
+não tem efeito, caso a mensagem já tenha sido resolvida no resource bundle do Spring.
+
+_Na versão 3.1.3 do Spring que estou utilizando, ao tentar sobrescrever o `jakarta.validation.constraints.PositiveOrZero.message=minha msg`
+no `messages.properties`, já funcionou, diferente do comportamento apresentado na versão da aula. De qualquer forma a sobrescrita do resource 
+bundle `ValidationMessages.properties` funcionou normalmente_
+
+</details></li>
 </ol>
 </details>
