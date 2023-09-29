@@ -806,8 +806,10 @@ List<FieldError> fieldErrors = bindingResult.getFieldErrors();
 
 Existe uma implementação Hibernate do Bean Validation, [Hibernate Validator](https://docs.jboss.org/hibernate/stable/validator/reference/en-US/html_single/#preface)
 que possui algumas funcionalidades depreciadas, já que nas versões atuais o Bean Validation ja trazia algumas funcionalidades
-que só existiam no hibernate.
-Melhor priorizar as funcionalidades do Bean Validation do Spring.
+que só existiam no hibernate. O Hibernate validator também possui funcionalidades por região, como `@CPF`, `@CNPJ` no caso
+do Brasil.
+
+De qualquer forma, é melhor priorizar as funcionalidades do Bean Validation do Spring.
 
 Conhecemos as notações:
 
@@ -817,7 +819,11 @@ Conhecemos as notações:
 - `@PositiveOrZero`
 - `@DecimalMin("1")`
 </details></li>
+<li><details>
+<summary>Validando as associações de uma entidade em cascata ⭐</summary>
 
+Adicionada a anotação `@Valid` na propriedade que também possui atributos anotados para serem validados.
 
+</details></li>
 </ol>
 </details>
