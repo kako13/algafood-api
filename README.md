@@ -876,8 +876,20 @@ propriedades anotadas com o mesmo Group da anotação `@Validated` um nível aci
 
 Nos casos em que **não for informado** um `@Validated` e o grupo, a aplicação irá adotar um grupo `Default.class` por padrão.
 Logo, qualquer anotação bean validation por padrão utiliza o grupo `Default.class`.
+</details></li>
+<li><details>
+<summary>Convertendo grupos de constraints para validação em cascata com @ConvertGroup ⭐ ⭐ ⭐</summary>
 
+Com o tempo o número de Groups pode crescer e isso provavemente vai causar um acúmulo de Groups em algum atributo de alguma 
+que seja informada em mais de uma requisição. 
 
+Então mudamos a abordagem voltando o `@Validated` do parâmetro RequestBody do controller para `@Valid`, e dentro do Restaurante 
+retiramos os Groups das anotações também, ou seja, agora temos o Group 'Default.class' validando o Restaurante. Enquanto que 
+na Cozinha dexamos o Group `@NotNull(groups = Groups.CozinhaId.class)` na propriedade `id`.
+
+Agora na propriedade Cozinha da classe Restaurante utilizamos o `@ConvertGroup(from = Default.class, to = Groups.CozinhaId.class)`.
+Isso significa que ao passar um Restaurante numa requisição o fluxo de validação vai considerar apenas as propriedades anotadas 
+com `Groups.CozinhaId.class` na Cozinha.  
 </details></li>
 </ol>
 </details>
