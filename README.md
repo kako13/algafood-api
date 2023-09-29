@@ -891,5 +891,7 @@ Agora na propriedade Cozinha da classe Restaurante utilizamos o `@ConvertGroup(f
 Isso significa que ao passar um Restaurante numa requisição o fluxo de validação vai considerar apenas as propriedades anotadas 
 com `Groups.CozinhaId.class` na Cozinha.  
 </details></li>
+<li>Desafio: adicionando constraints de validação no modelo</li>
+<li>Customizando mensagens de validação na anotação da constraint</li>
 </ol>
 </details>
