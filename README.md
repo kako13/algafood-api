@@ -940,7 +940,7 @@ List<Problem.Field> fields = fieldErrors.stream()
 <summary>Resolvendo mensagens de validação com Resource Bundle do Bean Validation ⭐ ⭐ ⭐</summary>
 
 O Bean Validation ao lançar a exception de validação busca a mensagem num resource bundle. O `messages.properties` é o resource
-bundle do **Spring**, já os arquivos de propriedades localizados na dependência `Maven: org.hibernate.validator:hibernate-validator:8.0.1.Final`:
+bundle do **Spring**, já os arquivos de propriedades localizados na dependência `org.hibernate.validator:hibernate-validator:8.0.1.Final`:
 - `ValidationMessages.properties` (Inglês)
 - `ValidationMessages_pt.properties` (Português)
 - `ValidationMessages_pt_BR.properties` (Complemento pt-br)
@@ -958,5 +958,30 @@ no `messages.properties`, já funcionou, diferente do comportamento apresentado 
 bundle `ValidationMessages.properties` funcionou normalmente_
 
 </details></li>
+<li><details>
+<summary>Usando o Resource Bundle do Spring como Resource Bundle do Bean Validation ⭐ ⭐ ⭐</summary>
+
+Criamos uma classe de configuração com um método que retorna um bean de `LocalValidatorFactoryBean`, para fazer a 
+integração e configuração do Bean Validation com o Spring. E nele determinamos se o MessageSource será o do Spring ou do 
+Bean validation:
+```
+@Configuration
+public class ValidationConfig {
+
+    @Bean
+    public LocalValidatorFactoryBean validator(MessageSource messageSource) {
+        LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
+        bean.setValidationMessageSource(messageSource); // com messages.properties
+        return bean;
+
+    }
+}
+```
+Se informada a linha: 
+`bean.setValidationMessageSource(messageSource);`, será utilizado o `messages.properties` do spring, do contrário será 
+utilizado o `ValidationMessages.properties`, seja ele do `org.hibernate.validator:hibernate-validator` ou um novo que o sobrecreva. 
+
+</details></li>
+
 </ol>
 </details>
