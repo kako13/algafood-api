@@ -805,7 +805,7 @@ List<FieldError> fieldErrors = bindingResult.getFieldErrors();
 <summary>Conhecendo e adicionando mais constraints de validação no modelo ⭐</summary>
 
 Existe uma implementação Hibernate do Bean Validation, [Hibernate Validator](https://docs.jboss.org/hibernate/stable/validator/reference/en-US/html_single/#preface)
-que possui algumas funcionalidades depreciadas, já que nas versões atuais o Bean Validation ja trazia algumas funcionalidades
+que possui algumas funcionalidades depreciadas, já que nas versões atuais o Bean Validation já trazia algumas funcionalidades
 que só existiam no hibernate. O Hibernate validator também possui funcionalidades por região, como `@CPF`, `@CNPJ` no caso
 do Brasil.
 
@@ -980,8 +980,16 @@ public class ValidationConfig {
 Se informada a linha: 
 `bean.setValidationMessageSource(messageSource);`, será utilizado o `messages.properties` do spring, do contrário será 
 utilizado o `ValidationMessages.properties`, seja ele do `org.hibernate.validator:hibernate-validator` ou um novo que o sobrecreva. 
-
 </details></li>
 
+<li><details>
+<summary>Criando constraints de validação customizadas usando composição ⭐ ⭐ ⭐</summary>
+
+Sobre o comportamento para anotações customizadas.
+Se (a anotação customizada for anotada por uma anotação do framework & a anotação do framework já possuir uma msg no messages.properties)
+      Mesmo definindo uma msg para a anotação customizada, será devolvida a mensagem da anotação do framework
+      
+Existe uma **[issue](https://github.com/spring-projects/spring-framework/issues/20519)** aberta para o caso. Mas acabo de testar e mesmo hoje permanece este comportamento.
+</details></li>
 </ol>
 </details>
