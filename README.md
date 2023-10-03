@@ -991,5 +991,24 @@ Se (a anotação customizada for anotada por uma anotação do framework & a ano
       
 Existe uma **[issue](https://github.com/spring-projects/spring-framework/issues/20519)** aberta para o caso. Mas acabo de testar e mesmo hoje permanece este comportamento.
 </details></li>
+
+<li><details>
+<summary>Criando constraints de validação customizadas com implementação de ConstraintValidator ⭐ ⭐ ⭐</summary>
+
+Criamos uma anotação customizada que verifica se a taxa frete é multiplo do número passado na anotação `@Multiplo`.
+Para isso foi necessário criar uma classe que implementará a lógica de validação, `MultiploValidator`. Ela implementa a 
+interface `ConstraintValidator<Multiplo, Number>` especificando a própria anotação e o tipo de dado passado. E devemos 
+implementar obrigatoriamente o método `isValid`, para a lógica de validação. E opcionalmete o método `initialize`, quando 
+for necessário recuperar alguma informação passada na anotação, como o número.
+
+Quanto a mensagem da constraint, pode ser definida na "classe" da anotação, na anotação sobre a propriedade, ou através do
+messages.properties, que neste caso, é utilizado pelo Bean Validation, recuperando os parâmetros:
+```
+Multiplo={0} deve ser um valor múltiplo de {1}.
+```
+Podendo utilizar as variações aprendidas nas aulas anteriores.
+O valor `{0}` é referente ao nome da propriedade, e o `{1}` recebe o parâmetro passado na anotação.
+
+</details></li>
 </ol>
 </details>

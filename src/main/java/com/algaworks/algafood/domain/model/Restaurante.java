@@ -1,7 +1,7 @@
 package com.algaworks.algafood.domain.model;
 
 import com.algaworks.algafood.core.validation.Groups;
-import com.algaworks.algafood.core.validation.TaxaFrete;
+import com.algaworks.algafood.core.validation.Multiplo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
@@ -34,7 +34,7 @@ public class Restaurante {
 
     @NotNull
 //    @PositiveOrZero//(message = "{TaxaFrete.invalida}")
-    @TaxaFrete
+    @Multiplo(numero = 10)
     @Column(name = "taxa_frete", nullable = false)
     private BigDecimal taxaFrete;
 
