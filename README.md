@@ -447,7 +447,7 @@ por conta de alguma alteração.** Consultar aulas 8 e 10._
 </ol>
 </details>
 <details>
-    <summary><i>08. Tratamento e modelagem de erros da API ⭐</i></summary>
+    <summary><i>08. Tratamento e modelagem de erros da API</i> ⭐</summary>
 <ol>
 
 <li>Introdução ao tratamento e modelagem de erros</li>
@@ -743,7 +743,7 @@ o consumidor da API, foi definido como userMessage o mesmo conteúdo do detail.
 </ol>
 </details>
 <details>
-    <summary><i>09. Validações com Bean Validation</i></summary>
+    <summary><i>09. Validações com Bean Validation</i> ⭐</summary>
 <ol>
 
 <li><details>
@@ -1044,6 +1044,40 @@ O Spring sempre nos da sugestão de nomes no console para utilizarmos como place
 ```
 [Error in object 'restaurante': codes [ValorZeroIncluiDescricao.restaurante,ValorZeroIncluiDescricao];
 ```
+</details></li>
+
+<li><details>
+<summary>Executando processo de validação programaticamente ⭐ ⭐ ⭐</summary>
+
+
+Como no método `PATCH` do controller de restaurantes não recebemos um Restaurante e sim um Map. Pois queremos apenas uma
+atualização parcial de um Restaurante. Se utilizassemos esta classe, as validações existentes não iriam permitir o registro.
+barrariam nossa tentativa de registro.
+
+Também não é possível fazer a validação com a anotação `@Valid` sobre o Map.
+Por isso criamos o seguinte método para a validação programática das propriedades que recebermos de um Restaurante utilizando
+`BeanPropertyBindingResult` e `SmartValidator`:
+
+```
+ @Autowired
+ private SmartValidator validator;
+ 
+ private void validate(Restaurante restaurante, String objectName) {
+     BeanPropertyBindingResult bindingResult = new BeanPropertyBindingResult(restaurante, objectName);
+     validator.validate(restaurante, bindingResult);
+     if (bindingResult.hasErrors()) {
+         throw new ValidacaoException(bindingResult);
+     }
+ }
+```
+Para validar o candidato a restaurante atualizado antes da camada de persistencia.
+
+Também criamos e lançamos a nova exception `ValidacaoException(bindingResult)` que recebe o bindingResult, para evitar
+lançar a `MethodArgumentNotValidException` devido à complexidade para instanciá-la, sendo que também poderíamos aproveitá-la 
+no nosso ExceptionHandler. 
+
+Desta forma ainda resta o tratamento desta nova exception `ValidacaoException` no ExceptionHandler para manter o 
+comportamento como as demais validações. 
 </details></li>
 </ol>
 </details>
