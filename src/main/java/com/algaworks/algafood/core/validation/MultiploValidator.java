@@ -12,7 +12,6 @@ public class MultiploValidator implements ConstraintValidator<Multiplo, Number> 
     @Override
     public void initialize(Multiplo constraintAnnotation) {
         numeroMultiplo = constraintAnnotation.numero();
-        ConstraintValidator.super.initialize(constraintAnnotation);
     }
 
     @Override
@@ -24,7 +23,7 @@ public class MultiploValidator implements ConstraintValidator<Multiplo, Number> 
             var valorDecimal = BigDecimal.valueOf(value.doubleValue());
             var multiploDecimal = BigDecimal.valueOf(this.numeroMultiplo);
 
-            BigDecimal resto = valorDecimal.remainder(multiploDecimal);
+            BigDecimal resto = valorDecimal.remainder(multiploDecimal); //pega o resto da divisao
             valido = BigDecimal.ZERO.compareTo(resto) == 0;
         }
 

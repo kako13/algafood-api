@@ -987,7 +987,7 @@ utilizado o `ValidationMessages.properties`, seja ele do `org.hibernate.validato
 
 Sobre o comportamento para anotações customizadas.
 Se (a anotação customizada for anotada por uma anotação do framework & a anotação do framework já possuir uma msg no messages.properties)
-      Mesmo definindo uma msg para a anotação customizada, será devolvida a mensagem da anotação do framework
+      mesmo definindo uma msg para a anotação customizada, será devolvida a mensagem da anotação do framework
       
 Existe uma **[issue](https://github.com/spring-projects/spring-framework/issues/20519)** aberta para o caso. Mas acabo de testar e mesmo hoje permanece este comportamento.
 </details></li>
@@ -1008,7 +1008,8 @@ Multiplo={0} deve ser um valor múltiplo de {1}.
 ```
 Podendo utilizar as variações aprendidas nas aulas anteriores.
 O valor `{0}` é referente ao nome da propriedade, e o `{1}` recebe o parâmetro passado na anotação.
-
 </details></li>
+
+<li>Criando constraints de validação customizadas em nível de classe ⭐ ⭐ ⭐</li>
 </ol>
 </details>
