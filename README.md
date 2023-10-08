@@ -1079,5 +1079,7 @@ no nosso ExceptionHandler.
 Desta forma ainda resta o tratamento desta nova exception `ValidacaoException` no ExceptionHandler para manter o 
 comportamento como as demais validações. 
 </details></li>
+
+<li>Desafio: tratando a exception customizada de validações programáticas ⭐ ⭐ ⭐</li>
 </ol>
 </details>
