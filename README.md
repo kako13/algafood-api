@@ -1011,5 +1011,39 @@ O valor `{0}` é referente ao nome da propriedade, e o `{1}` recebe o parâmetro
 </details></li>
 
 <li>Criando constraints de validação customizadas em nível de classe ⭐ ⭐ ⭐</li>
+
+<li><details>
+<summary>Ajustando Exception Handler para adicionar mensagens de validação em nível de classe ⭐ ⭐ ⭐</summary>
+
+Agora ao invés de pegarmos os erros pelo `bindingResult.getFieldErrors();`, utilizamos `bindingResult.getAllErrors()`,
+já que a notação é em nivel de classe, não mais em nível de propriedades (campos/atributo). Por isso alteramos o nome da
+propriedade `fields` para `objects`, já que estendemos a especificação do 'Problem Details' alinhando com o nosso uso e 
+este campo não faz parte da especificção.
+
+Passamos a receber `null` no campo `name` do Problem de retorno.
+
+Para corrijir o comportamento, durante a iteração dos erros, fizemos um teste (if) verificando, `objectError instanceof FieldError`, 
+caso sim fazemos o cast para `FieldError` para continuar com o comportamento das demais validações, com o nome da 
+propriedade (campo/atributo) no campo `name` do Problem de retorno:
+```
+if (objectError instanceof FieldError) {
+   name = ((FieldError) objectError).getField();
+}
+```
+
+Para facilitar na customização da mensagem, a descoberta da ordem dos argumentos passados na anotação utilizar pode ser 
+feita apresentando todos os argumentos na mensagem do messages.properties: 
+```
+ValorZeroIncluiDescricao={0} - {1} - {2} - {3} - valor zero inclui descricao
+```
+No caso foi utilizado a partir do indice '1', pois a primeira posição vem nula.
+
+O Spring sempre nos da sugestão de nomes no console para utilizarmos como placeholders quando a exception é resolvida pelo
+`MethodArgumentNotValidException`:
+
+```
+[Error in object 'restaurante': codes [ValorZeroIncluiDescricao.restaurante,ValorZeroIncluiDescricao];
+```
+</details></li>
 </ol>
 </details>

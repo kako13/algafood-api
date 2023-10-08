@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = {ValorZeroIncluiDescricaoValidator.class})
 public @interface ValorZeroIncluiDescricao {
 
-    String message() default "Descrição obrigatória";
+    String message() default "Descrição obrigatória inválida";
 
     Class<?>[] groups() default {};
 
