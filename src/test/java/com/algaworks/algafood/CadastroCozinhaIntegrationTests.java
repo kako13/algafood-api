@@ -1,5 +1,7 @@
 package com.algaworks.algafood;
 
+import com.algaworks.algafood.domain.exception.EntidadeEmUsoException;
+import com.algaworks.algafood.domain.exception.EntidadeNaoEncontradaException;
 import com.algaworks.algafood.domain.model.Cozinha;
 import com.algaworks.algafood.domain.service.CadastroCozinhaService;
 import jakarta.validation.ConstraintViolationException;
@@ -31,7 +33,7 @@ class CadastroCozinhaIntegrationTests {
 	}
 
 	@Test
-	public void deveFalhar_QuandoCadastrarCozinhaSemNome_AssertJ() {
+	public void deveFalhar_QuandoCadastrarCozinhaSemNome() {
 		//cenario
 		Cozinha novaCozinha = new Cozinha();
 		novaCozinha.setNome(null);
@@ -52,6 +54,36 @@ class CadastroCozinhaIntegrationTests {
 					cadastroCozinha.salvar(novaCozinha);
 				});
 		//validação
+		Assertions.assertEquals(ConstraintViolationException.class, erroEsperado.getClass());
+	}
+
+	@Test
+	public void deveFalhar_QuandoCadastrarCozinhaSemNome_JUnitJupiter_AssertJ() {
+		//cenario
+		Cozinha novaCozinha = new Cozinha();
+		novaCozinha.setNome(null);
+		//ação e validação
+		ConstraintViolationException erroEsperado =
+				Assertions.assertThrows(ConstraintViolationException.class, () -> {
+					cadastroCozinha.salvar(novaCozinha);
+				});
+		//validação
 		assertThat(erroEsperado).isNotNull();
+	}
+
+	@Test
+	public void deveFalhar_QuandoExcluirCozinhaEmUso() {
+		//id 1 sendo utilizado conforme carga db/testdata/afterMigrate.sql
+		assertThatThrownBy(() -> {
+			cadastroCozinha.excluir(1L);
+		}).isInstanceOf(EntidadeEmUsoException.class).isNotNull();
+	}
+
+	@Test
+	public void deveFalhar_QuandoExcluirCozinhaInexistente() {
+		//id 1 sendo utilizado conforme carga db/testdata/afterMigrate.sql
+		assertThatThrownBy(() -> {
+			cadastroCozinha.excluir(100L);
+		}).isInstanceOf(EntidadeNaoEncontradaException.class).isNotNull();
 	}
 }
