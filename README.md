@@ -1088,6 +1088,8 @@ comportamento como as demais validações.
     <summary><i>10. Testes de integração</i> ⭐</summary>
 <ol>
 
+<li>Introdução aos Testes de Integração e Testes de APIs</li>
+<li>Preparando o projeto para testes de integração</li>
 <li><details>
 <summary>Criando e rodando um teste de integração com Spring Boot, JUnit e AssertJ ⭐</summary>
 
@@ -1199,6 +1201,60 @@ Implementados os métodos de testes:
 - deveFalhar_QuandoExcluirCozinhaInexistente
 
 Incluí exemplos de uso do JUnit e Assertj.
+
+####
+</details></li>
+
+<li><details>
+<summary>Rodando os testes pelo Maven (Surefire Maven Plugin) ⭐ ⭐ </summary>
+
+O Maven Surefire Plugin só consegue localizar classes de teste que sigam os seguintes padrões:
+
+- `**/Test*.java`
+- `**/*Test.java`
+- `**/*Tests.java`
+- `**/*TestCase.java`
+
+Do contrário, será necessário incluir **_as classes ou sufixos_** nas configurações do plugin no pom:
+
+```    
+<plugins>
+   <plugin>
+     <groupId>org.apache.maven.plugins</groupId>
+     <artifactId>maven-surefire-plugin</artifactId>
+     <version>${maven.surefire-plugin.version}</version>
+     <configuration>
+       <includes>
+         <include>MeuTeste.java</include>
+       </includes>
+     </configuration>
+   </plugin>
+ </plugins>
+```
+
+####
+</details></li>
+
+<li><details>
+<summary>Configurando Maven Failsafe Plugin no projeto</summary>
+
+Adicionamos o plugin ao pom:
+
+```
+<plugins>
+   ...
+   <plugin>
+       <artifactId>maven-failsafe-plugin</artifactId>
+   </plugin>
+</plugins>
+```
+
+Este plugin, por padrão, identifica as classes de teste cujo sufixo é `IT` (Integration Test).
+
+- `CadastroCozinhaIT`
+
+Desta forma os testes de integração serão executados apenas quando for utilizado `./mvnw verify` e `./mvnw install`. Os 
+demais comandos como `./mvnw clean`, `./mvnw package` ou até mesmo `./mvnw test` não rodarão os testes de integração.
 
 ####
 </details></li>
