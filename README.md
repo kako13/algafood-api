@@ -1347,7 +1347,7 @@ Utilizamos a biblioteca `hamcrest` para escrever expressões com regras de corre
    <summary>Criando um método para fazer setup dos testes ⭐</summary>
 
 Utilizamos a anotação `@BeforeEach` (@Before JUnit 4 e Spring Boot 2.4.0 para trás) para garantir que o método de callback `setup` seja exceutado antes dos demais métodos
-da classe de teste. Desta forma podemos centralizar as configurações que desejamos para nossos testes, deixando o código 
+da classe de teste. Desta forma podemos centralizar as configurações que desejamos para o contexto dos nossos testes, deixando o código 
 mais limpo também. Neste caso configuramos o `RestAssured`:
 
 ```
@@ -1402,6 +1402,32 @@ cadastrada e utilizando o método HTTP post. Foi necessário também incluir o `
 Isso nos faz levantar um ponto importante:
 
 Os testes não devem ter dependência entre si, eles precisam ser independentes!
+
+####
+</details></li>
+
+
+<li><details>
+   <summary>Voltando o estado inicial do banco de dados para cada execução de teste com callback do Flyway ⭐ ⭐</summary>
+
+Para garantir o contexto que queremos em que cada teste vai rodar, sem correr o risco de um teste mudar o contexto de outro.
+Uma das formas tirarmos proveito da anotação `@BeforeEach`, e deixar o flyway limpar o banco e adicionar os dados que 
+queremos antes de **cada teste**, adicionando o `flyway.migrate();` no método de configuração:
+
+```
+ @BeforeEach
+ public void setup() {
+     RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
+     RestAssured.port = port;
+     RestAssured.basePath = "/cozinhas";
+
+     flyway.migrate();
+ }
+```
+
+Pode ser uma boa prática deixar um afterMigrate.sql isolado no pacote de testes para não misturarmos o contexto de uso. 
+Já que que o afterMigrate.sql do pacote `main\resource` tem como finalidade simular massa real durante o desenvolivmento,
+e não servir de massa para testes automatizados de integração.
 
 ####
 </details></li>

@@ -2,10 +2,13 @@ package com.algaworks.algafood;
 
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
+import org.flywaydb.core.Flyway;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpStatus;
 
 import static io.restassured.RestAssured.given;
@@ -19,11 +22,16 @@ class CadastroCozinhaIT {
     @LocalServerPort
     private int port;
 
+    @Autowired
+    Flyway flyway;
+
     @BeforeEach
     public void setup() {
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
         RestAssured.port = port;
         RestAssured.basePath = "/cozinhas";
+
+        flyway.migrate();
     }
 
     @Test
@@ -49,8 +57,9 @@ class CadastroCozinhaIT {
                 .body("nome", hasItems("Brasileira", "Tailandesa"));
     }
 
+    @Primary
     @Test
-    public void deveRetornarStatus201_QuandoCadastrarCozinha () {
+    public void deveRetornarStatus203241_QuandoCadastrarCozinha () {
         String cozinha = "{ \"nome\": \"Caseira\" }";
         given()
                 .body(cozinha)
