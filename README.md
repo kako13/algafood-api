@@ -1442,8 +1442,8 @@ Foi criado o arquivo `application-test.properties` no pacote `test\resources`:
 
 ```
 spring.datasource.url=jdbc:mysql://localhost:3306/algafood_test?createDatabaseIfNotExist=true&serverTimeZone=UTC
-spring.datasource.username=root
-spring.datasource.password=root
+spring.datasource.username=xxxxxx
+spring.datasource.password=xxxxxx
 
 spring.flyway.locations=classpath:db/migration
 
@@ -1470,6 +1470,22 @@ class CadastroCozinhaIT {
 
 
 Por enquanto o teste que verifica se existem 4 cozinhas falha, por conta da nova base de dados.
+
+####
+</details></li>
+
+
+<li><details>
+   <summary>Limpando e populando o banco de dados de teste ⭐ ⭐</summary>
+
+Primeiramente deixamos de utilizar o flayway na classe de teste, vez que isolamos a base de dados de teste.
+
+O instrutor disponibilizou uma classe de limpeza para a base de dados de teste, se preocupando em limpar apenas bases 
+com sufixo `test`, como medida de segurança. Além de evitar a limpeza da tabela de histórico do flyway `"flyway_schema_history"` 
+para evitar problemas no processo de recriação da base.
+
+Agora limpamos os dados no setup da classe de teste, chamando o método `databaseCleaner.clearTables();`. E incluímos os dados 
+manualmente através do novo método `prepararDados()`. E isso se repetirá antes da execução de cada teste.
 
 ####
 </details></li>
