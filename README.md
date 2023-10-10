@@ -1341,5 +1341,55 @@ Utilizamos a biblioteca `hamcrest` para escrever expressões com regras de corre
 
 ####
 </details></li>
+
+
+<li><details>
+   <summary>Criando um método para fazer setup dos testes ⭐</summary>
+
+Utilizamos a anotação `@BeforeEach` para garantir que o método de callback `setup` seja exceutado antes dos demais métodos
+da classe de teste. Desta forma podemos centralizar as configurações que desejamos para nossos testes, deixando o código 
+mais limpo também. Neste caso configuramos o `RestAssured`:
+
+```
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+class CadastroCozinhaIT {
+
+    @LocalServerPort
+    private int port;
+
+    @BeforeEach
+    public void setup() {
+        RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
+        RestAssured.port = port;
+        RestAssured.basePath = "/cozinhas";
+    }
+
+    @Test
+    public void deveRetornarStatus200_QuandoConsultarCozinhas() {
+
+        given()
+                .accept(ContentType.JSON)
+        .when()
+                .get()
+        .then()
+                .statusCode(HttpStatus.OK.value());
+    }
+
+    @Test
+    public void deveConterQuatroCozinhas_QuandoConsultarCozinhas() {
+
+        given()
+                .accept(ContentType.JSON)
+        .when()
+                .get()
+        .then()
+                .body("", hasSize(4))
+                .body("nome", hasItems("Brasileira", "Tailandesa"));
+    }
+}
+```
+
+####
+</details></li>
 </ol>
 </details>
