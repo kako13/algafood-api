@@ -1489,5 +1489,30 @@ manualmente através do novo método `prepararDados()`. E isso se repetirá ante
 
 ####
 </details></li>
+
+<li><details>
+   <summary>Testando endpoint passando parâmetro de URL ⭐ ⭐</summary>
+
+Utilizamos o RestAssured passando parâmetro de URL utilizando o `.pathParams("cozinhaId", 2)`. Indicamos a passagem dele 
+na URL indicando o mesmo nome de variável `.get("/{cozinhaId}")` e validamos o campo do corpo de retorno
+com o `.body("nome", equalTo("Brasileira"));` do Matchers da biblioteca `hamcrest`:
+
+```
+ @Test
+ public void deveRetornarRespostaEStatusCorretos_QuandoConsultarCozinhaInexistente() {
+     given()
+             .pathParams("cozinhaId", 2)
+             .accept(ContentType.JSON)
+     .when()
+             .get("/{cozinhaId}")
+     .then()
+             .statusCode(HttpStatus.OK.value())
+             .body("nome", equalTo("Brasileira"));
+ }
+```
+
+
+####
+</details></li>
 </ol>
 </details>
