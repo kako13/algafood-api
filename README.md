@@ -1083,3 +1083,71 @@ comportamento como as demais validações.
 <li>Desafio: tratando a exception customizada de validações programáticas ⭐ ⭐ ⭐</li>
 </ol>
 </details>
+
+<details open>
+    <summary><i>10. Testes de integração</i> ⭐</summary>
+<ol>
+
+<li><details>
+<summary>Criando e rodando um teste de integração com Spring Boot, JUnit e AssertJ ⭐</summary>
+
+
+
+Realizamos testes de integração com um caso **positivo e negativo** chamando a classe de serviço de Cozinha. Validando o que
+o a aplicação **faz e não faz**. Cada teste deve ser dividido em três partes:
+
+- cenário (preparação de objetos)
+- ação (tentar cadadastrar)
+- validação (verificar se objeto cadastrado está nulo ou e com o id nulo)
+
+Quanto ao número de validações (asserts), não necessariamente será apenas um por método. Pois para assegurar o estado de 
+determinados objetos ao término de um processo, pode ser necessário mais de uma asserção
+(`assertThat`, `assertThatThrownBy` ...). 
+
+
+_Sobre o JUnit 5
+Alterações são necessárias para quem utiliza uma versão do Spring Boot superior a 2.4.0 (3.1.3 no meu caso), a qual
+utiliza o JUnit 5 com padrão ao invés do JUnit 4._
+
+_Sobre a classe de testes
+Em nossa classe de testes a CadastroCozinhaIntegrationTests, removemos o @Test(expected = ConstraintViolationException),
+deixando somente a annotation @Test._
+
+_Fizemos a asserção da ConstraintViolationException via método assertThrows classe Assertions, ficando da seguinte forma:_
+
+JUnit 5 - jupiter Asserts:
+```
+ @Test
+ public void testarCadastroCozinhaSemNome() {
+     //cenario
+     Cozinha novaCozinha = new Cozinha();
+     novaCozinha.setNome(null);
+     //ação e validação
+     ConstraintViolationException erroEsperado =
+             Assertions.assertThrows(ConstraintViolationException.class, () -> {
+                 cadastroCozinha.salvar(novaCozinha);
+             });
+     //validação
+     assertThat(erroEsperado).isNotNull();
+ }
+```
+
+Utilizando o `assertj`:
+
+```
+ @Test
+ public void testarCadastroCozinhaSemNome() {
+     //cenario
+     Cozinha novaCozinha = new Cozinha();
+     novaCozinha.setNome(null);
+     
+     //ação e validação
+     assertThatThrownBy(() -> {
+         cadastroCozinha.salvar(novaCozinha);
+     }).isInstanceOf(ConstraintViolationException.class).isNotNull();
+ }
+```
+
+</details></li>
+</ol>
+</details>
