@@ -1102,7 +1102,7 @@ o a aplicação **faz e não faz**. Cada teste deve ser dividido em três partes
 
 Quanto ao número de validações (asserts), não necessariamente será apenas um por método. Pois para assegurar o estado de 
 determinados objetos ao término de um processo, pode ser necessário mais de uma asserção
-(`assertThat`, `assertThatThrownBy` ...). 
+(`assertThat`, `assertThatThrownBy`, ...). 
 
 
 _Sobre o JUnit 5
@@ -1118,7 +1118,7 @@ _Fizemos a asserção da ConstraintViolationException via método assertThrows c
 Utilizando o JUnit 5 - Jupiter Asserts:
 ```
  @Test
- public void testarCadastroCozinhaSemNome() {
+ public void deveFalhar_QuandoCadastrarCozinhaSemNome_JUnitJupiter() {
      //cenario
      Cozinha novaCozinha = new Cozinha();
      novaCozinha.setNome(null);
@@ -1128,7 +1128,7 @@ Utilizando o JUnit 5 - Jupiter Asserts:
                  cadastroCozinha.salvar(novaCozinha);
              });
      //validação
-     assertThat(erroEsperado).isNotNull();
+     Assertions.assertEquals(ConstraintViolationException.class, erroEsperado.getClass());
  }
 ```
 
@@ -1148,6 +1148,23 @@ Utilizando o `assertj` Assertions:
  }
 ```
 
+Combinado o JUnit 5 - Jupiter Asserts e `assertj` Assertions:
+
+```
+ @Test
+ public void testarCadastroCozinhaSemNome() {
+     //cenario
+     Cozinha novaCozinha = new Cozinha();
+     novaCozinha.setNome(null);
+     //ação e validação
+     ConstraintViolationException erroEsperado =
+             Assertions.assertThrows(ConstraintViolationException.class, () -> {
+                 cadastroCozinha.salvar(novaCozinha);
+             });
+     //validação
+     assertThat(erroEsperado).isNotNull();
+ }
+```
 </details></li>
 
 
@@ -1171,6 +1188,19 @@ como um opcional, sem seguir completamente o CamelCase, misturando inglês e por
 `shouldAtribuirId_WhenCadastrarCozinhaComDadosCorretos()`
 - deve/quando (utilizaremos estes)
 `deveAtribuirId_QuandoCadastrarCozinhaComDadosCorretos()`
+####
+</details></li>
+
+<li><details>
+<summary>Desafio: escrevendo testes de integração ⭐ ⭐ ⭐</summary>
+
+Implementados os métodos de testes:
+- deveFalhar_QuandoExcluirCozinhaEmUso
+- deveFalhar_QuandoExcluirCozinhaInexistente
+
+Incluí exemplos de uso do JUnit e Assertj.
+
+####
 </details></li>
 </ol>
 </details>
