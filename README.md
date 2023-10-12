@@ -1514,5 +1514,37 @@ com o `.body("nome", equalTo("Brasileira"));` do Matchers da biblioteca `hamcres
 
 ####
 </details></li>
+
+<li><details>
+   <summary>Desafio: refatorando o código de testes ⭐ ⭐</summary>
+
+Utilizamos a classe proposta pelo instrutor para leitura de arquivo contendo a nossa massa de teste.
+
+Refatoramos a classe de teste criando constantes, variável de instância para guardar atributos de `cozinhaBrasileira` para
+recuperar nome e id nos métodos, consultando a quantidade de cozinhas para deixar de forma dinamica no
+método que testa a aquantidade correta de cozinhas.
+
+Criamos um arquivo json contendo o caso sendo testado `cozinha-chinesa.json`.
+
+####
+</details></li>
+
+<li><details>
+   <summary>Desafio: escrevendo testes de API ⭐ ⭐</summary>
+
+De forma geral devemos testar (teste de integraçao) apenas aquilo que agrega valor. 
+
+Apenas para garantir e preservar o que já foi desenvolvido de mais importante, que não possa quebrar.
+
+Testes para validar que o contrato (definição campos e content negotiation) não vá quebrar.
+
+Deve testar **"caminhos felizes e infelizes"**.
+
+Foram desenvolvidos os testes de integração para consulta (GET) e cadastro (POST) de restaurantes, com arquivos `.json`
+simulando o envio de payloads de sucesso e falha para nosso recurso.
+
+####
+</details></li>
+
 </ol>
 </details>

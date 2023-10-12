@@ -3,7 +3,6 @@ package com.algaworks.algafood.core.validation;
 import com.fasterxml.jackson.core.io.BigDecimalParser;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
-import jakarta.validation.ValidationException;
 import org.springframework.beans.BeanUtils;
 
 import java.math.BigDecimal;
@@ -24,7 +23,7 @@ public class ValorZeroIncluiDescricaoValidator implements ConstraintValidator<Va
     @Override
     public boolean isValid(Object classeAnotada, ConstraintValidatorContext constraintValidatorContext) {
 
-        boolean valido = false;
+        boolean valido = true;
 
         try {
 
@@ -42,7 +41,8 @@ public class ValorZeroIncluiDescricaoValidator implements ConstraintValidator<Va
             }
             return valido;
         } catch (Exception e) {
-            throw new ValidationException(e);
+//          throw new ValidationException(e);
+            return false;
         }
     }
 }
