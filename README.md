@@ -1313,5 +1313,33 @@ Para que o teste pudesse falhar estimulamos o erro alterando o código de retorn
 
 ####
 </details></li>
+
+<li><details>
+   <summary>Validando o corpo da resposta HTTP ⭐</summary>
+
+Fizemos outro método de testes que vai consultar as 4 cozinhas cadastradas através do afterMigrate.sql.
+Utilizamos a biblioteca `hamcrest` para escrever expressões com regras de correspondencia em objetos, e a classe 
+`Matchers` com os métodos `hasSize` e `hasItems` entre outros:
+
+```
+ @Test
+ public void deveConterQuatroCozinhas_QuandoConsultarCozinhas() {
+
+     RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
+
+     given()
+             .basePath("/cozinhas")
+             .port(port)
+             .accept(ContentType.JSON)
+     .when()
+             .get()
+     .then()
+             .body("", Matchers.hasSize(4))
+             .body("nome", Matchers.hasItems("Brasileira", "Tailandesa"));
+ }
+```
+
+####
+</details></li>
 </ol>
 </details>
