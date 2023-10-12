@@ -1236,7 +1236,7 @@ Do contrário, será necessário incluir **_as classes ou sufixos_** nas configu
 </details></li>
 
 <li><details>
-<summary>Configurando Maven Failsafe Plugin no projeto</summary>
+<summary>Configurando Maven Failsafe Plugin no projeto ⭐</summary>
 
 Adicionamos o plugin ao pom:
 
@@ -1255,6 +1255,61 @@ Este plugin, por padrão, identifica as classes de teste cujo sufixo é `IT` (In
 
 Desta forma os testes de integração serão executados apenas quando for utilizado `./mvnw verify` e `./mvnw install`. Os 
 demais comandos como `./mvnw clean`, `./mvnw package` ou até mesmo `./mvnw test` não rodarão os testes de integração.
+
+####
+</details></li>
+
+<li><details>
+<summary>Implementando Testes de API com REST Assured e validando o código de status HTTP ⭐</summary>
+
+Apagamos todos testes de integração desenvolvidos anteriormente. E seguiremos com testes de API, end-to-end (considerado
+por muitos como um teste de integração também), seguindo todo o fluxo, inclusive passando pelos services e persistência 
+testados anteriormente.
+
+Primeiramente adicionamos a dependência do **_REST Assured_** ao pom.xml:
+
+```
+<dependency>
+   <groupId>io.rest-assured</groupId>
+   <artifactId>rest-assured</artifactId>
+   <scope>test</scope>
+</dependency>
+```
+
+Desta vez precisamos do contexto web de pé, por isso a anotação `@SpringBootTest` recebe a definição 
+`webEnvironment` determinando a configuração de porta durante o teste. E recuperamos o valor da porta com a anotação 
+`@LocalServerPort` para utilizar na chamada feita pelo teste `deveRetornarStatus200_QuandoConsultarCozinhas`:
+
+```
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+class CadastroCozinhaIT {
+
+    @LocalServerPort
+    private int port;
+
+    @Test
+    public void deveRetornarStatus200_QuandoConsultarCozinhas() {
+
+        RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
+
+        given()
+                .basePath("/cozinhas")
+                .port(port)
+                .accept(ContentType.JSON)
+        .when()
+                .get()
+        .then()
+                .statusCode(HttpStatus.OK.value());
+    }
+}
+```
+
+Com a chamada do método `RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();` habilitamos a exibição dos 
+detalhes do teste que apresentou falha. Detalhes da requisição, do retorno e corpo da resposta. Isso nos ajuda durante o 
+desenvolvimento a identificar o motivo da quebra dos testes quando fazemos algo novo no projeto.
+
+Para que o teste pudesse falhar estimulamos o erro alterando o código de retorno no controller de cozinhas.
+
 
 ####
 </details></li>
