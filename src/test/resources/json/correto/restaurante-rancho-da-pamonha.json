@@ -1,0 +1,7 @@
+{
+  "nome": "Rancho da Pamonha",
+  "taxaFrete": 21,
+  "cozinha": {
+    "id": 1
+  }
+}

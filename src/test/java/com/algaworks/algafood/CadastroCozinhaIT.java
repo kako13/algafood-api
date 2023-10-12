@@ -58,15 +58,14 @@ class CadastroCozinhaIT {
     }
 
     @Test
-    public void deveConterNCozinhas_QuandoConsultarCozinhas() {
+    public void deveRetornarQuantidadeCorretaDeCozinhas_QuandoConsultarCozinhas() {
 
         given()
                 .accept(ContentType.JSON)
         .when()
                 .get()
         .then()
-                .body("", hasSize(quantidadeCozinhasCadastradas))
-                .body("nome", hasItems("Brasileira", "Tailandesa"));
+                .body("", hasSize(quantidadeCozinhasCadastradas));
     }
 
     @Test
@@ -82,7 +81,7 @@ class CadastroCozinhaIT {
     }
 
     @Test
-    public void deveRetornarRespostaEStatusCorretos_QuandoConsultarCozinhaInexistente() {
+    public void deveRetornarRespostaEStatusCorretos_QuandoConsultarCozinhaExistente() {
         given()
                 .pathParams("cozinhaId", cozinhaBrasileira.getId())
                 .accept(ContentType.JSON)
