@@ -1115,7 +1115,7 @@ deixando somente a annotation @Test._
 
 _Fizemos a asserção da ConstraintViolationException via método assertThrows classe Assertions, ficando da seguinte forma:_
 
-JUnit 5 - jupiter Asserts:
+Utilizando o JUnit 5 - Jupiter Asserts:
 ```
  @Test
  public void testarCadastroCozinhaSemNome() {
@@ -1132,7 +1132,7 @@ JUnit 5 - jupiter Asserts:
  }
 ```
 
-Utilizando o `assertj`:
+Utilizando o `assertj` Assertions:
 
 ```
  @Test
@@ -1148,6 +1148,29 @@ Utilizando o `assertj`:
  }
 ```
 
+</details></li>
+
+
+<li><details>
+<summary>Escrevendo bons nomes de testes ⭐ ⭐ ⭐</summary>
+
+Neste ponto a coisa é meio que livre com relação conveção Java de nomenclatura de métodos, podendo conter separadores,
+como um opcional, sem seguir completamente o CamelCase, misturando inglês e português em alguns casos. O mais importante
+é adotar um padrão e seguí-lo em todo o projeto. Alguns padrões mais utilizados:
+- testar, **_testa_**
+`testaCadastroCozinhaSemNome()`
+- cadastro, exclusão, **_cadastra, exclui_**
+`cadastroCozinhaSemNome()`
+- given/when/then
+`givenJaExisteCozinhaChinesa_WhenCadastroCozinhaChinesa_ThenDeveFalhar()`
+- when/then
+`whenCadastroCozinhaComDadosCorretos_ThenDeveAtribuirId()`
+- quando/então
+`quandoCadastroCozinhaComDadosCorretos_EntaoDeveAtribuirId()`
+- should/when
+`shouldAtribuirId_WhenCadastrarCozinhaComDadosCorretos()`
+- deve/quando (utilizaremos estes)
+`deveAtribuirId_QuandoCadastrarCozinhaComDadosCorretos()`
 </details></li>
 </ol>
 </details>
