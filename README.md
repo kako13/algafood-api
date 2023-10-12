@@ -1426,8 +1426,50 @@ queremos antes de **cada teste**, adicionando o `flyway.migrate();` no método d
 ```
 
 Pode ser uma boa prática deixar um afterMigrate.sql isolado no pacote de testes para não misturarmos o contexto de uso. 
-Já que que o afterMigrate.sql do pacote `main\resource` tem como finalidade simular massa real durante o desenvolivmento,
-e não servir de massa para testes automatizados de integração.
+Já que que o afterMigrate.sql do pacote `main\resources` tem como finalidade simular massa real durante o desenvolivmento,
+e não servir de massa para testes automatizados de integração/API.
+
+####
+</details></li>
+
+<li><details>
+   <summary>Configurando um banco de testes e usando @TestPropertySource ⭐ ⭐</summary>
+
+Configuramos uma nova base de dados apenas para testes, desta forma os testes automatizados de integração/API podem rodar
+de forma independente dos ambiente de Desenvolvimento, Homologação, Produção. 
+
+Foi criado o arquivo `application-test.properties` no pacote `test\resources`:
+
+```
+spring.datasource.url=jdbc:mysql://localhost:3306/algafood_test?createDatabaseIfNotExist=true&serverTimeZone=UTC
+spring.datasource.username=root
+spring.datasource.password=root
+
+spring.flyway.locations=classpath:db/migration
+
+spring.datasource.hikari.maximum-pool-size=1
+
+spring.output.ansi.enabled=ALWAYS
+```
+
+E na classe de teste adicionamos a anotação `@TestPropertySource("/application-test.properties")`, desta forma será 
+utilizado o banco de dados de testes ao invés do principal:
+
+```
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@TestPropertySource("/application-test.properties")
+class CadastroCozinhaIT {
+
+    @LocalServerPort
+    private int port;
+
+    @Autowired
+    Flyway flyway;
+...
+```
+
+
+Por enquanto o teste que verifica se existem 4 cozinhas falha, por conta da nova base de dados.
 
 ####
 </details></li>
