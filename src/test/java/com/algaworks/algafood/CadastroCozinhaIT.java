@@ -38,7 +38,7 @@ class CadastroCozinhaIT {
     }
 
     @Test
-    public void deveConterQuatroCozinhas_QuandoConsultarCozinhas() {
+    public void deveConter4Cozinhas_QuandoConsultarCozinhas() {
 
         given()
                 .accept(ContentType.JSON)
@@ -47,5 +47,18 @@ class CadastroCozinhaIT {
         .then()
                 .body("", hasSize(4))
                 .body("nome", hasItems("Brasileira", "Tailandesa"));
+    }
+
+    @Test
+    public void deveRetornarStatus201_QuandoCadastrarCozinha () {
+        String cozinha = "{ \"nome\": \"Caseira\" }";
+        given()
+                .body(cozinha)
+                .accept(ContentType.JSON)
+                .contentType(ContentType.JSON)
+        .when()
+                .post()
+        .then()
+                .statusCode(HttpStatus.CREATED.value());
     }
 }

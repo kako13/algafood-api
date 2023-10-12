@@ -1346,7 +1346,7 @@ Utilizamos a biblioteca `hamcrest` para escrever expressões com regras de corre
 <li><details>
    <summary>Criando um método para fazer setup dos testes ⭐</summary>
 
-Utilizamos a anotação `@BeforeEach` para garantir que o método de callback `setup` seja exceutado antes dos demais métodos
+Utilizamos a anotação `@BeforeEach` (@Before JUnit 4 e Spring Boot 2.4.0 para trás) para garantir que o método de callback `setup` seja exceutado antes dos demais métodos
 da classe de teste. Desta forma podemos centralizar as configurações que desejamos para nossos testes, deixando o código 
 mais limpo também. Neste caso configuramos o `RestAssured`:
 
@@ -1388,6 +1388,20 @@ class CadastroCozinhaIT {
     }
 }
 ```
+
+####
+</details></li>
+
+
+<li><details>
+   <summary>Entendendo o problema da ordem de execução dos testes ⭐</summary>
+
+Criamos um teste `deveRetornarStatus201_QuandoCadastrarCozinha`, desta vez enviando um payload com a Cozinha a ser
+cadastrada e utilizando o método HTTP post. Foi necessário também incluir o `.contentType(ContentType.JSON)` no 
+`RestAssured.given()`. O problema agora é que já tinhamos um teste que verificava a quantidade de cozinhas cadastradas. 
+Isso nos faz levantar um ponto importante:
+
+Os testes não devem ter dependência entre si, eles precisam ser independentes!
 
 ####
 </details></li>
