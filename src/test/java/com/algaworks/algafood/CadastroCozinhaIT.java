@@ -14,8 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.TestPropertySource;
 
 import static io.restassured.RestAssured.given;
-import static org.hamcrest.Matchers.hasItems;
-import static org.hamcrest.Matchers.hasSize;
+import static org.hamcrest.Matchers.*;
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -75,6 +74,29 @@ class CadastroCozinhaIT {
                 .post()
         .then()
                 .statusCode(HttpStatus.CREATED.value());
+    }
+
+    @Test
+    public void deveRetornarRespostaEStatusCorretos_QuandoConsultarCozinhaInexistente() {
+        given()
+                .pathParams("cozinhaId", 2)
+                .accept(ContentType.JSON)
+        .when()
+                .get("/{cozinhaId}")
+        .then()
+                .statusCode(HttpStatus.OK.value())
+                .body("nome", equalTo("Brasileira"));
+    }
+
+    @Test
+    public void deveRetornarStatus404_QuandoConsultarCozinhaInexistente() {
+        given()
+                .pathParams("cozinhaId", 100)
+                .accept(ContentType.JSON)
+        .when()
+                .get("/{cozinhaId}")
+        .then()
+                .statusCode(HttpStatus.NOT_FOUND.value());
     }
 
     private void prepararDados() {
