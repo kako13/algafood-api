@@ -1688,5 +1688,15 @@ representação na API será alterado sem a necessidade de alterar a classe de m
 
 ####
 </details></li>
+
+<li><details>
+   <summary>Desafio: usando @JsonIgnoreProperties e Jackson Mixin ⭐ ⭐</summary>
+
+Corrigindo o recurso de `/cidades`, que aceita o envio do nome do estado no registro e alteração, para deixar de aceitar.
+
+E criar **classes abstratas mixin** para os recursos que utilizam anotações da @Jackson.
+
+####
+</details></li>
 </ol>
 </details>
