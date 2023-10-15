@@ -1,6 +1,7 @@
 package com.algaworks.algafood.domain.model;
 
 import com.algaworks.algafood.core.validation.Groups;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotBlank;
@@ -22,6 +23,7 @@ public class Cidade {
     @Column(nullable = false)
     private String nome;
 
+    @JsonIgnoreProperties(value = "nome", allowGetters = true)
     @Valid
     @ConvertGroup(to = Groups.EstadoId.class)
     @NotNull
