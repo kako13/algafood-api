@@ -1889,5 +1889,36 @@ já são 4 fusos horários diferentes.**
 ####
 </details></li>
 
+<li>Desafio: refatorando o código para usar OffsetDateTime ⭐ ⭐</li>
+
+
+<li><details>
+   <summary>Isolando o Domain Model do Representation Model com o padrão DTO ⭐ ⭐</summary>
+
+Ao misturar classes de domínio com classes de representação da API (Representation Model), podemos ter problemas na 
+manutenção, pois, pode ter a necessidade uma propriedade aparecer num recurso e em outro não. Ou até mesmo alterar o 
+domain model a acabar compromentendo o comportamento da API. Já que pode ser necessário criar uma saída customizada no seu 
+recurso que tenha mais campos do que o domain.
+
+Seja para omitir propriedades ou para expor alguma, não é uma boa prática acumular a responsabilidade de representação 
+no domain model.
+
+Logo é importante separar as responsabilidades, deixando a representação para um DTO que pode acumular a representação de 
+uma ou mais classes, de acordo com a necessidade.
+
+Quando utilizar DTOs? Utilizar em todos os casos ou não?
+
+Pelo que observei da opnião do instrutor, é que o ideal é ser consistente. Ou usa em tudo (o que é mais consistente), 
+ou não usa (quando em fase de protótipo). 
+
+O mais recomendado é utilizar e evitar expor tudo no retorno da API, podendo isolar as anotações do Jackson. 
+É mais trabalhoso, mas tras mais segurança ao fazer a manutenção do projeto, ajuda a assegurar
+a integridade da API.
+
+É mais uma polêmica. 
+
+
+####
+</details></li>
 </ol>
 </details>
