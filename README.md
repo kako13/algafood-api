@@ -1931,5 +1931,29 @@ de restaurante.
 ####
 </details></li>
 
+<li><details>
+   <summary>Criando DTOs para entrada de dados na API ⭐ ⭐</summary>
+
+Seguindo a mesma motivação da criação do DTO RestauranteModel, criaremos uma representação de entrada. Evitando as anotações
+no Jackson no dominio ou classes mixin. Já que nem sempre são iguais os modelos de representação de entrada e saída.
+
+Mas isso é uma questão de abordagem, podendo variar de acordo com o propósito do desenvolvedor.
+
+Inclusive podemos ter diversos modelos de representação de saída para o mesmo recurso.
+
+As validações bean validation agora estão nas classes DTO de entrada. As que ficaram nas classes de domínio serão retiradas.
+Para sistemas em que existem outras interfaces de cadasto na aplicação além da web API, por exemplo, o processamento de arquivos, 
+então deve-se manter as anotações de bean validation nas classes de domínio também. O ponto negativo é código duplicado, caso decida manter no domínio também.
+
+No nosso caso, vamos remover do domínio.
+
+**_Já presenciei desenvolvedores deixam as anotações
+na classe de domínio como forma de "documentar" e deixar explicita a regra de input para outros devs_**
+
+**_Foi o suporte a atualização parcial do controller de Restaurente._**
+
+####
+</details></li>
+
 </ol>
 </details>
