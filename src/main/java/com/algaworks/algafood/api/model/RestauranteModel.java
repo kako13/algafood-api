@@ -15,8 +15,16 @@ public class RestauranteModel {
 
     private String nome;
 
-    private BigDecimal taxaFrete;
+    private BigDecimal frete;
 
     private CozinhaModel cozinha;
 
+    /*
+    * É dividido em Tokens
+    * Origem: cozinha, nome
+    * Destino: nome, cozinha
+    *
+    */
+    private String nomeCozinha;
+    private String idCozinha;
 }
