@@ -1967,6 +1967,8 @@ No caso utilizaremos o Assembler.
 ####
 </details></li>
 
+<li>Desafio: Refatorando e criando um disassembler do DTO ⭐ ⭐</li>
+
 <li><details>
    <summary>Adicionando e usando o ModelMapper ⭐ ⭐</summary>
 
@@ -2095,7 +2097,60 @@ public class CozinhaModel {
     private String cozinhaNome;
 }
 ```
+####
+</details></li>
 
+<li><details>
+   <summary>Customizando o mapeamento de propriedades com ModelMapper ⭐ ⭐</summary>
+
+Quando temos propriedades cujos nomes não possuem correspondência, precisamos de alguma forma para "forçar" o ModelMapper
+a passar o valor de um objeto para outro de forma customizada.
+
+Se alterarmos o nome do `frete` do `RestauranteModel` para `precoFrete` passamos a receber null nesta propriedade
+como no exemplo abaixo:
+```
+{
+    "id": 6,
+    "nome": "Bar da Maria",
+    **"precoFrete": null,**
+    "cozinha": {
+        "id": 4,
+        "cozinhaNome": "Brasileira"
+    },
+    "nomeCozinha": "Brasileira",
+    "idCozinha": "4"
+}
+```
+
+Para solucionar o problema devemos customizar o `ModelMapperConfig` alteramos o bean do `ModelMapper` passando os
+métodos que devem ter correspondência:
+```
+@Configuration
+public class ModelMapperConfig {
+    @Bean
+    public ModelMapper modelMapper() {
+        var modelMapper = new ModelMapper();
+        modelMapper.createTypeMap(Restaurante.class, RestauranteModel.class)
+                .addMapping(Restaurante::getTaxaFrete, RestauranteModel::setPrecoFrete);
+        return modelMapper;
+    }
+}
+```
+
+Passando a retornar com o conteúdo:
+```
+{
+    "id": 6,
+    "nome": "Bar da Maria",
+    "precoFrete": 6.00,
+    "cozinha": {
+        "id": 4,
+        "cozinhaNome": "Brasileira"
+    },
+    "nomeCozinha": "Brasileira",
+    "idCozinha": "4"
+}
+```
 
 ####
 </details></li>
