@@ -2238,5 +2238,22 @@ cidade.estado=Estado da cidade
 ####
 </details></li>
 
+<li><details>
+<summary>Estratégias de nomes de propriedades: snake case vs lower camel case ⭐ ⭐</summary>
+
+**lowerCamelCase** ou **lower_snake_case**
+
+Podemos configurar o Spring para converter o padrão dos modelos para lower_snake_case através do `application.properties`
+com a seguinte configuração:
+```
+spring.jackson.property-naming-strategy=SNAKE_CASE
+```
+
+De qualquer forma, foi definido que será mantido no projeto o padrão **lowerCamelCase**, visto que JSON (JavaScript Object 
+Notation) vem do JavaScript e a convenção desta linguagem define este padrão para nomes de propriedades.
+
+####
+</details></li>
+
 </ol>
 </details>
