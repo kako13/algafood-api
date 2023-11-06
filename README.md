@@ -2191,7 +2191,52 @@ public void copyToDomainObject(RestauranteInput restauranteInput, Restaurante re
 ####
 </details></li>
 
+<li><details>
+   <summary>Revisando e ajustando as mensagens de validação com o uso de DTOs ⭐ ⭐</summary>
 
+Por conta da alteração do modelo de entrada, de `Restautante` (que era um modelo de domínio) para `RestauranteInput` (que 
+é um modelo de representação) precisamos substituir o `messages.properties`, para que as mensagens de validação fiquem de 
+acordo.
+
+Ficando da seguinte forma:
+
+```
+NotBlank={0} é obrigatório.
+NotNull={0} é obrigatório.
+PositiveOrZero={0} deve ser um valor maior ou igual a zero.
+Multiplo={0} deve ser um valor múltiplo de {1}.
+ValorZeroIncluiDescricao={1} deve conter {2} na descriçção devido {3}.
+
+#Possibilidade de usos:
+#jakarta.validation.constraints.PositiveOrZero.message={0} deve ser um número positivo que seja maior ou igual a O.
+TaxaFrete.invalida={0} está inválida.
+
+
+#Cozinha
+cozinha.nome=Nome da cozinha
+cozinha.id=Código da cozinha
+
+#Restaurante
+NotNull.restauranteInput.taxaFrete={0} é obrigatória.
+NotNull.restauranteInput.cozinha={0} é obrigatória.
+restauranteInput.taxaFrete=Taxa frete do restaurante
+restauranteInput.cozinha=Cozinha do restaurante
+
+restauranteInput.nome=Nome do restaurante
+
+#Estado
+estado.id=Código do estado
+estado.nome=Nome do estado
+
+#Cidade
+cidade.nome=Nome da cidade
+cidade.estado=Estado da cidade
+
+
+
+```
+####
+</details></li>
 
 </ol>
 </details>
