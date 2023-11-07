@@ -1556,8 +1556,8 @@ simulando o envio de payloads de sucesso e falha para nosso recurso.
 <li><details>
    <summary>Analisando e definindo melhor o escopo das transações ⭐ ⭐</summary>
 
-Utilizando `@Transactional`, recomendado uso qualquer metódo que altere o estado da base de dados, principalmente quando 
-o processo é mais complexo e contém diversas gravações em banco.
+Por boa prática, foi utilizado `@Transactional`, uso é recomendado em qualquer metódo que altere o estado da base de dados, 
+principalmente quando o processo é mais complexo e contém ou depende de diversas gravações em banco.
 
 ####
 </details></li>
@@ -1627,6 +1627,64 @@ a retornar:
 
 Desta forma na desserialização do JSON (montagem), o Jackson consegue entender que o campo `nome` deve ser considerado, 
 devido o `allowGetters = true`. Enquanto na serialização do JSON será ignorado, devido a `@JsonIgnoreProperties`.
+
+####
+</details></li>
+
+<li><details>
+   <summary>Criando classes de mixin para usar as anotações do Jackson ⭐ ⭐</summary>
+
+As anotações `@JsonIgnoreProperties` e `@JsonIgnore` buscam customizar os Representation Models tanto para serialização,
+quanto para desserialização. 
+
+Ficamos na situação em que, caso tenhamos classes que não fazem parte do nosso código para customizar, não será possível 
+anotá-las, impossiblitando o uso das últimas abordagens. Ou se queremos separar questões de domínio com comportamento 
+de API.
+
+Para superar estes problemas utilizamos classes mixin, serve como um espelho da classe de domínio e centraliza em si 
+responsabilidade de ser a representação do modelo de domínio.
+
+Para isso retiramos as anotações Jackson das propriedades da classe Restaurante. E criamos a classe `RestauranteMixin`, que 
+espelha apenas estes campos que tinham as anotações:
+
+```
+public class RestauranteMixin {
+
+    @JsonIgnoreProperties(value = "nome", allowGetters = true)
+    private Cozinha cozinha;
+
+    @JsonIgnore
+    @Embedded
+    private Endereco endereco;
+
+    @JsonIgnore
+    private LocalDateTime dataCadastro;
+
+    @JsonIgnore
+    private LocalDateTime dataAtualizacao;
+
+    @JsonIgnore
+    private List<FormaPagamento> formasPagamento = new ArrayList<>();
+
+    @JsonIgnore
+    private List<Produto> produtos = new ArrayList<>();
+}
+```
+
+Criamos a classe de componente `JacksonMixinModel` que estende a `SimpleModule` da Jackson e cria a relação entre as 
+Classes:
+```
+@Component
+public class JacksonMixinModel extends SimpleModule {
+
+    public JacksonMixinModel() {
+        super.setMixInAnnotation(Restaurante.class, RestauranteMixin.class);
+    }
+}
+```
+
+Agora, ao descomentar as propriedades anotadas com `@JsonIgnore` ou `@JsonIgnoreProperties` na classe mixin, o modelo de 
+representação na API será alterado sem a necessidade de alterar a classe de modelo de domínio que ficará mais limpa.
 
 ####
 </details></li>
