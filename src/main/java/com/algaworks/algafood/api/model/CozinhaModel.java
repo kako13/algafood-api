@@ -9,6 +9,13 @@ import lombok.*;
 @Setter
 public class CozinhaModel {
 
+    /*
+     * É dividido em Tokens
+     * Origem: cozinha, nome
+     * Destino: cozinha, cozinha, nome
+     *
+     */
+
     private Long id;
-    private String nome;
+    private String cozinhaNome;
 }

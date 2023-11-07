@@ -1973,13 +1973,128 @@ No caso utilizaremos o Assembler.
 O código repetitivo "boiller plate" de gets e sets ao transformar um objeto em outro, como RestauranteInput para a classe de 
 domínio Restaurante.
 
-O ModelMapper faz o mapeamento e conversão de objetos, conforme o exemplo.
+O ModelMapper faz o mapeamento e conversão de objetos. Para utilizar substituimos a implementação dos Assemplers e 
+Disassemblers dos DTOs por:
  
 toModel:
 `return modelMapper.map(restaurante, RestauranteModel.class);`
 
 toDomain:
 `return modelMapper.map(restauranteInput, Restaurante.class);`
+
+
+####
+</details></li>
+
+<li><details>
+   <summary>Entendendo a estratégia padrão do ModelMapper para correspondência de propriedades ⭐ ⭐ ⭐</summary>
+
+Caso os nomes tenham alguma correspondencia, a passagem de valor para as propriedades de destino ocorrerá automaticamente. 
+Este comportamento se estende a propriedades que não são de tipos primitivos também, deste modo, podemos passar dados de 
+dentro de **um objeto** diretamente para tipos primitivos, inclusive, podendo passar o mesmo valor para várias propriedades diferentes, 
+apenas tirando proveito deste comportamento de correspondencia de nomes. 
+
+ex:
+- Origem:
+```
+@ValorZeroIncluiDescricao(valorField = "taxaFrete", descricaoField = "nome", descricaoObrigatoria = "Frete Grátis")
+@Data
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Entity
+public class Restaurante {
+
+    @EqualsAndHashCode.Include
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+//    @NotBlank
+    @Column(nullable = false)
+    private String nome;
+
+//    @NotNull
+//    @PositiveOrZero
+    @Column(name = "taxa_frete", nullable = false)
+    private BigDecimal taxaFrete;
+
+//    @Valid
+//    @ConvertGroup(to = Groups.CozinhaId.class)
+//    @NotNull
+    @ManyToOne
+    @JoinColumn(name = "cozinha_id", nullable = false) //"num_idt_cozinha" definindo nome da coluna
+    private Cozinha cozinha;
+
+...
+```
+
+
+- Destino:
+```
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+public class RestauranteModel {
+
+    private Long id;
+
+    private String nome;
+
+    private BigDecimal frete;
+
+    private CozinhaModel cozinha;
+
+    private String idCozinha;
+
+    private String nomeCozinha;
+}
+```
+
+Indo mais a fundo, todos os tokens das propriedade de destino devem corresponder as propriedades de origem.
+Além disso a ordem dos tokens não precisa ter correspondência.
+O nome da propriedade de origem deve ter ao **menos um token** de correspondência com a de destino.
+
+Como no exemplo:
+
+RestauranteModel:
+```
+public class RestauranteModel {
+
+    private Long id;
+
+    private String nome;
+
+    private BigDecimal frete;
+
+    private CozinhaModel cozinha;
+
+    /*
+    * É dividido em Tokens
+    * Origem: cozinha, nome
+    * Destino: nome, cozinha
+    *
+    */
+    private String nomeCozinha;
+    private String idCozinha;
+}
+```
+
+CozinhaModel:
+```
+public class CozinhaModel {
+
+    /*
+     * É dividido em Tokens
+     * Origem: cozinha, nome
+     * Destino: cozinha, cozinha, nome (dois tokens de cozinhas por estar dentro do RestauranteModel)
+     *
+     */
+
+    private Long id;
+    private String cozinhaNome;
+}
+```
 
 
 ####
