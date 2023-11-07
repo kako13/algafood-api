@@ -2112,7 +2112,7 @@ como no exemplo abaixo:
 {
     "id": 6,
     "nome": "Bar da Maria",
-    **"precoFrete": null,**
+--> "precoFrete": null,
     "cozinha": {
         "id": 4,
         "cozinhaNome": "Brasileira"
@@ -2151,8 +2151,47 @@ Passando a retornar com o conteúdo:
     "idCozinha": "4"
 }
 ```
-
 ####
 </details></li>
+
+
+<li><details>
+   <summary>Mapeando para uma instância destino (e não um tipo) com ModelMapper ⭐ ⭐</summary>
+
+O ModelMapper possui diversas sobrecargas do método `map`, esta que utilizamos é para copiar as propriedades de uma
+instância de origem para outra instância de destino e tipo diferente:
+
+```
+ public void copyToDomainObject(RestauranteInput restauranteInput, Restaurante restaurante) {
+     modelMapper.map(restauranteInput, restaurante);
+ }
+```
+Como a classe de origem só tem propriedades obrigatórias a classe destino não receberá nenhum campo nulo. Diferente de
+quando usávamos o `BeanUtils` e o modelo de domínio, onde precisávamos lembrar de especificar quais campos deveriam
+ser ignorados ao fazer a cópia:
+```
+BeanUtils.copyProperties(restaurante, restauranteAtual, "id", "formasPagamento", "endereco", "dataCadastro");
+```
+
+
+Com essas mudanças no código, ficamos com um erro ao fazer uma alteração de restaurante ao alterar o `id` da cozinha,
+recebemos um código de retorno `500`, e a seguinte exception:
+```
+org.springframework.orm.jpa.JpaSystemException: identifier of an instance of com.algaworks.algafood.domain.model.Cozinha was altered from 2 to 1
+```
+
+Isso ocorre porque tentamos alterar o id de uma entidade que está gerenciada pelo JPA. Para solucionar o problema modificamos
+o método para passar uma nova instância de `Cozinha` ao restaurante antes de fazer a cópia pelo ModelMapper:
+```
+public void copyToDomainObject(RestauranteInput restauranteInput, Restaurante restaurante) {
+  restaurante.setCozinha(new Cozinha());           <--
+  modelMapper.map(restauranteInput, restaurante);
+}
+```
+####
+</details></li>
+
+
+
 </ol>
 </details>
