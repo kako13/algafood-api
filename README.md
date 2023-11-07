@@ -1955,5 +1955,17 @@ na classe de domínio como forma de "documentar" e deixar explicita a regra de i
 ####
 </details></li>
 
+<li><details>
+   <summary>Refatorando e criando um assembler de DTO ⭐ ⭐</summary>
+
+Retiramos a classe mixin `RestauranteMixin` pois utilizamos os DTOs customizamos e os campos que temos interesse já estão 
+nessas classes, e por isso é desnecessário o uso do `@JsonIgnore` na classe mixin.
+
+Podemos encontrar este padrão com nomenclatura de Assembler, Converter, DTOToEntity e ToEntity. 
+No caso utilizaremos o Assembler.
+
+####
+</details></li>
+
 </ol>
 </details>
