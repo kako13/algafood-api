@@ -1698,5 +1698,196 @@ E criar **classes abstratas mixin** para os recursos que utilizam anotações da
 
 ####
 </details></li>
+
+
+<li><details>
+   <summary>Antes de estudar sobre data/hora: relembrando as aulas de geografia e entendendo os fusos horários ⭐ ⭐</summary>
+
+
+Com relação a termos:
+
+Time Zone - Fuso horário
+
+Offset - deslocamento/diferença
+
+UTC - Padrão de horário universal (mantido por relógios atômicos)
+
+GMT - Greenwich Mean Time - um fuso horário sem offset com relação a UTC
+
+BRT - Padrão nacional BRT=UTC-3
+
+AMT - Padrão Amazônia AMT=UTC-4
+
+ACT - Padrão do Acre ACT=UTC-5
+
+
+Horário de verão acrescenta o ST (Summer Time):
+
+BRST = UTC-2
+AMST = UTC-3
+ACST = UTC-4
+
+Dependendo de quais lugares aderirem à questão
+
+####
+</details></li>
+
+<li><details>
+   <summary>Boas práticas para trabalhar com data e hora em REST APIs ⭐ ⭐</summary>
+
+
+Padrões de data dd/mm/aaaa pode gerar confusão devido à diversidade de padrões de formatação e região
+
+Então **para se trabalhar com datas recomenda-se seguir as 5 leis**:
+
+1. Utilize ISO-8601 para formatar data/hora (padrão bem flexível para representar):
+
+   2019-10-12T14:15:38-03:00 _(Corresponde ao fuso horário de Brasília, BRT)_
+
+   2019-10-12T14:15:38Z _(Corresponde ao fuso horário GMT, ou seja, UTC)_
+   
+   Desta forma é possível calcular a hora a apresentar de acordo com a localização do cliente.
+
+####
+2. Aceite qualquer fuso horário na API:
+
+   Ou seja a API deve aceitar e converter para o fuso horário em uso na aplicação.
+####
+3. Armazene em UTC:
+
+   Sempre armazenar data e hora sem nenhum offset na base de dados. Evita problemas e mudança de horário e localização.
+####
+4. Retorne em UTC:
+
+   O Consumider precisa ter liberdade para determinar o fuso em que os dados serão apresentados fazendo a conversão com 
+base em UTC.
+####
+5. Não inclua o horário, se não for necessário:
+
+   **_Isso evita que o valor possa ser convertido para outro dia após conversões_**.
+
+   Como este caso em que se refere a mesma data em fusos diferentes:
+
+   2023-10-20T23:59:00Z - UTC Europa
+
+   2323-10-21T04:59:00+05:000 - UTC+5 Rússia
+
+####
+</details></li>
+
+
+<li><details>
+   <summary>Configurando e refatorando o projeto para usar UTC ⭐ ⭐</summary>
+
+A aula proprõe modificar o `afterMigration.sql` de utc_timestamp (o correto) para current_timestamp (geralmente utilizado, 
+mas incorreto), na intensão de replicar um cenário com problemas.
+
+Sem as alterações o projeto já gravava em UTC na base de dados.
+
+Após a substituição dos tipos acima e retirar `&serverTimeZone=UTC` do application.properties, os dados carregados do 
+`afterMigration.sql` ainda são corregados como UTC, ou seja, com horário do PC +3. Porém, ao fazer um novo cadastro de 
+restaurante via API, ele já era gravado com o horário do PC, ou seja, sem UTC.
+
+
+Configuramos o driver jdbc do MySQL para converter data e hora para UTC, ou seja, devolvemos a configuração `&serverTimeZone=UTC`
+ao `application.properties` e o tipo `utc_timestamp` aos campos de data do `afterMigration.sql`. Logo, **até mesmo** os 
+novos registros no banco de dados foram gravados em UTC, porém uma divergência entre o payload de retorno do registro do 
+novo restaurante e a consulta do recurso:
+
+O retorno do cadastro pega a hora do meu fuso horário e um offset(-):
+
+```
+{
+    "id": 7,
+    "nome": "Recanto da Pamonha",
+    "taxaFrete": 10,
+    "cozinha": {
+        "id": 4,
+        "nome": "Brasileira"
+    },
+    "dataCadastro": "2023-10-26T01:02:55.178836-03:00",
+    "dataAtualizacao": "2023-10-26T01:02:55.178836-03:00"
+}
+```
+
+Enquanto a consulta pega o horário UTC (sem fuso horário):
+
+```
+{
+    "id": 7,
+    "nome": "Recanto da Pamonha",
+    "taxaFrete": 10.00,
+    "cozinha": {
+        "id": 4,
+        "nome": "Brasileira"
+    },
+    "dataCadastro": "2023-10-26T04:02:55Z",
+    "dataAtualizacao": "2023-10-26T04:02:55Z"
+}
+```
+
+Para resolver o problema poderíamos mudar o fuso horário da máquina de BRT para UTC, ou, alterar na aplicação. Optamos 
+pela alteração na aplicação, assim independente de onde ela rode utilizará UTC, ou seja, três horas à frente do fuso horário
+local (BRT). 
+
+Na classe principal da aplicação incluímos a configuração de TimeZone ``TimeZone.setDefault(TimeZone.getTimeZone("UTC"));``:
+
+```
+@EnableJpaRepositories(repositoryBaseClass = CustomJpaRespositoryImpl.class)
+@SpringBootApplication
+public class AlgafoodApiApplication {
+
+	public static void main(String[] args) {
+		TimeZone.setDefault(TimeZone.getTimeZone("UTC"));
+		SpringApplication.run(AlgafoodApiApplication.class, args);
+	}
+
+}
+```
+
+
+Ficando da seguinte forma no retorno do cadastro onde são ```01:15:31``` da manhã:
+
+```
+{
+    "id": 8,
+    "nome": "Recanto da Pamonha",
+    "taxaFrete": 10,
+    "cozinha": {
+        "id": 4,
+        "nome": "Brasileira"
+    },
+    "dataCadastro": "2023-10-26T04:15:31.42286Z",
+    "dataAtualizacao": "2023-10-26T04:15:31.42286Z"
+}
+```
+
+Na consulta:
+
+```
+{
+    "id": 8,
+    "nome": "Recanto da Pamonha",
+    "taxaFrete": 10.00,
+    "cozinha": {
+        "id": 4,
+        "nome": "Brasileira"
+    },
+    "dataCadastro": "2023-10-26T04:15:31Z",
+    "dataAtualizacao": "2023-10-26T04:15:31Z"
+}
+```
+
+E no Banco de dados já em UTC:
+
+```2023-10-26 04:15:31```
+
+**O ponto principal é _sempre utilizar UTC_. Se considerarmos a implantação em cloud de alta disponibilidade com vários 
+datacenters espalhados em vários fusos horários, ou até mesmo nos casos de aplicações de uso exclusivamente nacional, onde 
+já são 4 fusos horários diferentes.** 
+
+####
+</details></li>
+
 </ol>
 </details>
