@@ -1084,7 +1084,7 @@ comportamento como as demais validações.
 </ol>
 </details>
 
-<details open>
+<details>
     <summary><i>10. Testes de integração</i> ⭐</summary>
 <ol>
 
@@ -1546,5 +1546,20 @@ simulando o envio de payloads de sucesso e falha para nosso recurso.
 ####
 </details></li>
 
+</ol>
+</details>
+
+<details open>
+    <summary><i>11. Boas práticas e técnicas para APIs</i> ⭐</summary>
+<ol>
+
+<li><details>
+   <summary>Analisando e definindo melhor o escopo das transações ⭐ ⭐</summary>
+
+Utilizando `@Transactional`, recomendado uso qualquer metódo que altere o estado da base de dados, principalmente quando 
+o processo é mais complexo e contém diversas gravações em banco.
+
+####
+</details></li>
 </ol>
 </details>

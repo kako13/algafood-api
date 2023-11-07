@@ -7,6 +7,7 @@ import com.algaworks.algafood.domain.repository.EstadoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -17,10 +18,12 @@ public class CadastroEstadoService {
     @Autowired
     private EstadoRepository estadoRepository;
 
+    @Transactional
     public Estado salvar(Estado estado) {
         return estadoRepository.save(estado);
     }
 
+    @Transactional
     public void excluir(Long id) {
         try {
             Optional.of(this.buscarOuFalhar(id))
