@@ -2255,5 +2255,7 @@ Notation) vem do JavaScript e a convenção desta linguagem define este padrão 
 ####
 </details></li>
 
+<li>Desafio: usando DTOs como representation model  ⭐ ⭐ ⭐</li>
+
 </ol>
 </details>
