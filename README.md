@@ -1915,10 +1915,21 @@ O mais recomendado é utilizar e evitar expor tudo no retorno da API, podendo is
 É mais trabalhoso, mas tras mais segurança ao fazer a manutenção do projeto, ajuda a assegurar
 a integridade da API.
 
-É mais uma polêmica. 
+Trata-se de mais uma polêmica na "Bolha Dev". 
 
 
 ####
 </details></li>
+
+
+<li><details>
+   <summary>Implementando a conversão de entidade para DTO ⭐ ⭐</summary>
+
+Por enquanto fizemos o parse manualmente dos valores do domínio para o representation model em todos os métodos do controller 
+de restaurante.
+
+####
+</details></li>
+
 </ol>
 </details>

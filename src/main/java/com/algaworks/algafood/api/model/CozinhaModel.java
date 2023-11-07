@@ -1,12 +1,14 @@
 package com.algaworks.algafood.api.model;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 @Getter
 @Setter
 public class CozinhaModel {
 
-    private Integer id;
+    private Long id;
     private String nome;
 }
