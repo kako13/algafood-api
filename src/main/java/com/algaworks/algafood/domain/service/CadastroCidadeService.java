@@ -33,6 +33,7 @@ public class CadastroCidadeService {
         try {
             Optional.of(this.buscarOuFalhar(id))
                     .ifPresent(n -> cidadeRepository.delete(n));
+            cidadeRepository.flush();
         } catch (DataIntegrityViolationException e) {
             throw new EntidadeEmUsoException(String.format(MSG_CIDADE_EM_USO, id));
         }

@@ -2257,5 +2257,26 @@ Notation) vem do JavaScript e a convenção desta linguagem define este padrão 
 
 <li>Desafio: usando DTOs como representation model  ⭐ ⭐ ⭐</li>
 
+<li><details>
+<summary>Corrigindo bug de tratamento de exception de integridade de dados com flush do JPA ⭐ ⭐ ⭐ ⭐</summary>
+
+Por conta de utilizarmos o `@Transactional` (controle de transação) o `try-catch` da classe de serviço `CadastroCozinhaService` 
+deixa de capturar a exception que era lançada ao tentar excluir uma entidade de Cozinha em uso, logo não faz o tratamento 
+dela. E na API recebemos um código de retorno 500.
+
+Isso ocorre por conta do JPA, que devido o `@Transactional`, cria uma fila de operações de banco de dados, e só comita 
+a transação (descarrega a fila de operações pendentes) após a execução do método anotado, ou seja, no momento em que já não 
+temos mais como capturar a exception, pois o método já foi finalizado.
+
+Para solucionar o problema utilizamos o `cozinhaRepository.flush();` no caso do Spring Data JPA, mas poderia ser `entityManager.flush()`
+no caso de utilizar o entity manager. Isso fará um flush (envia ao banco todas as operações pendentes)
+
+Por outro lado, caso dentro do escopo do método anotado com `@Transactional` tenha uma consulta logo após alguma modificação
+(gravação ou atualização) na base de dados, o JPA fará o flush automaticament, entendendo que a consulta deve contemplar 
+a última alteração.
+
+####
+</details></li>
+
 </ol>
 </details>
