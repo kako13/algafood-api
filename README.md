@@ -1967,5 +1967,22 @@ No caso utilizaremos o Assembler.
 ####
 </details></li>
 
+<li><details>
+   <summary>Adicionando e usando o ModelMapper ⭐ ⭐</summary>
+
+O código repetitivo "boiller plate" de gets e sets ao transformar um objeto em outro, como RestauranteInput para a classe de 
+domínio Restaurante.
+
+O ModelMapper faz o mapeamento e conversão de objetos, conforme o exemplo.
+ 
+toModel:
+`return modelMapper.map(restaurante, RestauranteModel.class);`
+
+toDomain:
+`return modelMapper.map(restauranteInput, Restaurante.class);`
+
+
+####
+</details></li>
 </ol>
 </details>
