@@ -1561,5 +1561,74 @@ o processo é mais complexo e contém diversas gravações em banco.
 
 ####
 </details></li>
+
+<li><details>
+   <summary>Refinando o payload de cadastro com @JsonIgnoreProperties ⭐ ⭐</summary>
+
+Ao registrar ou alterar um Restaurante (`/restaurantes`) passando uma propriedade que não existe em Cozinha, recebemos o 
+Problem Details correto, apresentando: 
+```
+{
+    "status": 400,
+    "type": "https://algafood.com.br/mensagem-incompreensivel",
+    "title": "Mensagem incompreensível",
+    "detail": "A propriedade 'cozinha.sadfsda' não existe. Corrija ou remova essa propriedade e tente novamente.",
+    "userMessage": "Ocorreu um erro interno no sistema. Tente novamente e se o problema persistir, entre em contato com o administrador do sistema",
+    "timeStamp": "2023-10-15T01:05:37.8429979"
+}
+```
+Porém, quando passamos uma propriedade cujo nome de fato existe na estrutura do objeto, como `nome`, no caso de Cozinha, 
+a API ignora o envio do campo e, incorretamente, permite o registro do recurso. E se tentarmos anotarmos a propriedade 
+`nome` dentro de cozinha com `@JsonIgnore`, não consiguiremos utilizar e registro e alteração do recurso `/cozinhas`.
+
+Para corrigir esta situção, anotamos com `@JsonIgnoreProperties(value = "nome")` a propriedade `cozinha` dentro de Restaurante.
+Para ter o mesmo comportamento do `@JsonIgnore`, porém **apenas no fluxo de registro e alteração de Restaurante**. 
+
+Agora se eviarmos o campo `nome` da `cozinha` junto no registro ou alteração (`/restaurantes`), temos o mesmo comportamento 
+como se o campo não existisse:
+```
+{
+    "status": 400,
+    "type": "https://algafood.com.br/mensagem-incompreensivel",
+    "title": "Mensagem incompreensível",
+    "detail": "A propriedade 'cozinha.nome' não existe. Corrija ou remova essa propriedade e tente novamente.",
+    "userMessage": "Ocorreu um erro interno no sistema. Tente novamente e se o problema persistir, entre em contato com o administrador do sistema",
+    "timeStamp": "2023-10-15T01:08:56.8923763"
+}
+```
+
+Entretanto, após realizar as correções anteriores, ao consultarmos um ou mais restaurantes, o campo `nome` da cozinha não 
+é mais apresentado: 
+```
+{
+    "id": 1,
+    "nome": "Thai Gourmet",
+    "taxaFrete": 10.00,
+    "cozinha": {
+        "id": 1
+    }
+}
+```
+
+Para corrigir este novo problema incluímos `allowGetters = true` na anotação `@JsonIgnoreProperties`, ficando 
+`@JsonIgnoreProperties(value = "nome", allowGetters = true)` sobre a propriedade cozinha da classe Restaurante. Que passou
+a retornar:
+```
+{
+    "id": 1,
+    "nome": "Thai Gourmet",
+    "taxaFrete": 10.00,
+    "cozinha": {
+        "id": 1,
+        "nome": "Tailandesa"
+    }
+}
+```
+
+Desta forma na desserialização do JSON (montagem), o Jackson consegue entender que o campo `nome` deve ser considerado, 
+devido o `allowGetters = true`. Enquanto na serialização do JSON será ignorado, devido a `@JsonIgnoreProperties`.
+
+####
+</details></li>
 </ol>
 </details>
