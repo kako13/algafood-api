@@ -6,19 +6,17 @@ import com.algaworks.algafood.domain.model.FormaPagamento;
 import com.algaworks.algafood.domain.model.Produto;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.Embedded;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RestauranteMixin {
+public abstract class RestauranteMixin {
 
     @JsonIgnoreProperties(value = "nome", allowGetters = true)
     private Cozinha cozinha;
 
     @JsonIgnore
-    @Embedded
     private Endereco endereco;
 
     @JsonIgnore
