@@ -51,7 +51,6 @@ public class CozinhaController {
     @PutMapping("/{cozinhaId}")
     public CozinhaModel atualizar(@PathVariable Long cozinhaId, @RequestBody @Valid CozinhaInput cozinhaInput) {
         Cozinha cozinhaAtual = cadastroCozinha.buscarOuFalhar(cozinhaId);
-//        BeanUtils.copyProperties(cozinhaInput, cozinhaAtual, "id");
         cozinhaInputDisassembler.copyToDomainObject(cozinhaInput, cozinhaAtual);
         return cozinhaModelAssembler.toModel(cadastroCozinha.salvar(cozinhaAtual));
     }

@@ -44,17 +44,16 @@ public class EstadoController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Estado adicionar(@RequestBody @Valid EstadoInput estadoInput) {
+    public EstadoModel adicionar(@RequestBody @Valid EstadoInput estadoInput) {
         Estado estado = estadoInputDisassembler.toDomainObject(estadoInput);
-        return cadastroEstado.salvar(estado);
+        return estadoModelAssembler.toModel(cadastroEstado.salvar(estado));
     }
 
     @PutMapping("/{estadoId}")
-    public Estado atualizar(@PathVariable Long estadoId, @RequestBody @Valid EstadoInput estadoInput) {
+    public EstadoModel atualizar(@PathVariable Long estadoId, @RequestBody @Valid EstadoInput estadoInput) {
         Estado estadoAtual = cadastroEstado.buscarOuFalhar(estadoId);
-//        BeanUtils.copyProperties(estadoInput, estadoAtual, "id");
         estadoInputDisassembler.copyToDomainObject(estadoInput, estadoAtual);
-        return cadastroEstado.salvar(estadoAtual);
+        return estadoModelAssembler.toModel(cadastroEstado.salvar(estadoAtual));
     }
 
     @DeleteMapping("/{estadoId}")
