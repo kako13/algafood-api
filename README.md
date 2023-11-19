@@ -1549,8 +1549,8 @@ simulando o envio de payloads de sucesso e falha para nosso recurso.
 </ol>
 </details>
 
-<details open>
-    <summary><i>11. Boas práticas e técnicas para APIs</i> ⭐</summary>
+<details>
+    <summary><i>11. Boas práticas e técnicas para APIs</i> ⭐ ⭐ ⭐ ⭐</summary>
 <ol>
 
 <li><details>
@@ -2258,7 +2258,7 @@ Notation) vem do JavaScript e a convenção desta linguagem define este padrão 
 <li>Desafio: usando DTOs como representation model  ⭐ ⭐ ⭐</li>
 
 <li><details>
-<summary>Corrigindo bug de tratamento de exception de integridade de dados com flush do JPA ⭐ ⭐ ⭐ ⭐</summary>
+<summary>Corrigindo bug de tratamento de exception de integridade de dados com flush do JPA ⭐ ⭐ ⭐</summary>
 
 Por conta de utilizarmos o `@Transactional` (controle de transação) o `try-catch` da classe de serviço `CadastroCozinhaService` 
 deixa de capturar a exception que era lançada ao tentar excluir uma entidade de Cozinha em uso, logo não faz o tratamento 
@@ -2274,6 +2274,392 @@ no caso de utilizar o entity manager. Isso fará um flush (envia ao banco todas 
 Por outro lado, caso dentro do escopo do método anotado com `@Transactional` tenha uma consulta logo após alguma modificação
 (gravação ou atualização) na base de dados, o JPA fará o flush automaticament, entendendo que a consulta deve contemplar 
 a última alteração.
+
+####
+</details></li>
+</ol>
+</details>
+
+
+<details open>
+    <summary><i>12. Modelagem avançada e implementação da API</i> ⭐ ⭐ ⭐</summary>
+<ol>
+
+<li><details>
+   <summary>Modelando sub-recursos para relacionamentos ⭐ ⭐</summary>
+
+Retomando um pouco o conceito de Singleton Resource e Collection Resource, podemos modelar também sub-recursos.
+
+Podemos assumir que o recurso tem **granularidade grossa** e modelar o recurso de forma que para acessar o de endereço 
+de um restaurante seja necessário apenas buscar por um restaurante, de forma que o endereço já venha aninhado como uma 
+propriedade:
+
+```GET /restaurantes/1```
+
+```
+{
+   "id": 1,
+   "nome": "Java Steakhouse",
+   "taxaFrete": 10.0,
+   "endereco": {
+      "cep": "38400-900"
+      "logradouro": "Av João Pinheiro",
+      "numero": "1000",
+      "bairro": "Centro"
+   }
+}
+```
+
+Ou podemos modelar com **granularidade fina** de forma que o endereço seja um sub-recurso dentro do recurso restaurante, 
+onde este não possuirá mais o endereço aninhado, para acessar o endereço precisamos especificar o restaurante e apontar que
+queremos o recurso de endereço dentro dele:
+
+```GET /restaurantes/1```
+
+```
+{
+   "id": 1,
+   "nome": "Java Steakhouse",
+   "taxaFrete": 10.0
+}
+```
+Endereço do restaurante:
+```GET /restaurantes/1/endereco```
+
+```
+{
+   "cep": "38400-900"
+   "logradouro": "Av Joao Pinheiro",
+   "numero": "1000",
+   "bairro": "Centro"
+}
+```
+###
+Também podemos ter sub-recursos de coleções, onde a necessidade surge quando um recurso tem uma ou mais 
+propriedades que sejam lista, ou seja, um caso com **granularidade grossa**:
+
+```GET /restaurantes/1```
+
+```
+{
+   "id": 1,
+   "nome": "Java Steakhouse",
+   "taxaFrete": 10.0,
+   "produtos": [
+      {
+         "id": 100,
+         "nome": "Bife Ancho"
+      },
+      {
+         "id": 120,
+         "nome": "Picanha"
+      },
+      {
+         "id": 150,
+         "nome": "Coração"
+      }
+   ]
+}
+```
+Devemos nos perguntar: 
+
+_- Queremos/precisamos trazer todos os produtos quando consultamos um restaurante?_
+
+Dependendo da situação podemos ter muitos elementos dentro da lista.
+
+As soluções possíveis seriam:
+
+- Listar todos os produtos, independente do restaurante:
+
+```GET /produtos```
+
+```
+[
+   {
+      "id": 100,
+      "nome": "Bife Ancho"
+   },
+   {
+      "id": 120,
+      "nome": "Picanha"
+   },
+   {
+      "id": 130,
+      "nome": "Camarão tailandês"
+   }
+]
+```
+Isso retornaria muitos resultados.
+
+Outra opção:
+
+- Listar todos os produtos, de um restaurante:
+
+```GET /produtos?restaurante=1```
+
+```
+[
+   {
+      "id": 100,
+      "nome": "Bife Ancho"
+   },
+   {
+      "id": 120,
+      "nome": "Picanha"
+   }
+]
+```
+
+Caso os recursos (recurso e princial e futuro sub-recurso) tenham uma relação forte (onde a manutenção e a consulta só 
+possam existir a partir de um restaurante, ou seja, do recurso principal. Quando existem regras para esta relação ou um 
+só pode existir se o outro existir. Lembrando que estas necessidades vêm do **negócio** e não de uma questão técnica).
+É o caso de modelarmos um **sub-recurso de coleção** de produtos:
+
+```GET /restaurantes/1/produtos```
+
+```
+[
+   {
+      "id": 100,
+      "nome": "Bife Ancho"
+   },
+   {
+      "id": 120,
+      "nome": "Picanha"
+   }
+]
+```
+
+Desta maneira o consumidor já não acessaria mais todos os produtos como anteriormente no `GET /produtos`. Por outro lado, 
+nesta abordagem o consumidor pode especificar o "Singleton sub-resource" de produto para consulta:
+
+```GET /restaurantes/1/produtos/100```
+
+```
+{
+   "id": 100,
+   "nome": "Bife Ancho"
+}
+```
+
+Ou para o registro:
+
+```POST /restaurantes/1/produtos```
+
+Com o payload:
+```
+{
+   "id": 100,
+   "nome": "Bife Ancho"
+}
+```
+####
+</details></li>
+
+<li><details>
+   <summary>Granularidade de recursos: Chatty vs Chunky APIs ⭐ ⭐</summary>
+
+####
+
+- Chatty API: "tagarela", duas ou mais chamadas para operações comuns
+
+   Ex: Ao cadastrar um restaurante fazer:
+   - POST do restaurante
+   - PUT para incluir o endereço
+   - PUT para incluir o frete
+
+####
+Ou:
+- Chunky API: robusta, operações com uma chamada
+
+   Ex: Ao cadastrar um restaurante fazer:
+   - Apenas um POST do restaurante já contendo:
+   - endereço
+   - frete
+   - ...
+
+**Recursos de granularidade fina** vs **granularidade grossa**
+
+A melhor forma de definir a granularidade de uma API é analizar do ponto de vista do consumidor. O consumidor precisa
+conseguir realizar o que precisa.
+
+Tomando como exemplo o endereço do restaurante, nos casos de:
+
+- Granularidade grossa:
+   - Ao atualizar um restaurante, precisará informar **TODOS** as propriedades, mesmo que só queira atualizar uma delas.
+   - Ao consultar receberá todas as propriedades mesmo que tenha interesse em apenas uma.
+   - Deve conhecer os recursos e regras
+   - Tratar as propriedades (caso não passem nas validações ou não queira todas as propriedades retornadas)
+
+- Granularidade fina:
+   - Pode consultar ou cadastrar/atualizar de formas independentes
+   - Não precisa tratar ao consultar ou atualizar um Restaurante 
+   - **Permite inconsistência no estado o recurso**
+   ex: 
+      - Se endereço for obrigatório, e separamos em recurso restaurante e subrecurso endereço, pode ser que o consumidor 
+   cadastre um restaurante sem endereço. 
+      - Se o produto só puder ser cadastrado num restaurante que possua endereço. Isso obriga a estabelecer uma ordem de 
+   cadastro: cadastro de endereço -> cadastro de restaurante -> finalmente cadastro de produto. 
+
+Trade-off:
+Caso exista a possibilidade de **deixar o estado do recurso inconsistente**, **melhor utilizar granularidade grossa**.
+Caso o consumidor precise executar coisas específicas na API, **se não gerar inconsistência no estádo do recurso**, 
+**melhor a granularidade fina**.
+
+####
+</details></li>
+
+<li><details>
+<summary>Modelando conceitos abstratos de negócio e ações não-CRUD como recursos ⭐ ⭐ ⭐ ⭐</summary>
+
+Quando precisamos implementar operações que não são de CRUD na API, como ativações e inativações.
+
+Abordagens:
+
+```
+PUT /restaurantes/1
+{
+   "nome": "Comida Mineira",
+   "taxaFrete": 10.0,
+   "ativo": true          <--
+}
+```
+A propriedade não necessáriamente precisa existir na entidade de domínio ou banco de dados.
+A ativação poderia um simples campo no banco, como pode depender de diversas outras validações e processos.
+Modelar desta forma pode ser mais complexo e principalmente faltar informação para realizar o processo, como por exemplo o
+motivo da ativação/inativação.
+###
+Neste caso poderia ser utilizado o método PATCH, passando apenas a propriedade que nos interessa:
+
+```
+PATCH /restaurantes/1
+{
+   "ativo": true
+}
+```
+Ainda assim a abordagem acima pode se tornar complexa.
+
+###
+Podemos também disponibilizar endpoints para as operações (sempre com o uso de substantivos).
+
+Extraímos o conceito abstrato de negócio e modelamos para recursos (mesmo que não exista uma entidade nos modelos de domínio),
+se existe o conceito podemos modelar os recursos:
+
+```PUT /restaurantes/1/ativacao```
+
+```PUT /restaurantes/1/inativacao```
+
+###
+Podemos modelar como sub-recurso que necessite de um payload:
+
+```
+PUT /restaurantes/1/ativo
+
+true
+```
+Neste caso a URI não determina a ação e sim o payload.
+
+###
+Ou orientar o comportamento pelos métodos HTTP:
+
+Ativa:
+```
+PUT /restaurantes/1/ativo
+```
+Inativa:
+```
+DELETE /restaurantes/1/ativo
+```
+Consulta:
+```
+GET /restaurantes/1/ativo
+```
+```
+true
+```
+
+###
+Ao invés de extrair o nome de uma propriedade como recurso, podemos "coisificar", tornar concreto, um processo de negócio, 
+como alteração de status e adicionar numa sub-coleção:
+
+```
+POST /restaurantes/1/alteracoes-status
+{
+   "ativo": true
+}
+```
+
+E podemos dar sequência a esta ideia disponibilizando os eventos de alteração de status:
+```
+GET /restaurantes/1/alteracoes-status
+```
+```
+[
+   {
+      "dataAlteracao": "2019-10-23T14:22:00Z",
+      "ativo": true
+   },
+   {
+      "dataAlteracao": "2019-10-24T11:45:12z",
+      "ativo": false
+   }
+]
+```
+###
+Num exemplo hipotético de compra de loja, podemos usar o conceito abstrato de **pagamento** e modelar um sub-recurso de 
+pagamentos, das compras. Mesmo que não exista no domain model:
+
+```
+POST /compras/1/pagamentos
+{
+   "numeroCartao": "5222407761994833",
+   "nomeTitular": "JOAO DA SILVA",
+   "vencimento": "10/2027",
+   "codigoSeguranca": "329",
+   "valor": 200.0
+}
+```
+
+###
+Num exemplo onde seja necessário envio de e-mail para notificar os restaurantes sobre algo, como campanha de marketing:
+
+```
+POST /notificacoes-restaurantes
+{
+   "assunto": "Campanha de Natal",
+   "mensagem": "Vamos iniciar uma campanha ... "
+}
+```
+Isso não exige que os dados sejam persistidos em banco, é apenas a concepção de um processo de negócio, materializado 
+num recurso. Tudo pode ocorrer sem gravar em banco. Mas caso seja gravado, pode ser disponibilizado o histórico no método 
+`GET` para fazer a consulta.
+
+
+A dica final é não proliferar recursos, pois pode gerar dúvida no consumidor. Mas caso surja a necessidade devido a algum 
+processo de negócio, podemos criar sem problemas, mesmo que ele não exista no domain model do projeto.
+
+####
+</details></li>
+
+<li><details>
+<summary>Implementando os endpoints de ativação e inativação de restaurantes ⭐ ⭐</summary>
+
+A alteração da tabela Restaurante com a inclusão do campo foi feita primeiramente na base de Desenvolvimento e depois foi
+criada uma migration V008 além da alteração do afterMigrate.sql contemplando o novo campo obrigatório como ativo (true)
+para todos os registros.
+
+O campo foi incluído no domain model Restaurante e no DTO RestauranteModel
+
+Foram encapsulados os métodos de ativação e de inativação no próprio domain model, para deixar a escrita na classe de serviço
+com mais semântica e mais próximo de uma descrição de acontecimentos, como uma redação.
+
+No controller foi desenvolvido o endpoint `PUT/DELETE /restaurantes/1` para os processos, seguinto a abordagem orientada
+a métodos HTTP, onde o PUT (por ser idempotente quando comparado ao POST) faz a ativação do restaurante e DELETE
+(por ser idempotente quando comparado ao POST, ainda que exista polêmica sobre o efeito colateral no recurso na primeira
+requisição) 
+a inativação.
+
+Como não existe nenhum body no retorno, devolvemos o código `204 No Content`.
 
 ####
 </details></li>
