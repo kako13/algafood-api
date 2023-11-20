@@ -2664,5 +2664,38 @@ Como não existe nenhum body no retorno, devolvemos o código `204 No Content`.
 ####
 </details></li>
 
+
+<li><details>
+<summary>Desafio: implementando os endpoints de formas de pagamento ⭐ ⭐</summary>
+
+Para realizar o desafio foi necessário criar as seguintes classes:
+
+- Model de entrada FormaPagamentoInput
+- Model de saída FormaPagamentoModel
+- Para métodos ModelMapper de conversão de domain para model de saída `toModel`, FormaPagamentoModelAssembler
+- Para métodos ModelMapper de conversão de model de entrada para domain `toDomainObject`, FormaPagamentoInputDisassembler
+- Exception FormaPagamentoNaoEncontradaException
+- CadastroFormaPagamentoService
+- FormaPagamentoController
+- Adicionamos as configurações para mensagens de erro no messages.properties
+
+####
+</details></li>
+
+
+**Esclarecimento sobre tentar excluir um recurso que não existe:**
+
+_Quando a operação a ser realizada resulta em modificação de uma forma de pagamento, precisamos recuperar a mesma do banco de dados.
+O método buscarOuFalhar recupera a informação, e caso não encontre a mesma, lança um RestauranteNaoEncontradoException, que é tratado no próprio método._
+
+> Conceitualmente falando:
+Quando vamos alterar alguma coisa que não existe, devemos ser avisados que essa coisa não foi encontrada, pois a operação de alteração pressupõe a existência do dado.
+
+
+_No segundo caso, a operação a ser realizada é a remoção da forma de pagamento. Não precisamos recuperar essa informação do banco, e sim, apenas enviar a ordem de remoção da mesma do banco._
+
+> Conceitualmente falando:
+Quando vamos remover alguma coisa, caso ela exista nós executamos a operação de remover, caso ela não exista, seguimos adiante (o que queríamos realizar não é necessário porque o item já foi removido antes, então, isso não configura um comportamento atípico, portanto, não precisamos de exceção).
+
 </ol>
 </details>
