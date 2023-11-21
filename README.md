@@ -2642,7 +2642,7 @@ processo de negócio, podemos criar sem problemas, mesmo que ele não exista no 
 </details></li>
 
 <li><details>
-<summary>Implementando os endpoints de ativação e inativação de restaurantes ⭐ ⭐</summary>
+<summary>Implementando os endpoints de ativação e inativação de restaurantes ⭐ ⭐ ⭐</summary>
 
 A alteração da tabela Restaurante com a inclusão do campo foi feita primeiramente na base de Desenvolvimento e depois foi
 criada uma migration V008 além da alteração do afterMigrate.sql contemplando o novo campo obrigatório como ativo (true)
@@ -2670,18 +2670,30 @@ Como não existe nenhum body no retorno, devolvemos o código `204 No Content`.
 
 Para realizar o desafio foi necessário criar as seguintes classes:
 
-- Model de entrada FormaPagamentoInput
-- Model de saída FormaPagamentoModel
-- Para métodos ModelMapper de conversão de domain para model de saída `toModel`, FormaPagamentoModelAssembler
-- Para métodos ModelMapper de conversão de model de entrada para domain `toDomainObject`, FormaPagamentoInputDisassembler
-- Exception FormaPagamentoNaoEncontradaException
-- CadastroFormaPagamentoService
-- FormaPagamentoController
-- Adicionamos as configurações para mensagens de erro no messages.properties
+- Model de entrada `FormaPagamentoInput`
+- Model de saída `FormaPagamentoModel`
+- Para métodos `ModelMapper` de conversão de domain para model de saída `toModel`, `FormaPagamentoModelAssembler`
+- Para métodos `ModelMapper` de conversão de model de entrada para domain `toDomainObject`, `FormaPagamentoInputDisassembler`
+- Exception `FormaPagamentoNaoEncontradaException`
+- `CadastroFormaPagamentoService`
+- `FormaPagamentoController`
+- Adicionamos as configurações para mensagens de erro no `messages.properties`
 
 ####
 </details></li>
 
+<li><details>
+<summary>Adicionando endereço no modelo da representação do recurso de restaurante ⭐ ⭐ ⭐</summary>
+
+Foi necessário criar/alterar as seguintes classes:
+
+- Model de saída `EnderecoModel` para o `RestauranteModel`
+- Model de saída `CidadeResumoModel` para o `EnderecoModel`, e para exibir o nome do estado ao lado das propriedades da cidade, ao invés de aninhar dentro dela
+- Para métodos ModelMapper de conversão de model de entrada para domain `toDomainObject`, FormaPagamentoInputDisassembler
+- Adicionamos o mapeamento dos atributos acima no `ModelMapperConfig`
+
+####
+</details></li>
 
 **Esclarecimento sobre tentar excluir um recurso que não existe:**
 
