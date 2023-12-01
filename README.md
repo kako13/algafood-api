@@ -2779,6 +2779,86 @@ PUT /usuarios/{idUsuario}/senha
 
 </details></li>
 
+<li><details>
+<summary>Um pouco mais sobre JPA: objeto alterado fora da transação é sincronizado com o banco de dados ⭐ ⭐ ⭐</summary>
+
+A ideia foi demonstrar o comportamento do JPA quando gerenciando uma entidade JÁ PERSISTIDA na base de dados, em conjunto
+com um método transacionado (@Transactional). 
+
+Temos o método `salvar` na classe UsuarioService:
+```
+ @Transactional
+ public Usuario salvar(Usuario usuario) {
+     return usuarioRepository.save(usuario);
+ }
+```
+
+E o método `atualizar` no UsuarioController que altera a entidade `Usuario` fora de uma transação, mas que chama o método
+`salvar`, que por sua vez participa de uma trasação:
+```
+ @PutMapping("/{idUsuario}")
+ public UsuarioModel atualizar(@PathVariable Long idUsuario, @RequestBody @Valid UsuarioInput usuarioInput) {
+     Usuario usuario = cadastroUsuario.buscarOuFalhar(idUsuario);
+     usuarioInputDisassembler.copyToDomainObject(usuarioInput, usuario);
+     return usuarioModelAssembler.toModel(cadastroUsuario.salvar(usuario));
+ }
+```
+
+Para demonstrar o comportamento de gerenciamento do JPA dentro da transação, foi retirada a chamada do 
+`usuarioRepository.save(usuario)` do método salvar, ficando da seguinte forma:
+
+```
+ @Transactional
+ public Usuario salvar(Usuario usuario) {
+     return usuario;
+ }
+```
+Desta forma, mesmo sem a chamada do método `usuarioRepository.save(usuario)`, quando testamos a **alteração** de usuário 
+via API, ela ocorre com sucesso.
+
+Esse comportamento se dá justamente por conta de, na alteração, primeiramente buscarmos pela entidade no banco, desta forma,
+a entidade está sob gerência do JPA ("conectada ao banco"). Então no momento em que chamamos o método 
+`cadastroUsuario.salvar(usuario)` no controller, por participar da **transação** do método `salvar` da classe de serviço, 
+o JPA fará um `begin` para iniciar a transação e ao términar um `commit` na base de dados. Alterando, portanto, o registro.
+
+Poseríamos inclusive deixar o método da forma abaixo que ele permaneceria alterando o registro na base de dados:
+```
+ @Transactional
+ public void salvar() {
+ }
+```
+
+Por outro lado, se tentarmos fazer um registro de usuário via API, não será gravado na base de dados. Vez que, como não 
+houve nenhuma consulta antes da tentativa de registro, a entidade não está sob gerência do JPA.
+
+Porém, se retirarmos a anotação de transação, `@Transactional`, nem mesmo a alteração será possível, pois não ocorrerá 
+o `begin` nem o `commit` conforme descrito anteriormente para sincronizar com o banco de dados.
+
+Para melhorar o entendimento, estimulamos o rollback da transação injetando o `EntityManager` na classe de serviço e 
+descarregando as operações através do `entityManager.flush()` antes do `commit` da transação, e depois lançamos uma exception:
+```
+@Transactional
+public void salvar() {
+   entityManager.flush();
+   if (true) {
+      throw new RuntimeException();
+   }
+}
+```
+Isso gera um update, mas como a exception é lançada ocorre o `rollback`, de forma que o registro não sofra alteração.
+
+Saída do console:
+
+```
+Hibernate: update usuario set data_cadastro=?,email=?,nome=?,senha=? where id=?
+2023-12-01T07:18:07.506Z  WARN 53284 --- [nio-8080-exec-2] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [java.lang.RuntimeException]
+```
+
+
+###
+</details></li>
+
+
 **Esclarecimento sobre tentar excluir um recurso que não existe:**
 
 _Quando a operação a ser realizada resulta em modificação de uma forma de pagamento, precisamos recuperar a mesma do banco de dados.
