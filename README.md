@@ -2695,6 +2695,41 @@ Foi necessário criar/alterar as seguintes classes:
 ####
 </details></li>
 
+<li><details>
+<summary>Refatorando serviço de cadastro de restaurante para incluir endereço ⭐ ⭐ ⭐</summary>
+
+Foi necessário criar/alterar as seguintes classes:
+
+- Model de entrada `EnderecoInput` para o `RestauranteInput`
+- Model de entrada `CidadeIdInput` para o `EnderecoInput`
+- Para métodos ModelMapper de conversão de model de entrada para domain `toDomainObject`, RestaurantInputDisassembler
+
+####
+Após as alterações surgiram alguns problemas:
+
+
+- novo problema:
+Ao tentar alterar a `cidade` do `endereco` do Restaurante, recebemos o erro: 
+`[org.springframework.orm.jpa.JpaSystemException: identifier of an instance of com.algaworks.algafood.domain.model.Cidade was altered from 2 to 1]`
+
+- solução:
+No método `copyToDomainObject` da classe `RestauranteInputDisassembler` precisamos utilizar o `new Cidade` no atributo da
+entidade Restaurante, caso ele tenha conteúdo, pois ainda é gerenciada pelo JPA.
+
+- novo problema:
+  O codigo 404 retornando ao mandar uma cidade que não existe.
+
+- solucao:
+  Ajustar o controller de restaurantes (métodos `adicionar` e `atualizar`) para considerar no catch a exception
+  `CidadeNaoEncontradaException` também além da `CozinhaNaoEncontradaException`.
+####
+Para customizar as mensagens de erros adicionamos ao `messages.properties` a propriedade `endereco` ao invés de `enderecoInput`
+como os demais casos, visto que não temos um recurso destinado a endereços e esta propriedade é do tipo `Embeddable`  
+e poderá estar presente dentro de algum outro objeto.  
+
+###
+</details></li>
+
 **Esclarecimento sobre tentar excluir um recurso que não existe:**
 
 _Quando a operação a ser realizada resulta em modificação de uma forma de pagamento, precisamos recuperar a mesma do banco de dados.
