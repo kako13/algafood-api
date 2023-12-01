@@ -12,19 +12,8 @@ import java.math.BigDecimal;
 public class RestauranteModel {
 
     private Long id;
-
     private String nome;
-
-    private BigDecimal precoFrete;
-
+    private BigDecimal taxaFrete;
     private CozinhaModel cozinha;
-
-    /*
-    * É dividido em Tokens
-    * Origem: cozinha, nome
-    * Destino: nome, cozinha
-    *
-    */
-    private String nomeCozinha;
-    private String idCozinha;
+    private Boolean ativo;
 }
