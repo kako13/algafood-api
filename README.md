@@ -2730,6 +2730,55 @@ e poderá estar presente dentro de algum outro objeto.
 ###
 </details></li>
 
+<li>Desafio: implementando os endpoints de grupos</li>
+
+<li><details>
+<summary>Desafio: implementando os endpoints de usuarios ⭐ ⭐ ⭐</summary>
+
+Foi necessário criar/alterar as seguintes classes:
+
+- Utilizamos herança para compor as classes de modelo de entrada, `UsuarioInput` e `UsuarioComSenhaInput`.
+- Model de saída `UsuarioModel`
+- Para métodos `ModelMapper` de conversão de domain para model de saída `toModel`, `UsuarioModelAssembler`
+- Para métodos `ModelMapper` de conversão de model de entrada para domain `toDomainObject` e `copyToDomainObject`, `UsuarioInputDisassembler`
+- Model de entrada para alteração de senha `SenhaInput`
+- Mensagens em messages.properties
+- E o afterMigrate.sql
+
+Métodos HTTP:
+
+```
+POST /usuarios
+
+{
+    "nome": "Samuel Silva",
+    "email": "samuel.silva@algafood.com",
+    "senha": "123456"
+}
+```
+
+```
+PUT /usuarios
+
+{
+    "nome": "Juca Santos",
+    "email": "juca.santos@algafood.com"
+}
+```
+
+```
+PUT /usuarios/{idUsuario}/senha 
+
+{
+    "senhaAtual": "123456",
+    "novaSenha": "12"
+}
+```
+###
+
+
+</details></li>
+
 **Esclarecimento sobre tentar excluir um recurso que não existe:**
 
 _Quando a operação a ser realizada resulta em modificação de uma forma de pagamento, precisamos recuperar a mesma do banco de dados.
