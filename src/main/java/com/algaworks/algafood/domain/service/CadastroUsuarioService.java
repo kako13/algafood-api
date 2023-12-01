@@ -4,6 +4,7 @@ import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.exception.UsuarioNaoEncontradoException;
 import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.repository.UsuarioRepository;
+import jakarta.persistence.EntityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,9 +17,17 @@ public class CadastroUsuarioService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private EntityManager entityManager;
+
     @Transactional
-    public Usuario salvar(Usuario usuario) {
-        return usuarioRepository.save(usuario);
+    public void salvar() {
+
+        entityManager.flush();
+
+        if (true) {
+            throw new RuntimeException();
+        }
     }
 
     @Transactional
