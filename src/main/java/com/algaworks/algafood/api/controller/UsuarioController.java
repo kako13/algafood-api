@@ -4,6 +4,7 @@ import com.algaworks.algafood.api.assembler.UsuarioInputDisassembler;
 import com.algaworks.algafood.api.assembler.UsuarioModelAssembler;
 import com.algaworks.algafood.api.model.UsuarioModel;
 import com.algaworks.algafood.api.model.input.SenhaInput;
+import com.algaworks.algafood.api.model.input.UsuarioComSenhaInput;
 import com.algaworks.algafood.api.model.input.UsuarioInput;
 import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.repository.UsuarioRepository;
@@ -42,20 +43,19 @@ public class UsuarioController {
         return usuarioModelAssembler.toModel(cadastroUsuario.buscarOuFalhar(idUsuario));
     }
 
-//    @PostMapping
-//    @ResponseStatus(HttpStatus.CREATED)
-//    public UsuarioModel adicionar(@RequestBody @Valid UsuarioComSenhaInput usuarioComSenhaInput) {
-//        Usuario usuario = cadastroUsuario.salvar(usuarioInputDisassembler.toDomainObject(usuarioComSenhaInput));
-//        return usuarioModelAssembler.toModel(usuario);
-//
-//    }
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public UsuarioModel adicionar(@RequestBody @Valid UsuarioComSenhaInput usuarioComSenhaInput) {
+        Usuario usuario = cadastroUsuario.salvar(usuarioInputDisassembler.toDomainObject(usuarioComSenhaInput));
+        return usuarioModelAssembler.toModel(usuario);
+
+    }
 
     @PutMapping("/{idUsuario}")
     public UsuarioModel atualizar(@PathVariable Long idUsuario, @RequestBody @Valid UsuarioInput usuarioInput) {
-        Usuario usuarioAtual = cadastroUsuario.buscarOuFalhar(idUsuario);
-        usuarioInputDisassembler.copyToDomainObject(usuarioInput, usuarioAtual);
-        cadastroUsuario.salvar();
-        return usuarioModelAssembler.toModel(usuarioAtual);
+        Usuario usuario = cadastroUsuario.buscarOuFalhar(idUsuario);
+        usuarioInputDisassembler.copyToDomainObject(usuarioInput, usuario);
+        return usuarioModelAssembler.toModel(cadastroUsuario.salvar(usuario));
     }
 
     @PutMapping("/{idUsuario}/senha")
