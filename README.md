@@ -2851,13 +2851,50 @@ Saída do console:
 
 ```
 Hibernate: update usuario set data_cadastro=?,email=?,nome=?,senha=? where id=?
-2023-12-01T07:18:07.506Z  WARN 53284 --- [nio-8080-exec-2] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [java.lang.RuntimeException]
+WARN 53284 --- [nio-8080-exec-2] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [java.lang.RuntimeException]
 ```
 
 
 ###
 </details></li>
 
+<li><details>
+<summary>Implementando regra de negócio para evitar usuários com e-mails duplicados ⭐ ⭐ ⭐</summary>
+
+A regra é garantir que o mesmo e-mail não seja utilizado em mais um cadastro de usuário.
+
+Isso pede que ao **registrar** um novo usuário o e-mail não exista na base. E ao **alterar** um usuário o e-mail não pode
+existir na base de dados, exceto o do próprio usuário sendo alterado.
+
+
+####
+- Problema:
+
+Enquanto no registro de usuário a validação para verficar se já existe um usuário com mesmo e-mail funciona normalmente, 
+na **alteração** eram encontradas duas entidades. Isso ocorre por conta do gerenciamento do JPA da entidade `Usuario` na 
+consulta do controller, que antes de fazer a consulta por email, no service `CadastroUsuario`, despacha o que existe de 
+"pendente" para ser persistido antes de realizar a nova consulta.
+
+Este comportamento que motivou a criação do detach no Custom Repository, e a utilização dele para retirar o gerenciamento
+do JPA, evitando a persistência antes da consulta por e-mail, que por sua vez retornará apenas um registro, evitando o erro
+abaixo:
+
+- Código de retorno: 500 na API
+
+```
+WARN 63428 --- [nio-8080-exec-4] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.dao.IncorrectResultSizeDataAccessException: query did not return a unique result: 2]
+```
+
+Foi necessário:
+- declarar e implementar um novo método CustomRepository e CustomRepositoryImpl
+- chamar o método `usuarioRepository.detached(usuario)` no CadastroService antes da nova consulta por e-mail
+
+
+_Desviei um pouco da proposta da aula e deixei a lógica de validação num método a parte._
+###
+</details></li>
+
+<div align="center">_______________________________________________________________________________</div>
 
 **Esclarecimento sobre tentar excluir um recurso que não existe:**
 

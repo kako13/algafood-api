@@ -8,17 +8,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 public class CadastroUsuarioService {
 
     public static final String MSG_USUARIO_SENHA_INVALIDA = "Senha atual informada não coincide com a senha cadastrada para o usuário.";
+    public static final String MSG_USUARIO_JA_CADASTRADO = "Já existe um usuário cadastrado com o e-mail %s";
 
     @Autowired
     private UsuarioRepository usuarioRepository;
 
     @Transactional
     public Usuario salvar(Usuario usuario) {
+        usuarioRepository.detached(usuario);
+        validarUsuarioExistente(usuario);
         return usuarioRepository.save(usuario);
+    }
+
+    private void validarUsuarioExistente(Usuario usuario) {
+        String email = usuario.getEmail();
+        Optional<Usuario> usuarioExistente = usuarioRepository.findByEmail(email);
+        if (usuarioExistente.isPresent() && !usuarioExistente.get().equals(usuario))
+            throw new NegocioException(String.format(MSG_USUARIO_JA_CADASTRADO, email));
     }
 
     @Transactional
