@@ -2889,8 +2889,44 @@ Foi necessário:
 - declarar e implementar um novo método CustomRepository e CustomRepositoryImpl
 - chamar o método `usuarioRepository.detached(usuario)` no CadastroService antes da nova consulta por e-mail
 
+_Se em algum momento um objeto gerenciado pelo JPA for alterado e na sequência de execução dos métodos algum desses métodos 
+estiver anotado com @Transactional, esses objetos gerenciados serão devidamente sincronizados com o banco de dados, por 
+isso a importância de se entender esse conceito. Entender o funcionamento da anotação @Transactional pode ajudar a 
+resolver muitos problemas de consistência entre o código e o banco de dados._
 
 _Desviei um pouco da proposta da aula e deixei a lógica de validação num método a parte._
+###
+</details></li>
+
+
+<li><details>
+<summary>Implementando os endpoints de associação de formas de pagamento em restaurantes ⭐ ⭐ ⭐</summary>
+
+Foram implementados os seguintes endpoints: 
+
+- `GET /restaurantes/{id}/formas-pagamento` listar formas de pagamento associadas
+- `PUT /restaurantes/{id}/formas-pagamento/{id}` associar uma forma de pagamento
+- `DELETE /restaurantes/{id}/formas-pagamento/{id}` desassociar uma forma de pagamento
+
+Os métodos `PUT` e `DELETE` estão com comportamento idempotente, logo sem mensagens de validação sobre se a forma de 
+pagamento ainda não está associada ao restaurante (DELETE), ou se já está associada (PUT).
+
+As seguintes classes foram criadas/alteradas:
+
+- RestauranteFormaPagamentoController
+- Restaurante
+- FormaPagamentoModelAssembler
+- CadastroRestauranteService
+
+**Novamente tiramos proveito do comportamento do JPA quando gerencia uma entidade, seja dentro ou passando
+por uma transação** (`@Transactional`). Por isso não foi necessário chamar o método `restauranteRepository.save(restaurante)` 
+após associar ou desassociar uma forma de pagamento. 
+
+E utilizamos o **`Set`** ao invés de `List` para não inserir restaurante_forma_pagamento com ids repetidos evitando a violação de integridade no banco:
+`org.springframework.dao.DataIntegrityViolationException: could not execute statement [Duplicate entry '3-1' for key 'restaurante_forma_pagamento.PRIMARY'] [insert into restaurante_forma_pagamento (restaurante_id,forma_pagamento_id) values (?,?)]; SQL [insert into restaurante_forma_pagamento (restaurante_id,forma_pagamento_id) values (?,?)]; constraint [restaurante_forma_pagamento.PRIMARY]`
+
+
+
 ###
 </details></li>
 
