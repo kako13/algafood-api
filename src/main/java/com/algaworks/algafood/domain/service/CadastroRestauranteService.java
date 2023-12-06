@@ -1,6 +1,5 @@
 package com.algaworks.algafood.domain.service;
 
-import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.exception.RestauranteNaoEncontradoException;
 import com.algaworks.algafood.domain.model.Cidade;
 import com.algaworks.algafood.domain.model.Cozinha;
@@ -47,9 +46,9 @@ public class CadastroRestauranteService {
         restauranteAtual.inativar();
     }
 
-    public Restaurante buscarOuFalhar(Long id) {
-        return restauranteRepository.findById(id)
-                .orElseThrow(() -> new RestauranteNaoEncontradoException(id));
+    public Restaurante buscarOuFalhar(Long restauranteId) {
+        return restauranteRepository.findById(restauranteId)
+                .orElseThrow(() -> new RestauranteNaoEncontradoException(restauranteId));
     }
 
     @Transactional
