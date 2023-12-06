@@ -9,9 +9,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @ValorZeroIncluiDescricao(valorField = "taxaFrete", descricaoField = "nome", descricaoObrigatoria = "Frete Grátis")
@@ -38,7 +36,9 @@ public class Restaurante {
     @Embedded
     private Endereco endereco;
 
-    private Boolean ativo = Boolean.TRUE;
+    private Boolean ativo;
+
+    private Boolean aberto;
 
     @CreationTimestamp
     @Column(nullable = false, columnDefinition = "datetime")
@@ -68,7 +68,16 @@ public class Restaurante {
     public boolean removerFormaPagamento(FormaPagamento formaPagamento) {
         return getFormasPagamento().remove(formaPagamento);
     }
+
     public boolean adicionarFormaPagamento(FormaPagamento formaPagamento) {
         return getFormasPagamento().add(formaPagamento);
+    }
+
+    public void abrir() {
+        setAberto(true);
+    }
+
+    public void fechar() {
+        setAberto(false);
     }
 }
