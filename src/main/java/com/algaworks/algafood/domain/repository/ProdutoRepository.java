@@ -11,7 +11,7 @@ import java.util.Optional;
 @Repository
 public interface ProdutoRepository extends JpaRepository<Produto, Long> {
 
-//    @Query("select produto from Produto produto where produto.restaurante.id = :restaurante and id = :produto")
+//    @Query(value = "select p from produto p WHERE p.restaurante_id = :restaurantId and p.id = :produtoId", nativeQuery = true)
     @Query("select produto from Produto produto where produto.restaurante.id = :restaurante and produto.id = :produto")
     Optional<Produto> findById(@Param("restaurante") Long restaurantId, @Param("produto") Long produtoId);
 }
