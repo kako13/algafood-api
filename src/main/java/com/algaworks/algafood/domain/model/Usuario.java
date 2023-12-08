@@ -6,8 +6,8 @@ import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Data
@@ -34,7 +34,7 @@ public class Usuario {
             joinColumns = @JoinColumn(name = "usuario_id"),
             inverseJoinColumns = @JoinColumn(name = "grupo_id"))
     @ManyToMany
-    private List<Grupo> grupos = new ArrayList<>();
+    private Set<Grupo> grupos = new HashSet<>();
 
     public boolean senhaCoincideCom(String senhaAtual) {
         return getSenha().equals(senhaAtual);
@@ -43,5 +43,13 @@ public class Usuario {
 
     public boolean getSenhaNaoCoincideCom(String senhaAtual) {
         return !senhaCoincideCom(senhaAtual);
+    }
+
+    public boolean adicionarGrupo(Grupo grupo) {
+        return getGrupos().add(grupo);
+    }
+
+    public boolean removerGrupo(Grupo grupo) {
+        return getGrupos().remove(grupo);
     }
 }

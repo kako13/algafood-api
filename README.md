@@ -3005,6 +3005,32 @@ _Por enquanto não criamos um controller para permissões._
 </details></li>
 
 
+<li><details>
+<summary>Desafio: implementando os endpoints de associação de usuários com grupos ⭐ ⭐ ⭐</summary>
+
+Da mesma forma que associamos as permissões aos grupos, agora associamos os grupos aos usuários. 
+
+Para o desafio foi necessário criar/alterar as seguintes classes:
+
+- CadastroUsuarioService.java
+- GrupoModelAssembler.java
+- Usuario.java
+- UsuarioGrupoController.java
+- afterMigrate.sql
+
+
+###
+</details></li>
+
+
+<div align="center">_______________________________________________________________________________</div>
+
+
+Até o momento subrecursos de **processos "coisificados"** (ativo, abertura e fechamento) foram implementados no controller principal (CRUD),
+enquanto os subrecursos de **CRUD e associação** foram implementados em controllers separados.
+
+_Por enquanto não criamos um controller para permissões._
+
 <div align="center">_______________________________________________________________________________</div>
 
 **Esclarecimento sobre tentar excluir um recurso que não existe:**
