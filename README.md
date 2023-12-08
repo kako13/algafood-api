@@ -3023,6 +3023,25 @@ Para o desafio foi necessário criar/alterar as seguintes classes:
 </details></li>
 
 
+
+<li><details>
+<summary>Desafio: implementando endpoints de associação de usuários responsáveis com restaurantes ⭐ ⭐ ⭐</summary>
+
+Da mesma forma que associamos os grupos aos usuários, agora associamos os usuários responsáveis aos restuarantes. 
+
+Para o desafio foi necessário criar/alterar as seguintes classes:
+
+- Restaurante
+- CadastroRestauranteService
+- UsuarioModelAssembler
+- RestauranteUsuarioController
+- afterMigrate.sql
+- V010__cria-tabela-restaurante-usuario-responsavel.sql
+
+###
+</details></li>
+
+
 <div align="center">_______________________________________________________________________________</div>
 
 
