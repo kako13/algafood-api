@@ -3023,7 +3023,6 @@ Para o desafio foi necessário criar/alterar as seguintes classes:
 </details></li>
 
 
-
 <li><details>
 <summary>Desafio: implementando endpoints de associação de usuários responsáveis com restaurantes ⭐ ⭐ ⭐</summary>
 
@@ -3037,6 +3036,21 @@ Para o desafio foi necessário criar/alterar as seguintes classes:
 - RestauranteUsuarioController
 - afterMigrate.sql
 - V010__cria-tabela-restaurante-usuario-responsavel.sql
+
+###
+</details></li>
+
+
+<li><details>
+<summary>Implementando ativação e inativação em massa de restaurantes ⭐ ⭐ ⭐</summary>
+
+Para o desafio foi necessário criar/alterar as seguintes classes:
+
+- CadastroRestauranteService
+- RestauranteController
+
+O payload definido foi um array com os ids de restaurantes, foi ajustado o controller para retornar 400 em caso de id 
+inexistente. Pois retornar 404 estaria incorreto vez que o recurso "/restaurantes/ativacoes" existe. 
 
 ###
 </details></li>
