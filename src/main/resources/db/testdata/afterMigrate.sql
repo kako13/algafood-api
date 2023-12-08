@@ -50,8 +50,12 @@ insert into forma_pagamento (descricao) values ('Cartão de crédito');
 insert into forma_pagamento (descricao) values ('Cartão de débito');
 insert into forma_pagamento (descricao) values ('Dinheiro');
 
+insert into permissao (nome, descricao) values ('CONSULTAR_RESTAURANTES', 'Permite consultar restautantes');
+insert into permissao (nome, descricao) values ('EDITAR_RESTAURANTES', 'Permite editar restautantes');
 insert into permissao (nome, descricao) values ('CONSULTAR_COZINHAS', 'Permite consultar cozinhas');
 insert into permissao (nome, descricao) values ('EDITAR_COZINHAS', 'Permite editar cozinhas');
+insert into permissao (nome, descricao) values ('CONSULTAR_PRODUTOS', 'Permite consultar produtos');
+insert into permissao (nome, descricao) values ('EDITAR_PRODUTOS', 'Permite editar produtos');
 
 insert into restaurante_forma_pagamento (restaurante_id, forma_pagamento_id) values (1, 1), (1, 2), (1, 3), (2, 3), (3, 2), (3, 3), (4, 1), (4, 2), (5, 1), (5, 2), (6, 3);
 
@@ -66,9 +70,10 @@ insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('San
 insert into produto (nome, descricao, preco, ativo, restaurante_id) values ('Espetinho de Cupim', 'Acompanha farinha, mandioca e vinagrete', 8, 1, 6);
 
 insert into grupo (nome) values ('Gerente'), ('Vendedor'), ('Secretária'), ('Cadastrador');
+insert into grupo_permissao values (1, 1) ,(3, 1) ,(4, 1) ,(1, 2) ,(2, 2) ,(3, 2) ,(1, 3) ,(3, 3) ,(4, 3) ,(2, 4) ,(3, 4);
 
-insert into usuario (id, nome, email, senha, data_cadastro) values
-(1, 'João da Silva', 'joao.ger@algafood.com', '123', utc_timestamp),
-(2, 'Maria Joaquina', 'maria.vnd@algafood.com', '123', utc_timestamp),
-(3, 'José Souza', 'jose.aux@algafood.com', '123', utc_timestamp),
-(4, 'Sebastião Martins', 'sebastiao.cad@algafood.com', '123', utc_timestamp);
+insert into usuario (nome, email, senha, data_cadastro) values
+('João da Silva', 'joao.ger@algafood.com', '123', utc_timestamp),
+('Maria Joaquina', 'maria.vnd@algafood.com', '123', utc_timestamp),
+('José Souza', 'jose.aux@algafood.com', '123', utc_timestamp),
+('Sebastião Martins', 'sebastiao.cad@algafood.com', '123', utc_timestamp);
