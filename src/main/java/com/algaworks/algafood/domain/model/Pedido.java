@@ -1,5 +1,6 @@
 package com.algaworks.algafood.domain.model;
 
+import com.algaworks.algafood.api.model.ItemPedidoModel;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -19,25 +20,20 @@ public class Pedido {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false)
     private BigDecimal subtotal;
-    @Column(nullable = false)
     private BigDecimal taxaFrete;
-    @Column(nullable = false)
     private BigDecimal valorTotal;
-    @Column(nullable = false)
     @CreationTimestamp
     private OffsetDateTime dataCriacao;
     private OffsetDateTime dataConfirmacao;
     private OffsetDateTime dataCancelamento;
     private OffsetDateTime dataEntrega;
-    @Column(nullable = false)
-    private StatusPedido status;
+    @Enumerated(EnumType.STRING)
+    private StatusPedido status = StatusPedido.CRIADO;
 
     @Embedded
     private Endereco endereco;
 
-    @Column(nullable = false)
     @OneToMany(mappedBy = "pedido")
     private List<ItemPedido> itens = new ArrayList<>();
 
@@ -54,4 +50,19 @@ public class Pedido {
     private Restaurante restaurante;
 
 
+    public void calcularValorTotal(){
+        this.subtotal = getItens().stream()
+                .map(ItemPedido::getPrecoTotal)
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        this.subtotal = subtotal.add(this.taxaFrete);
+    }
+
+    public void definirTaxaFrete() {
+        setTaxaFrete(getRestaurante().getTaxaFrete());
+    }
+
+    public void associarItensAoPedido(List<ItemPedido> itens) {
+        itens.forEach(item -> item.setPedido(this));
+    }
 }
