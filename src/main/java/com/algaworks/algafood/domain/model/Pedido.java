@@ -33,7 +33,7 @@ public class Pedido {
     @Embedded
     private Endereco endereco;
 
-    @OneToMany(mappedBy = "pedido")
+    @OneToMany(mappedBy = "pedido", cascade = CascadeType.ALL)
     private List<ItemPedido> itens = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -48,20 +48,12 @@ public class Pedido {
     @JoinColumn(nullable = false)
     private Restaurante restaurante;
 
-
     public void calcularValorTotal(){
         this.subtotal = getItens().stream()
+                .peek(ItemPedido::calcularPrecoTotal)
                 .map(ItemPedido::getPrecoTotal)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        this.subtotal = subtotal.add(this.taxaFrete);
-    }
-
-    public void definirTaxaFrete() {
-        setTaxaFrete(getRestaurante().getTaxaFrete());
-    }
-
-    public void associarItensAoPedido(List<ItemPedido> itens) {
-        itens.forEach(item -> item.setPedido(this));
+        this.valorTotal = subtotal.add(this.taxaFrete);
     }
 }
