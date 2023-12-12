@@ -9,7 +9,7 @@ public enum StatusPedido {
     CANCELADO("Cancelado");
 
     @Getter
-    private String descricao;
+    private final String descricao;
 
     StatusPedido(String descricao) {
         this.descricao = descricao;
