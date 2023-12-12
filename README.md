@@ -3095,6 +3095,8 @@ Foi necessário criar/alterar as seguintes classes:
 <li><details>
 <summary>Desafio: Implementando o endpoint de emissão de pedidos ⭐ ⭐ ⭐ ⭐</summary>
 
+Para o desafio foi necessário criar/alterar as seguintes classes:
+
 - messages.properties (mensagens de validação de todos os campos do PedidoInput)
 - ApiExceptionHandler (melhoria na mensagem de validação no Problem Details sobre um campo inexistente numa coleção:
 
@@ -3164,6 +3166,21 @@ Usuário autenticado está "hard coded" até implementarmos o JWT
 ###
 </details></li>
 
+<li><details>
+<summary>Implementando endpoint de transição de status de pedidos ⭐ ⭐ ⭐</summary>
+
+Foi necessário criar/alterar as seguintes classes:
+
+- FluxoPedidoController
+- FluxoPedidoService
+- StatusPedido
+
+Novamente um processo foi "coisificado" e virou um recurso (`"/pedidos/{id}/confirmacao"`) que respondera no verbo PUT.
+Validamos o pedido verficando o status anterior (se é CRIADO) então gravamos o novo status (CONFIRMADO) e a data de alteração.
+Caso não passe na validação uma exceção de negócio é lançada.
+
+###
+</details></li>
 
 <div align="center">_______________________________________________________________________________</div>
 
@@ -3181,13 +3198,13 @@ _Quando a operação a ser realizada resulta em modificação de uma forma de pa
 O método buscarOuFalhar recupera a informação, e caso não encontre a mesma, lança um RestauranteNaoEncontradoException, que é tratado no próprio método._
 
 > Conceitualmente falando:
-Quando vamos alterar alguma coisa que não existe, devemos ser avisados que essa coisa não foi encontrada, pois a operação de alteração pressupõe a existência do dado.
+> Quando vamos alterar alguma coisa que não existe, devemos ser avisados que essa coisa não foi encontrada, pois a operação de alteração pressupõe a existência do dado.
 
 
 _No segundo caso, a operação a ser realizada é a remoção da forma de pagamento. Não precisamos recuperar essa informação do banco, e sim, apenas enviar a ordem de remoção da mesma do banco._
 
 > Conceitualmente falando:
-Quando vamos remover alguma coisa, caso ela exista nós executamos a operação de remover, caso ela não exista, seguimos adiante (o que queríamos realizar não é necessário porque o item já foi removido antes, então, isso não configura um comportamento atípico, portanto, não precisamos de exceção).
+> Quando vamos remover alguma coisa, caso ela exista nós executamos a operação de remover, caso ela não exista, seguimos adiante (o que queríamos realizar não é necessário porque o item já foi removido antes, então, isso não configura um comportamento atípico, portanto, não precisamos de exceção).
 
 </ol>
 </details>

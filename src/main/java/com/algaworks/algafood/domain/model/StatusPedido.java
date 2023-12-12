@@ -1,9 +1,17 @@
 package com.algaworks.algafood.domain.model;
 
-public enum StatusPedido {
-    CRIADO,
-    CONFIRMADO,
-    ENQTREGUE,
-    CANCELADO;
+import lombok.Getter;
 
+public enum StatusPedido {
+    CRIADO("Criado"),
+    CONFIRMADO("Confirmardo"),
+    ENQTREGUE("Entregue"),
+    CANCELADO("Cancelado");
+
+    @Getter
+    private String descricao;
+
+    StatusPedido(String descricao) {
+        this.descricao = descricao;
+    }
 }
