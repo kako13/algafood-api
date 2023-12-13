@@ -46,7 +46,7 @@ public class FluxoPedidoService {
                             StatusPedido.CANCELADO.getDescricao()));
 
         pedido.setStatus(StatusPedido.CANCELADO);
-        pedido.setDataConfirmacao(OffsetDateTime.now());
+        pedido.setDataCancelamento(OffsetDateTime.now());
     }
 
     @Transactional
@@ -61,6 +61,6 @@ public class FluxoPedidoService {
                             StatusPedido.ENTREGUE.getDescricao()));
 
         pedido.setStatus(StatusPedido.ENTREGUE);
-        pedido.setDataConfirmacao(OffsetDateTime.now());
+        pedido.setDataEntrega(OffsetDateTime.now());
     }
 }
