@@ -284,9 +284,6 @@ Possibilitando que o dev note possíveis erros.
 <li>Injetando o próprio repositório na implementação customizada e a anotação @Lazy ⭐</li>
 <li>Estendendo o JpaRepository para customizar o repositório base ⭐</li>
 
-###
-###### *Utilizando o Spring na versão 3.1.3 e Java na versão 17, não é possível capturar a exception 'EmptyResultDataAccessException' ao tentar excluir uma entidade inexistente. Ajustes foram necessários.*
-
 </ol>
 </details>
 
@@ -456,11 +453,7 @@ por conta de alguma alteração.** Consultar aulas 8 e 10._
 
 Esta abordagem separa as anotações de ResponseStatus entre a possíveis exceptions e o controller. Para um poc pode fazer 
 sentido. Mas tem como ponto negativo a mistura (o contato) de classes de negócio com a camada web, além de não podermos 
-incluir um body quando cair em alguma das exceptions anotadas. 
-
-
-Foi necessário alterar o método de exclusão do serviço de cozinhas, pois aparentemente o Spring framework nesta versão `3.1.3` não
-lança a exception `EmptyResultDataAccessException`.
+incluir um body quando cair em alguma das exceptions anotadas.
 
 </details>
 </li>
