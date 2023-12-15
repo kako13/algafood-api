@@ -6,10 +6,9 @@ import com.algaworks.algafood.domain.model.FormaPagamento;
 import com.algaworks.algafood.domain.repository.FormaPagamentoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 public class CadastroFormaPagamentoService {
@@ -25,13 +24,17 @@ public class CadastroFormaPagamentoService {
     }
 
     @Transactional
-    public void excluir(Long id) {
+    public void excluir(Long formaPagamentoId) {
         try {
-            Optional.of(this.buscarOuFalhar(id))
-                    .ifPresent(e -> formaPagamentoRepository.deleteById(id));
+            formaPagamentoRepository.deleteById(formaPagamentoId);
             formaPagamentoRepository.flush();
+
+        } catch (EmptyResultDataAccessException e) {
+            throw new FormaPagamentoNaoEncontradaException(formaPagamentoId);
+
         } catch (DataIntegrityViolationException e) {
-            throw new EntidadeEmUsoException(String.format(MSG_FORMA_PAGAMENTO_EM_USO, id));
+            throw new EntidadeEmUsoException(
+                    String.format(MSG_FORMA_PAGAMENTO_EM_USO, formaPagamentoId));
         }
     }
 

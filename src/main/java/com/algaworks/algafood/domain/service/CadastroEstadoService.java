@@ -6,10 +6,9 @@ import com.algaworks.algafood.domain.model.Estado;
 import com.algaworks.algafood.domain.repository.EstadoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 public class CadastroEstadoService {
@@ -24,13 +23,17 @@ public class CadastroEstadoService {
     }
 
     @Transactional
-    public void excluir(Long id) {
+    public void excluir(Long estadoId) {
         try {
-            Optional.of(this.buscarOuFalhar(id))
-                    .ifPresent(e -> estadoRepository.deleteById(id));
+            estadoRepository.deleteById(estadoId);
             estadoRepository.flush();
+
+        } catch (EmptyResultDataAccessException e) {
+            throw new EstadoNaoEncontradoException(estadoId);
+
         } catch (DataIntegrityViolationException e) {
-            throw new EntidadeEmUsoException(String.format(MSG_ESTADO_EM_USO, id));
+            throw new EntidadeEmUsoException(
+                    String.format(MSG_ESTADO_EM_USO, estadoId));
         }
     }
 
