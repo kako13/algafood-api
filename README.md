@@ -736,7 +736,7 @@ o consumidor da API, foi definido como userMessage o mesmo conteúdo do detail.
 </ol>
 </details>
 <details>
-    <summary><i>09. Validações com Bean Validation</i> ⭐</summary>
+    <summary><i>09. Validações com Bean Validation</i> ⭐ ⭐</summary>
 <ol>
 
 <li><details>
@@ -766,7 +766,7 @@ código 400
 
 </details></li>
 <li><details>
-<summary>Desafio: tratando exception de violação de constraints de validação ⭐</summary>
+<summary>Desafio: tratando exception de violação de constraints de validação ⭐ ⭐</summary>
 
 Foi implementado o método `handleMethodArgumentNotValid` da interface `ResponseEntityExceptionHandler`.
 </details></li>
@@ -1078,7 +1078,7 @@ comportamento como as demais validações.
 </details>
 
 <details>
-    <summary><i>10. Testes de integração</i> ⭐</summary>
+    <summary><i>10. Testes de integração</i> ⭐ ⭐</summary>
 <ol>
 
 <li>Introdução aos Testes de Integração e Testes de APIs</li>
@@ -1543,7 +1543,7 @@ simulando o envio de payloads de sucesso e falha para nosso recurso.
 </details>
 
 <details>
-    <summary><i>11. Boas práticas e técnicas para APIs</i> ⭐ ⭐ ⭐ ⭐</summary>
+    <summary><i>11. Boas práticas e técnicas para APIs</i> ⭐ ⭐ ⭐</summary>
 <ol>
 
 <li><details>
@@ -3375,7 +3375,7 @@ _Por enquanto não criamos um controller para permissões._
 
 <div align="center">_______________________________________________________________________________</div>
 
-**Esclarecimento sobre tentar excluir um recurso que não existe:**
+**Sobre tentar excluir um recurso que não existe:**
 
 _Quando a operação a ser realizada resulta em modificação de uma forma de pagamento, precisamos recuperar a mesma do banco de dados.
 O método buscarOuFalhar recupera a informação, e caso não encontre a mesma, lança um RestauranteNaoEncontradoException, que é tratado no próprio método._
@@ -3388,6 +3388,103 @@ _No segundo caso, a operação a ser realizada é a remoção da forma de pagame
 
 > Conceitualmente falando:
 > Quando vamos remover alguma coisa, caso ela exista nós executamos a operação de remover, caso ela não exista, seguimos adiante (o que queríamos realizar não é necessário porque o item já foi removido antes, então, isso não configura um comportamento atípico, portanto, não precisamos de exceção).
+
+</ol>
+</details>
+
+<details open>
+    <summary><i>13. Modelagem de projeções, pesquisas e relatórios</i> ⭐ ⭐ ⭐</summary>
+<ol>
+
+<li><details>
+   <summary>Fazendo projeção de recursos com @JsonView do Jackson ⭐ ⭐</summary>
+
+Da mesma forma que em aulas anteriores criamos uma interface de marcação `Groups`, agora criamos uma outra chamada 
+RestauranteView. Ela contém duas outras interfaces, `Resumo` e `ApenasNome`, que serão os comportamentos de serialização 
+dos restaurantes consultados.
+
+Marcamos os representation models nos atributos que queremos apresentar em cada uma das abordagens:
+
+Restaurante:
+```
+public class RestauranteModel {
+
+    @JsonView({RestauranteView.Resumo.class, RestauranteView.ApenasNome.class})
+    private Long id;
+    @JsonView({RestauranteView.Resumo.class, RestauranteView.ApenasNome.class})
+    private String nome;
+    @JsonView(RestauranteView.Resumo.class)
+    private BigDecimal taxaFrete;
+    @JsonView(RestauranteView.Resumo.class)
+    private CozinhaModel cozinha;
+
+    private Boolean ativo;
+    private Boolean aberto;
+    private EnderecoModel endereco;
+}
+```
+Cozinha:
+```
+public class CozinhaModel {
+    @JsonView(RestauranteView.Resumo.class)
+    private Long id;
+    @JsonView(RestauranteView.Resumo.class)
+    private String nome;
+}
+```
+
+E no Controller pode-se anotar o método com a mesma marcação desejada retornando o model:
+```
+    @GetMapping(params = "projecao=resumo")
+--> @JsonView(RestauranteView.Resumo.class)
+    public List<RestauranteModel> listarResumido() {
+        return listar();
+    }
+    
+    @GetMapping(params = "projecao=apenas-nome")
+--> @JsonView(value = {RestauranteView.ApenasNome.class})
+    public List<RestauranteModel> listarApenasNomes() {
+        return listar();
+    }
+```
+
+Ou retornar um `MappingJacksonValue` no método do controller sem usar a anotação `@JsonView`, determinando qual a marcação
+que será utilizada na serialização:
+```
+    @GetMapping()
+    public MappingJacksonValue listar(@RequestParam(required = false, name = "projecao") String projecao) {
+        List<Restaurante> restaurantes = restauranteRepository.findAll();
+        List<RestauranteModel> restaurantesModel = restauranteModelAssembler.toCollectionModel(restaurantes);
+
+        MappingJacksonValue restaurantesWrapper = new MappingJacksonValue(restaurantesModel);
+        restaurantesWrapper.setSerializationView(RestauranteView.Resumo.class);
+
+        if ("apenas-nome".equals(projecao))
+            restaurantesWrapper.setSerializationView(RestauranteView.ApenasNome.class);
+        else if ("completo".equals(projecao))
+            restaurantesWrapper.setSerializationView(null);
+
+        return restaurantesWrapper;
+    }
+```
+
+Quando utilizar um DTO como representation model e quando utilizar uma projeção com @JsonView:
+
+DTO - quando quiser fazer mudar completamente a estrutura do model para cada projeção
+
+@JsonView - quando quiser reaproveitar um DTO sem ter que criar novas classes
+
+- - -
+
+Prós:
+- Menos classes
+
+Contra:
+- As anotações podem começar a poluir as classes de Model quando aumentarem o número de projeções 
+
+
+####
+</details></li>
 
 </ol>
 </details>
