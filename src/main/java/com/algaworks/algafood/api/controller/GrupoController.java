@@ -16,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/grupos")
-public class GrupoContoller {
+public class GrupoController {
 
     @Autowired
     private GrupoRepository grupoRepository;

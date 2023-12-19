@@ -2457,7 +2457,7 @@ Com o payload:
 </details></li>
 
 <li><details>
-   <summary>Granularidade de recursos: Chatty vs Chunky APIs ⭐ ⭐</summary>
+   <summary>Granularidade de recursos: Chatty vs Chunky APIs ⭐ ⭐ ⭐</summary>
 
 ####
 
@@ -2925,10 +2925,31 @@ após associar ou desassociar uma forma de pagamento.
 E utilizamos o **`Set`** ao invés de `List` para não inserir restaurante_forma_pagamento com ids repetidos evitando a violação de integridade no banco:
 `org.springframework.dao.DataIntegrityViolationException: could not execute statement [Duplicate entry '3-1' for key 'restaurante_forma_pagamento.PRIMARY'] [insert into restaurante_forma_pagamento (restaurante_id,forma_pagamento_id) values (?,?)]; SQL [insert into restaurante_forma_pagamento (restaurante_id,forma_pagamento_id) values (?,?)]; constraint [restaurante_forma_pagamento.PRIMARY]`
 
+###
+</details></li>
+
+
+<li><details>
+<summary>Desafio: implementando os endpoints de produtos ⭐ ⭐ ⭐</summary>
+
+Para o desafio foi necessário criar/alterar as seguintes classes:
+
+- CadastroProdutoService
+- Produto (deixei o restaurante como (fetch = FetchType.LAZY) para evitar consulta desnecessária ao listar produtos)
+- ProdutoInput
+- ProdutoInputDisassembler
+- ProdutoModel
+- ProdutoModelAssembler
+- ProdutoNaoEncontradoException
+- ProdutoRepository
+- RestauranteProdutoController
+- messages.properties
+
 
 
 ###
 </details></li>
+
 
 <div align="center">_______________________________________________________________________________</div>
 
