@@ -2882,7 +2882,7 @@ abaixo:
 - Código de retorno: 500 na API
 
 ```
-WARN 63428 --- [nio-8080-exec-4] .m.m.a.ExceptionHandlerExceptionResolver : Resolved [org.springframework.dao.IncorrectResultSizeDataAccessException: query did not return a unique result: 2]
+org.springframework.dao.IncorrectResultSizeDataAccessException: query did not return a unique result: 2
 ```
 
 Foi necessário:
@@ -3012,10 +3012,10 @@ Da mesma forma que associamos as permissões aos grupos, agora associamos os gru
 
 Para o desafio foi necessário criar/alterar as seguintes classes:
 
-- CadastroUsuarioService.java
-- GrupoModelAssembler.java
-- Usuario.java
-- UsuarioGrupoController.java
+- CadastroUsuarioService
+- GrupoModelAssembler
+- Usuario
+- UsuarioGrupoController
 - afterMigrate.sql
 
 
@@ -3044,13 +3044,122 @@ Para o desafio foi necessário criar/alterar as seguintes classes:
 <li><details>
 <summary>Implementando ativação e inativação em massa de restaurantes ⭐ ⭐ ⭐</summary>
 
-Para o desafio foi necessário criar/alterar as seguintes classes:
+Foi necessário criar/alterar as seguintes classes:
 
 - CadastroRestauranteService
 - RestauranteController
 
 O payload definido foi um array com os ids de restaurantes, foi ajustado o controller para retornar 400 em caso de id 
 inexistente. Pois retornar 404 estaria incorreto vez que o recurso "/restaurantes/ativacoes" existe. 
+
+###
+</details></li>
+
+
+<li><details>
+<summary>Desafio: Implementando os endpoints de consulta de pedidos ⭐ ⭐ ⭐</summary>
+
+Para o desafio foi necessário criar/alterar as seguintes classes:
+
+- ItemPedidoModelAssembler
+- PedidoModelAssembler
+- PedidoController (métodos GET para listar e buscar)
+- ItemPedidoModel
+- PedidoModel
+- RestauranteResumoModel
+- ModelMapperConfig (para o binding de `Pedido.class` para `PedidoModel.class`)
+- PedidoNaoEncontradoException
+- PedidoRepository
+- EmissaoPedidoService
+- afterMigrate.sql (delete, alter table e inserção de pedidos para consulta)
+
+###
+</details></li>
+
+
+<li><details>
+<summary>Otimizando a query de pedidos e retornando model resumido na listagem ⭐ ⭐ ⭐</summary>
+
+Foi necessário criar/alterar as seguintes classes:
+
+- PedidoResumoModelAssembler
+- PedidoController
+- PedidoResumoModel
+- Pedido (para evitar consulta desnecessária utilizei `fetch = FetchType.LAZY`)
+- PedidoRepository (utilizamos query JPQL customizadas com @Query)
+
+###
+</details></li>
+
+
+<li><details>
+<summary>Desafio: Implementando o endpoint de emissão de pedidos ⭐ ⭐ ⭐ ⭐</summary>
+
+- messages.properties (mensagens de validação de todos os campos do PedidoInput)
+- ApiExceptionHandler (melhoria na mensagem de validação no Problem Details sobre um campo inexistente numa coleção:
+
+Antes da correção:
+
+```
+{
+    "status": 400,
+    "type": "https://algafood.com.br/mensagem-incompreensivel",
+    "title": "Mensagem incompreensível",
+    "detail": "A propriedade 'itens.null.sdaf' não existe. Corrija ou remova essa propriedade e tente novamente.",
+    "userMessage": "Ocorreu um erro interno no sistema. Tente novamente e se o problema persistir, entre em contato com o administrador do sistema",
+    "timeStamp": "2023-12-12T16:14:32.0514428Z"
+}
+```
+
+Após a correção:
+```
+{
+    "status": 400,
+    "type": "https://algafood.com.br/mensagem-incompreensivel",
+    "title": "Mensagem incompreensível",
+    "detail": "A propriedade 'itens.[0].sdaf' não existe. Corrija ou remova essa propriedade e tente novamente.",
+    "userMessage": "Ocorreu um erro interno no sistema. Tente novamente e se o problema persistir, entre em contato com o administrador do sistema",
+    "timeStamp": "2023-12-12T16:15:35.4136043Z"
+}
+```
+
+- EmissaoPedidoService (validações de `Usuario`, `Restaurante`, `FormaPagamento`, `Item`, `Produto` e `Cidade`)
+- FormaPagamentoIdInput
+- ItemPedido (métodos `definirValorUnitario` e `calcularPrecoTotal`)
+- ItemPedidoInput (validações `@PositiveOrZero` e `@NotNull`)
+- ModelMapperConfig (para fazer o skip no id durante o binding de `ItemPedidoInput.class`, `ItemPedido.class`):
+
+```
+modelMapper.createTypeMap(ItemPedidoInput.class, ItemPedido.class).addMappings(input -> input.skip(ItemPedido::setId));
+``` 
+Desta forma evitando o erro abaixo por conta do id de pedido receber o valor que deveria ir para o produtoId do Item:
+```
+org.springframework.dao.InvalidDataAccessApiUsageException: detached entity passed to persist: com.algaworks.algafood.domain.model.ItemPedido
+```
+- Pedido (retirando métodos `definirTaxaFrete` e `associarItensAoPedido` e melhorando o `calcularValorTotal`)
+- PedidoController
+- PedidoInput (`@Size(min = 1)` para definir tamanho mínimo de coleção de itens)
+- PedidoInputDisassembler
+- RestauranteIdInput
+
+Deixei a implementação do serviço de emissão de pedido um pouco diferente da solução do curso. No método principal do 
+serviço preferi segregar todas as validações **por domínio**, de forma que após cada validação os objetos são associados
+a entidade principal que será persistida, o `Pedido`:
+```
+    @Transactional
+    public Pedido emitir(Pedido pedido) {
+        validarCliente(pedido);
+        validarRestaurante(pedido);
+        validarFormaDePagamento(pedido);
+        validarItensProdutos(pedido);
+        validarCidade(pedido);
+        pedido.setTaxaFrete(pedido.getRestaurante().getTaxaFrete());
+        pedido.calcularValorTotal();
+        return pedidoRepository.save(pedido);
+    }
+```
+
+Usuário autenticado está "hard coded" até implementarmos o JWT
 
 ###
 </details></li>

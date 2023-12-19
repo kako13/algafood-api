@@ -136,9 +136,15 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
         return handleExceptionInternal(ex, problem, headers, status, request);
     }
 
-    private static String joinPath(List<JsonMappingException.Reference> ex) {
-        return ex.stream()
-                .map(reference -> reference.getFieldName())
+    private String joinPath(List<JsonMappingException.Reference> references) {
+        return references.stream()
+                .map(ref -> {
+                    if (ref.getFieldName() == null) {
+                        return "[" + ref.getIndex() + "]";
+                    } else {
+                        return ref.getFieldName();
+                    }
+                })
                 .collect(Collectors.joining("."));
     }
 
