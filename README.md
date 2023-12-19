@@ -1051,8 +1051,8 @@ O Spring sempre nos da sugestão de nomes no console para utilizarmos como place
 
 
 Como no método `PATCH` do controller de restaurantes não recebemos um Restaurante e sim um Map. Pois queremos apenas uma
-atualização parcial de um Restaurante. Se utilizassemos esta classe, as validações existentes não iriam permitir o registro.
-barrariam nossa tentativa de registro.
+atualização parcial de um Restaurante. Se utilizassemos esta classe, as validações existentes não iriam permitir o registro,
+barrariam a tentativa.
 
 Também não é possível fazer a validação com a anotação `@Valid` sobre o Map.
 Por isso criamos o seguinte método para a validação programática das propriedades que recebermos de um Restaurante utilizando
@@ -2944,6 +2944,60 @@ Para o desafio foi necessário criar/alterar as seguintes classes:
 - ProdutoRepository
 - RestauranteProdutoController
 - messages.properties
+
+
+
+###
+</details></li>
+
+
+<li><details>
+<summary>Desafio: Implementando os endpoints de abertura e fechamento de restaurantes ⭐ ⭐ ⭐</summary>
+
+Para o desafio foi necessário criar/alterar as seguintes classes:
+
+- Restaurante
+- RestauranteModel
+- RestauranteController
+- CadastroRestauranteService
+- V009__cria-coluna-aberto-restaurante.sql
+- afterMigrate.sql
+
+O campo `aberto` foi adicionado nas classes de modelo de domínio e de representação e os métodos `abrir` e `fechar` ao 
+controller e ao service, o comportamento de abrir e fechar foi encapsulado na classe de domínio. O modelo foi alterado
+criando a migration V009 para a inclusão do novo campo além da inclusão nos scripts do afterMigrate para testes.
+
+
+###
+</details></li>
+
+
+<li><details>
+<summary>Desafio: implementando os endpoints de associação de grupos com permissões ⭐ ⭐ ⭐</summary>
+
+Da mesma forma que associamos as formas de pagamento aos restaurantes, agora associamos as permissões aos grupos. 
+
+Para o desafio foi necessário criar/alterar as seguintes classes:
+
+- PermissaoModelAssembler
+- GrupoPermissoesController
+- PermissaoModel
+- PermissaoNaoEncontradaException
+- Grupo
+- PermissaoRepository
+- CadastroGrupoService
+- CadastroPermissaoService
+- CadastroRestauranteService
+- afterMigrate.sql
+
+O campo `aberto` foi adicionado nas classes de modelo de domínio e de representação e os métodos `abrir` e `fechar` ao 
+controller e ao service, o comportamento de abrir e fechar foi encapsulado na classe de domínio. O modelo foi alterado
+criando a migration V009 para a inclusão do novo campo além da inclusão nos scripts do afterMigrate para testes.
+
+Até o momento subrecursos de **processos** (ativo, abertura e fechamento) foram implementados no controller principal (CRUD),
+enquanto os subrecursos de **CRUD e associação** foram implementados em controllers separados. 
+
+_Por enquanto não criamos um controller para permissões._
 
 
 

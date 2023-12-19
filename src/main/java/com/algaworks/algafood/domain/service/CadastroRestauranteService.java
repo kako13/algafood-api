@@ -59,7 +59,7 @@ public class CadastroRestauranteService {
 
     }
     @Transactional
-    public void adicionarFormaPagamento(Long restauranteId, Long formaPagamentoId) {
+    public void associarFormaPagamento(Long restauranteId, Long formaPagamentoId) {
         Restaurante restaurante = buscarOuFalhar(restauranteId);
         FormaPagamento formaPagamento = cadastroFormaPagamento.buscarOuFalhar(formaPagamentoId);
         restaurante.adicionarFormaPagamento(formaPagamento);
