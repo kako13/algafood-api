@@ -3486,5 +3486,53 @@ Contra:
 ####
 </details></li>
 
+
+<li><details>
+   <summary>Limitando os campos retornados pela API com @JsonFilter do Jackson ⭐ ⭐</summary>
+
+- O model em questão recebe a anotação `@JsonFilter("pedidoFilter")` com o nome do novo filter.
+- Da mesma forma que com o `@JsonView` o controller pode devolver um `MappingJacksonValue`
+- Mas desta vez sera utilizado o `SimpleFilterProvider` e `SimpleBeanPropertyFilter`
+- Por padrão estamos trazendo todos os campos, mas caso algum campo seja passado (ou lista de campos sem espaços) será 
+retornado apenas os elementos selecionados
+
+```
+    @GetMapping
+    public MappingJacksonValue listar(@RequestParam(required = false) String campos) {
+        List<Pedido> pedidos = pedidoRepository.findAll();
+        List<PedidoResumoModel> pedidosModel = pedidoResumoModelAssembler.toCollectionModelList(pedidos);
+        MappingJacksonValue pedidosWrapper = new MappingJacksonValue(pedidosModel);
+
+        SimpleFilterProvider filterProvider = new SimpleFilterProvider();
+        filterProvider.addFilter("pedidoFilter", SimpleBeanPropertyFilter.serializeAll());
+
+        if (StringUtils.isNotBlank(campos))
+            filterProvider.addFilter("pedidoFilter", SimpleBeanPropertyFilter.filterOutAllExcept(campos.split(",")));
+
+        pedidosWrapper.setFilters(filterProvider);
+        return pedidosWrapper;
+    }
+```
+
+Prós:
+
+- Reduz a quantidade de anotações no model quando comparado as projeções do @JsonView
+- Diferente das projeções é possível selecionar qualquer campo do representation model
+- Fexibilidade
+
+Contras:
+
+- A responsabilidade de selecionar os campos agora fica com o consumidor da API, sendo que a prática pede projeções ou 
+models que atendam a funcionalidade específica
+- Muitos argumentam que o tamnho do payload não compromente tanto assim o recurso
+
+Opnião do professor:
+- Pode ser implementado quando o consumidor da API tem esse tipo de necessidade de flexibilidade. 
+- Deve-se tomar cuidade com o "overengeneer", que seria gastar esforço em algo que nem deveria ser implementado, ou cuidando 
+de defeitos que nem precisariam existir 
+
+####
+</details></li>
+
 </ol>
 </details>
