@@ -284,9 +284,6 @@ Possibilitando que o dev note possíveis erros.
 <li>Injetando o próprio repositório na implementação customizada e a anotação @Lazy ⭐</li>
 <li>Estendendo o JpaRepository para customizar o repositório base ⭐</li>
 
-###
-###### *Utilizando o Spring na versão 3.1.3 e Java na versão 17, não é possível capturar a exception 'EmptyResultDataAccessException' ao tentar excluir uma entidade inexistente. Ajustes foram necessários.*
-
 </ol>
 </details>
 
@@ -456,11 +453,7 @@ por conta de alguma alteração.** Consultar aulas 8 e 10._
 
 Esta abordagem separa as anotações de ResponseStatus entre a possíveis exceptions e o controller. Para um poc pode fazer 
 sentido. Mas tem como ponto negativo a mistura (o contato) de classes de negócio com a camada web, além de não podermos 
-incluir um body quando cair em alguma das exceptions anotadas. 
-
-
-Foi necessário alterar o método de exclusão do serviço de cozinhas, pois aparentemente o Spring framework nesta versão `3.1.3` não
-lança a exception `EmptyResultDataAccessException`.
+incluir um body quando cair em alguma das exceptions anotadas.
 
 </details>
 </li>
@@ -3315,6 +3308,59 @@ As responsabilidades agora estão distribuídas:
 
 Outro detalhe adicionado a regra de negócio é que agora podemos cancelar um pedido que esteja com status `CRIADO`, 
 `CONFIRMADO`. Além do `StatusPedido` poder receber uma lista de status anteriores.
+
+###
+</details></li>
+
+
+<li><details>
+<summary>Usando IDs vs UUIDs nas URIs de recursos ⭐ ⭐ ⭐ ⭐</summary>
+
+Para alguns recursos é importante pensar se é realmente necessário expor dos dados do ID que vai path. Em nossa API é 
+possível saber quantos pedidos já geramos através do `id` de um novo pedido, e supor a sequência numérica dos pedidos também.
+
+Para contornar essa sistuação, utilizamos o [UUID](https://www.uuidgenerator.net/version4).
+
+32 caracteres
+36 com os hífens
+
+Prós:
+
+Ocultar informação sensível ou de uso exclusivamente interno da organização.
+Não sequencial, logo não pode ser intuído quais os registros anteriores e os próximos.
+
+
+Contras:
+
+Não é recomendado utilizar como chave primária, pois alguns bancos não se comportam bem com este tipo de chave, além de ser
+muito grande para fazer comparações, e isso poderia proliferar essa chave pelo banco e gerar problemas de desempenho.
+É mais difícil de trabalhar ao debugar a aplicação, pois é de difícil memorização. 
+
+-------
+
+O MySql possui uma função que nos gera um UUID como nessa consulta, `select uuid()`, então vamos tirar proveito dela no 
+script de migration:
+
+```
+alter table pedido add codigo varchar(36) not null after id;
+update pedido set codigo = UUID();
+alter table pedido add constraint uk_pedido_codigo unique (codigo);
+```
+
+As vezes podemos expor alguma coisa sobre o negócio ou entidades numa mensagem de erro, portanto é importante revisarmos 
+as mensagens para garantir que devolvemos o `UUID` ao invés dos `Ids` nos lançamentos de exceptions. 
+
+Foram alterados todos os métodos que se referiam ao `id` do `Pedido` para `String codigoPedido`.
+
+Na classe `Pedido` criamos um método privado para gerar o `UUID` a partir do Java que usa a anotação de callback 
+`@PrePersist` para podermos gerar o código antes de inserir no banco, sem passar null no campo `codigo`:
+
+```
+    @PrePersist
+    private void gerarCodigo() {
+        setCodigo(UUID.randomUUID().toString());
+    }
+```
 
 ###
 </details></li>
