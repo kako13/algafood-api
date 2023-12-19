@@ -3181,6 +3181,8 @@ Caso não passe na validação uma exceção de negócio é lançada.
 
 ###
 </details></li>
+
+
 <li><details>
 <summary>Desafio: implementando endpoints de transição de status de pedidos ⭐ ⭐ ⭐ ⭐</summary>
 
@@ -3194,6 +3196,125 @@ Novamente os processos foram "coisificados" e viraram um recursos (`"/pedidos/{i
 que responderam no verbo PUT. Validamos o pedido verficando o status anterior (se é CRIADO para o cancelamento ou se é
 CONFIRMADO para a entrega) então gravamos o novo status (CANCELADO OU ENTREGUE) e a data de alteração. 
 Caso não passe na validação uma exceção de negócio é lançada.
+
+###
+</details></li>
+
+
+<li><details>
+<summary>Refatorando o código de regras para transição de status de pedidos ⭐ ⭐ ⭐ ⭐</summary>
+
+Foi necessário criar/alterar as seguintes classes:
+
+- Pedido
+- FluxoPedidoService
+- StatusPedido
+
+
+A regra de negócio tem os seguintes aspectos:
+
+- a alteração de status depende do status anterior que foi previamente determinado
+- caso o status não seja o anteriormente definido pela regra é lançada uma exception de negócio
+- estando na regra o status é alterado e a data correspondente ao status é setada (confirmação, cancelamento, entrega) 
+
+Então foi realizada a refatoração utilizando uma lógica **bem interessante** envolvendo o Enum `StatusPedido` em conjunto 
+com a classe de domínio `Pedido`. De forma que a classe `FluxoPedidoService`, ficou mais limpa e legível:
+```
+@Service
+public class FluxoPedidoService {
+
+    @Autowired
+    private EmissaoPedidoService emissaoPedido;
+
+    @Transactional
+    public void confirmar(Long pedidoId) {
+        Pedido pedido = emissaoPedido.buscarOuFalhar(pedidoId);
+        pedido.confirmar();
+    }
+
+    @Transactional
+    public void cancelar(Long pedidoId) {
+        Pedido pedido = emissaoPedido.buscarOuFalhar(pedidoId);
+        pedido.cancelar();
+    }
+
+    @Transactional
+    public void entregar(Long pedidoId) {
+        Pedido pedido = emissaoPedido.buscarOuFalhar(pedidoId);
+        pedido.entregar();
+    }
+}
+```
+A classe `Pedido` está menos "anêmica", pois agora concentra os métodos que alteram seu status e as datas: 
+
+```
+    public void confirmar() {
+        this.setStatus(StatusPedido.CONFIRMADO);
+        this.setDataConfirmacao(OffsetDateTime.now());
+    }
+
+    public void cancelar() {
+        this.setStatus(StatusPedido.CANCELADO);
+        this.setDataCancelamento(OffsetDateTime.now());
+    }
+
+    public void entregar() {
+        this.setStatus(StatusPedido.ENTREGUE);
+        this.setDataEntrega(OffsetDateTime.now());
+    }
+
+    private void setStatus(StatusPedido novoStatus) {
+        if (getStatus().naoPodeAlterarPara(novoStatus)) {
+            throw new NegocioException(
+                    String.format("Status do pedido %s não pode ser alterado de %s para %s.",
+                            this.getId(),
+                            this.getStatus().getDescricao(),
+                            novoStatus.getDescricao()));
+        } else {
+            this.status = novoStatus;
+        }
+    }
+```
+Desta forma o `setStatus` que era implementado pelo `@Data` do lombok, foi reescrito de forma **privada**. Desta forma o
+setStatus só podera ser chamado através dos métodos `confirmar`, `cancelar` e `entregar`. O `setStatus` tem uma condição
+que verifica se **'não pode alterar'** (no `StatusPedido`) para lançar a exception, seguindo a ideia de **"fail fast"**, do contrário atribui 
+o novo status.
+
+
+E o Enum `StatusPedido` ficou responsável por **acumular quais os status anteriores permitidos**, portanto, **se a exception
+deve ser lançada** no método `setStatus` da classe `Pedido`:
+
+```
+public enum StatusPedido {
+    CRIADO("Criado"),
+    CONFIRMADO("Confirmado", CRIADO),
+    ENTREGUE("Entregue", CONFIRMADO),
+    CANCELADO("Cancelado", CRIADO, CONFIRMADO);
+
+    @Getter
+    private final String descricao;
+
+    private List<StatusPedido> statusAnteriores;
+
+    StatusPedido(String descricao, StatusPedido... statusAnteriores) {
+        this.statusAnteriores = Arrays.asList(statusAnteriores);
+        this.descricao = descricao;
+    }
+
+    public boolean naoPodeAlterarPara(StatusPedido novoStatus) {
+        return !novoStatus.statusAnteriores.contains(this);
+    }
+}
+```
+
+As responsabilidades agora estão distribuídas:
+
+- acumula status anteriores e se !pode alterar para o novo Status (`StatusPedido` - `naoPodeAlterarPara(StatusPedido novoStatus)`)
+- lançar a exception (`Pedido` - `setStatus(StatusPedido novoStatus)`)
+- atribuir status e data relativa ao status (`Pedido` - `confirmar()`, `cancelar()`, `entregar()` )
+
+Outro detalhe adicionado a regra de negócio é que agora podemos cancelar um pedido que esteja com status `CRIADO`, 
+`CONFIRMADO`. Além do `StatusPedido` poder receber uma lista de status anteriores.
 
 ###
 </details></li>
