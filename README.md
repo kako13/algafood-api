@@ -3175,8 +3175,24 @@ Foi necessário criar/alterar as seguintes classes:
 - FluxoPedidoService
 - StatusPedido
 
-Novamente um processo foi "coisificado" e virou um recurso (`"/pedidos/{id}/confirmacao"`) que respondera no verbo PUT.
+Novamente um processo foi "coisificado" e virou um recurso (`"/pedidos/{id}/confirmacao"`) que responderá no verbo PUT.
 Validamos o pedido verficando o status anterior (se é CRIADO) então gravamos o novo status (CONFIRMADO) e a data de alteração.
+Caso não passe na validação uma exceção de negócio é lançada.
+
+###
+</details></li>
+<li><details>
+<summary>Desafio: implementando endpoints de transição de status de pedidos ⭐ ⭐ ⭐ ⭐</summary>
+
+Foi necessário criar/alterar as seguintes classes:
+
+- FluxoPedidoController
+- FluxoPedidoService
+- StatusPedido
+
+Novamente os processos foram "coisificados" e viraram um recursos (`"/pedidos/{id}/cancelamento"` e `"/pedidos/{id}/entrega"`) 
+que responderam no verbo PUT. Validamos o pedido verficando o status anterior (se é CRIADO para o cancelamento ou se é
+CONFIRMADO para a entrega) então gravamos o novo status (CANCELADO OU ENTREGUE) e a data de alteração. 
 Caso não passe na validação uma exceção de negócio é lançada.
 
 ###

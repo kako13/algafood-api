@@ -4,12 +4,12 @@ import lombok.Getter;
 
 public enum StatusPedido {
     CRIADO("Criado"),
-    CONFIRMADO("Confirmardo"),
-    ENQTREGUE("Entregue"),
+    CONFIRMADO("Confirmado"),
+    ENTREGUE("Entregue"),
     CANCELADO("Cancelado");
 
     @Getter
-    private String descricao;
+    private final String descricao;
 
     StatusPedido(String descricao) {
         this.descricao = descricao;
