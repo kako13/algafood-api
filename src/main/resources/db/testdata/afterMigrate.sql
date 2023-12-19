@@ -12,17 +12,19 @@ delete from restaurante;
 delete from restaurante_forma_pagamento;
 delete from usuario;
 delete from usuario_grupo;
+delete from restaurante_usuario_responsavel;
 
-alter table cozinha auto_increment=1;
-alter table cidade auto_increment=1;
-alter table estado auto_increment=1;
-alter table forma_pagamento auto_increment=1;
-alter table grupo auto_increment=1;
-alter table permissao auto_increment=1;
-alter table produto auto_increment=1;
-alter table restaurante auto_increment=1;
-alter table usuario auto_increment=1;
-alter table usuario_grupo auto_increment=1;
+set foreign_key_checks = 1;
+
+alter table cidade auto_increment = 1;
+alter table cozinha auto_increment = 1;
+alter table estado auto_increment = 1;
+alter table forma_pagamento auto_increment = 1;
+alter table grupo auto_increment = 1;
+alter table permissao auto_increment = 1;
+alter table produto auto_increment = 1;
+alter table restaurante auto_increment = 1;
+alter table usuario auto_increment = 1;
 
 insert into cozinha (nome) values ('Tailandesa');
 insert into cozinha (nome) values ('Indiana');
@@ -76,6 +78,9 @@ insert into usuario (nome, email, senha, data_cadastro) values
 ('João da Silva', 'joao.ger@algafood.com', '123', utc_timestamp),
 ('Maria Joaquina', 'maria.vnd@algafood.com', '123', utc_timestamp),
 ('José Souza', 'jose.aux@algafood.com', '123', utc_timestamp),
-('Sebastião Martins', 'sebastiao.cad@algafood.com', '123', utc_timestamp);
+('Sebastião Martins', 'sebastiao.cad@algafood.com', '123', utc_timestamp),
+('Manoel Lima', 'manoel.loja@gmail.com', '123', utc_timestamp);
 
 insert into usuario_grupo (usuario_id, grupo_id) values (1, 1), (1, 2), (2, 2);
+
+insert into restaurante_usuario_responsavel (restaurante_id, usuario_id) values (1, 5), (3, 5);
