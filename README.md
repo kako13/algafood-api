@@ -2274,7 +2274,7 @@ a última alteração.
 </details>
 
 
-<details open>
+<details>
     <summary><i>12. Modelagem avançada e implementação da API</i> ⭐ ⭐ ⭐</summary>
 <ol>
 
@@ -3517,19 +3517,104 @@ retornado apenas os elementos selecionados
 Prós:
 
 - Reduz a quantidade de anotações no model quando comparado as projeções do @JsonView
-- Diferente das projeções é possível selecionar qualquer campo do representation model
+- Diferente das projeções, é possível selecionar qualquer campo do representation model
 - Fexibilidade
 
 Contras:
 
-- A responsabilidade de selecionar os campos agora fica com o consumidor da API, sendo que a prática pede projeções ou 
-models que atendam a funcionalidade específica
+- A responsabilidade, ou, o poder, de selecionar os campos agora fica com o consumidor da API, sendo que a prática pede 
+projeções ou models que atendam a funcionalidade específica
 - Muitos argumentam que o tamnho do payload não compromente tanto assim o recurso
+- É necessário implementar em cada controller que se queira o mesmo comportamento
 
 Opnião do professor:
 - Pode ser implementado quando o consumidor da API tem esse tipo de necessidade de flexibilidade. 
 - Deve-se tomar cuidade com o "overengeneer", que seria gastar esforço em algo que nem deveria ser implementado, ou cuidando 
 de defeitos que nem precisariam existir 
+
+####
+</details></li>
+
+
+
+<li><details>
+   <summary>Limitando os campos retornados pela API com @JsonFilter do Jackson ⭐ ⭐ ⭐ 😢(compatível apenas até Spring 2.7.4) </summary>
+
+Com apenas uma classe de configuração `SquigglyConfig` é possível obter o mesmo comportamento da implementação anterior:
+
+```
+@Configuration
+public class SquigglyConfig {
+
+    @Bean
+    public FilterRegistrationBean<SquigglyRequestFilter> squigglyRequestFilter(ObjectMapper objectMapper) {
+        Squiggly.init(objectMapper, new RequestSquigglyContextProvider());
+
+        var filterRegistration = new FilterRegistrationBean<SquigglyRequestFilter>();
+        filterRegistration.setFilter(new SquigglyRequestFilter());
+        filterRegistration.setOrder(1);
+    }
+}
+```
+
+Poderia-se utilizar cochetes para evitar utilizar muitas vezes o prefixo como abaixo:
+- `/pedidos?fields=cliente.id,cliente.nome`
+
+Mas para evitar os caracteres inválidos:
+- `/pedidos?fields=cliente%5Bid,nome%5D` 
+
+o ideal seria poder utilizar desta forma: 
+- `/pedidos?fields=cliente[id,nome]`
+  
+Mas apresenta erro, então para solucionar forçamos Tomcat a aceitar colchetes através da classe de configuração:
+```
+// Referências:
+// - https://stackoverflow.com/a/53613678
+// - https://tomcat.apache.org/tomcat-8.5-doc/config/http.html
+// - https://docs.spring.io/spring-boot/docs/current/reference/html/howto.html#howto-configure-webserver
+
+import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
+import org.springframework.boot.web.server.WebServerFactoryCustomizer;
+import org.springframework.stereotype.Component;
+
+@Component
+public class TomcatCustomizer implements WebServerFactoryCustomizer<TomcatServletWebServerFactory> {
+
+    @Override
+    public void customize(TomcatServletWebServerFactory factory) {
+        factory.addConnectorCustomizers(connector -> connector.setAttribute("relaxedQueryChars", "[]"));
+    }
+    
+}
+```
+Superado o problema dos colchetes, foi determinado o escopo desse tipo de controle nos recursos e alteramos o nome padrão
+do parâmetro de "fields" para "campos":
+```
+@Configuration
+public class SquigglyConfig {
+
+    @Bean
+    public FilterRegistrationBean<SquigglyRequestFilter> squigglyRequestFilter(ObjectMapper objectMapper) {
+         Squiggly.init(objectMapper, new RequestSquigglyContextProvider("campos", null));  <--
+         
+-->      var urlPatterns = Arrays.asList("/pedidos/*", "/restaurantes/*");
+         
+         var filterRegistration = new FilterRegistrationBean<SquigglyRequestFilter>();
+         filterRegistration.setFilter(new SquigglyRequestFilter());
+         filterRegistration.setOrder(1);
+-->      filterRegistration.setUrlPatterns(urlPatterns);
+         
+         return filterRegistration;
+    }
+}
+```
+
+Como considerado no curso, infelizmente trata-se de uma biblioteca terceira foi descontinuada. Mas fica o aprendizado 
+sobre trade-off ao optar por uma tecnologia em detrimento de outra. As classes serão comitadas, mas logo corrigidas no 
+commit seguinte, por quebrarem o projeto.
+Caso este comportamento da implementação seja mantido, ele será feito com `@JsonView`, `@JsonFilter` ou DTO (Representation 
+Model) de um model/entidade resumida.
+
 
 ####
 </details></li>
