@@ -41,9 +41,6 @@ public class PedidoController {
     private PedidoInputDisassembler pedidoInputDisassembler;
 
     @Autowired
-    private CustomRestFilter filterComponent;
-
-    @Autowired
     private CustomRestFilter customRestFilter;
 
     @GetMapping

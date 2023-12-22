@@ -3540,7 +3540,8 @@ de defeitos que nem precisariam existir
 <li><details>
    <summary>Limitando os campos retornados pela API com Squiggly ⭐(compatível apenas até Spring 2.7.4) </summary>
 
-Com apenas uma classe de configuração `SquigglyConfig` é possível obter o mesmo comportamento da implementação anterior:
+Com apenas uma classe de configuração `SquigglyConfig` é possível obter o mesmo comportamento da implementação anterior,
+com apenas uma classe configuração:
 
 ```
 @Configuration
