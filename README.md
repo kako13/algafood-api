@@ -3538,7 +3538,7 @@ de defeitos que nem precisariam existir
 
 
 <li><details>
-   <summary>Limitando os campos retornados pela API com @JsonFilter do Jackson ⭐ ⭐ ⭐ 😢(compatível apenas até Spring 2.7.4) </summary>
+   <summary>Limitando os campos retornados pela API com Squiggly ⭐(compatível apenas até Spring 2.7.4) </summary>
 
 Com apenas uma classe de configuração `SquigglyConfig` é possível obter o mesmo comportamento da implementação anterior:
 
@@ -3609,15 +3609,27 @@ public class SquigglyConfig {
 }
 ```
 
-Como considerado no curso, infelizmente trata-se de uma biblioteca terceira foi descontinuada. Mas fica o aprendizado 
-sobre trade-off ao optar por uma tecnologia em detrimento de outra. As classes serão comitadas, mas logo corrigidas no 
-commit seguinte, por quebrarem o projeto.
-Caso este comportamento da implementação seja mantido, ele será feito com `@JsonView`, `@JsonFilter` ou DTO (Representation 
-Model) de um model/entidade resumida.
-
 
 ####
 </details></li>
+
+<div align="center">_______________________________________________________________________________</div>
+
+
+Como considerado no curso, infelizmente Squiggly é uma biblioteca terceira e descontinuada. Mas fica o aprendizado
+sobre trade-off ao optar por uma tecnologia em detrimento de outra. As classes serão comitadas, mas logo corrigidas no
+commit seguinte, por quebrarem o projeto.
+Caso este comportamento na API seja mantido até o fim do módulo, ele será feito com `@JsonView`, `@JsonFilter`
+ou DTO (Representation Model) de um model/entidade resumida.
+
+Foi desenvolvido um componente que possui um método `wrapFilter(String filterName, String fields, List<?> modelsList)` 
+que recebe um nome de filter (que deve ser o mesmo da anotação `@JsonFilter` no model), os campos intercalados por `,` passados 
+no parametro da requisição e a lista de models contendo a anotação.
+Não foi possível replicar o comportamento aceitando colchetes, pois a configuração do Tomcat para permitir colchetes já 
+não existe desta versão do Spring (3.1.3) devido RFC 7230 e RFC 3986 que aborda vulnerabilidades nesta prática. 
+
+
+<div align="center">_______________________________________________________________________________</div>
 
 </ol>
 </details>
