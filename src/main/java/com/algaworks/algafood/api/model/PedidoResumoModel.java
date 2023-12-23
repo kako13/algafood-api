@@ -1,14 +1,12 @@
 package com.algaworks.algafood.api.model;
 
 import com.algaworks.algafood.domain.model.StatusPedido;
-import com.fasterxml.jackson.annotation.JsonFilter;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 
-@JsonFilter("pedidoFilter") // Para simular o comportamento do Squiggly
 @Getter
 @Setter
 public class PedidoResumoModel {
