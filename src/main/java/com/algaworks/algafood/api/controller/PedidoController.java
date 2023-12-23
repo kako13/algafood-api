@@ -12,7 +12,9 @@ import com.algaworks.algafood.domain.exception.NegocioException;
 import com.algaworks.algafood.domain.model.Pedido;
 import com.algaworks.algafood.domain.model.Usuario;
 import com.algaworks.algafood.domain.repository.PedidoRepository;
+import com.algaworks.algafood.domain.repository.filter.PedidoFilter;
 import com.algaworks.algafood.domain.service.EmissaoPedidoService;
+import com.algaworks.algafood.infrastructure.repository.spec.PedidoSpecs;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -44,9 +46,10 @@ public class PedidoController {
     private CustomRestFilter customRestFilter;
 
     @GetMapping
-    public MappingJacksonValue listar(@RequestParam(required = false) String campos) {
-        List<Pedido> pedidos = pedidoRepository.findAll();
+    public MappingJacksonValue pesquisar(@RequestParam(required = false) String campos, PedidoFilter filtro) {
+        List<Pedido> pedidos = pedidoRepository.findAll(PedidoSpecs.usandoFiltro(filtro));
         List<PedidoResumoModel> pedidosModel = pedidoResumoModelAssembler.toCollectionModelList(pedidos);
+        // TODO - Simulando Squiggly (filtro de representation model)
         return customRestFilter.wrapFilter("pedidoFilter", campos, pedidosModel);
     }
 
