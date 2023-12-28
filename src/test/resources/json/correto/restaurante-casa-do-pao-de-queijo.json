@@ -1,0 +1,17 @@
+{
+  "nome": "Casa do Pão de Queijo",
+  "taxaFrete": 7.30,
+  "cozinha": {
+    "id": 1
+  },
+  "endereco": {
+    "cep": "01300-020",
+    "logradouro": "Av. Maria Oliveira",
+    "numero": "1000",
+    "complemento": null,
+    "bairro": "Jd. 12 de Outubro",
+    "cidade": {
+      "id": 1
+    }
+  }
+}

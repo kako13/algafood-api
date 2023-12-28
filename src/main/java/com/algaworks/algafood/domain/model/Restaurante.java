@@ -35,9 +35,9 @@ public class Restaurante {
     @Embedded
     private Endereco endereco;
 
-    private Boolean ativo;
+    private Boolean ativo = Boolean.TRUE;
 
-    private Boolean aberto;
+    private Boolean aberto = Boolean.FALSE;
 
     @CreationTimestamp
     @Column(nullable = false, columnDefinition = "datetime")

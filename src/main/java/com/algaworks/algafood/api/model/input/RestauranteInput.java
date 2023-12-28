@@ -27,4 +27,16 @@ public class RestauranteInput {
     @Valid
     @NotNull
     private EnderecoInput endereco;
+
+    public RestauranteInput() {
+    }
+
+    public RestauranteInput(String nome, BigDecimal taxaFrete, Long cozinha, EnderecoInput endereco) {
+        this.nome = nome;
+        this.taxaFrete = taxaFrete;
+        CozinhaIdInput cozinhaIdInput = new CozinhaIdInput();
+        cozinhaIdInput.setId(cozinha);
+        this.cozinha = cozinhaIdInput;
+        this.endereco = endereco;
+    }
 }
