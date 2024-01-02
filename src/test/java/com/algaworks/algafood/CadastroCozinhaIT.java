@@ -53,7 +53,7 @@ class CadastroCozinhaIT {
     private String jsonCorretoCozinhaChinesa;
 
     @BeforeEach
-    public void setup() {
+    void setup() {
         RestAssured.enableLoggingOfRequestAndResponseIfValidationFails();
         RestAssured.port = port;
         RestAssured.basePath = "/cozinhas";
@@ -64,7 +64,7 @@ class CadastroCozinhaIT {
     }
 
     @Test
-    public void deveRetornarStatus200_QuandoConsultarCozinhas() {
+    void deveRetornarStatus200_QuandoConsultarCozinhas() {
 
         given()
                 .accept(ContentType.JSON)
@@ -75,7 +75,7 @@ class CadastroCozinhaIT {
     }
 
     @Test
-    public void deveRetornarStatus201_QuandoCadastrarCozinha () {
+    void deveRetornarStatus201_QuandoCadastrarCozinha () {
         given()
                 .body(jsonCorretoCozinhaChinesa)
                 .accept(ContentType.JSON)
@@ -141,7 +141,7 @@ class CadastroCozinhaIT {
     }
 
     @Test
-    public void deveRetornarStatus404_QuandoConsultarCozinhaInexistente() {
+    void deveRetornarStatus404_QuandoConsultarCozinhaInexistente() {
         given()
                 .pathParams("cozinhaId", COZINHA_ID_INEXISTENTE)
                 .accept(ContentType.JSON)
