@@ -3,30 +3,27 @@ package com.algaworks.algafood;
 import com.algaworks.algafood.api.model.RestauranteModel;
 import com.algaworks.algafood.api.model.input.RestauranteInput;
 import com.algaworks.algafood.domain.model.*;
-import com.algaworks.algafood.domain.repository.CidadeRepository;
-import com.algaworks.algafood.domain.repository.CozinhaRepository;
-import com.algaworks.algafood.domain.repository.EstadoRepository;
-import com.algaworks.algafood.domain.repository.RestauranteRepository;
+import com.algaworks.algafood.domain.repository.*;
 import com.algaworks.algafood.util.DatabaseCleaner;
 import com.algaworks.algafood.util.ResourceUtils;
+import com.algaworks.algafood.util.data.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.RestAssured;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
-import org.junit.jupiter.api.Assertions;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.StringArrayPropertyEditor;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.TestPropertySource;
 
-import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
@@ -42,21 +39,24 @@ public class CadastroRestauranteIT {
     public static final String CAMPOS_INVALIDOS_PROBLEM_USER_MSG = "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.";
     @LocalServerPort
     private int port;
-
     @Autowired
     private DatabaseCleaner databaseCleaner;
-
     @Autowired
     private CozinhaRepository cozinhaRepository;
-
     @Autowired
     private RestauranteRepository restauranteRepository;
-
     @Autowired
     private EstadoRepository estadoRepository;
-
     @Autowired
     private CidadeRepository cidadeRepository;
+    @Autowired
+    private FormaPagamentoRepository formaPagamentoRepository;
+    @Autowired
+    private GrupoRepository grupoRepository;
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+    @Autowired
+    private PermissaoRepository permissaoRepository;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -94,7 +94,7 @@ public class CadastroRestauranteIT {
     }
 
     @Test
-    public void deveRetornarCodigo200_QuandoListarRestaurantes() {
+    void deveRetornarCodigo200_QuandoListarRestaurantes() {
         given()
                 .accept(ContentType.JSON)
         .when()
@@ -105,7 +105,7 @@ public class CadastroRestauranteIT {
     }
 
     @Test
-    public void deveRetornarStatus201ERestauranteModel_QuandoCadastrarRestaurante() throws JsonProcessingException {
+    void deveRetornarStatus201ERestauranteModel_QuandoCadastrarRestaurante() throws JsonProcessingException {
         RestauranteInput restauranteInput = objectMapper.readValue(jsonCorretoRestauranteCasaDaPamonha, RestauranteInput.class);
         given()
                 .body(jsonCorretoRestauranteCasaDaPamonha)
@@ -130,7 +130,7 @@ public class CadastroRestauranteIT {
     }
 
     @Test
-    public void deveRetornarStatus200ERestauranteModel_QuandoConsultarUmRestauranteExistente() {
+    void deveRetornarStatus200ERestauranteModel_QuandoConsultarUmRestauranteExistente() {
         given()
                 .pathParams("restauranteId", restauranteCasaDaFeijoda.getId())
                 .accept(ContentType.JSON)
@@ -157,7 +157,7 @@ public class CadastroRestauranteIT {
     }
 
     @Test
-    public void deveRetornarStatus200ERestauranteModel_QuandoAlterarUmRestauranteExistente() throws JsonProcessingException {
+    void deveRetornarStatus200ERestauranteModel_QuandoAlterarUmRestauranteExistente() throws JsonProcessingException {
         RestauranteInput restauranteInput = objectMapper.readValue(jsonCorretoRestauranteCasaDoPaoDeQueijo, RestauranteInput.class);
         given()
                 .contentType(ContentType.JSON)
@@ -183,7 +183,7 @@ public class CadastroRestauranteIT {
     }
 
     @Test
-    public void deveRetornarStatus200EProjecaoApenasNome_QuandoPassarProjecapPorRequestParam() {
+    void deveRetornarStatus200EProjecaoApenasNome_QuandoPassarProjecapPorRequestParam() {
         Response response =
                 given()
                         .param("projecao","apenas-nome")
@@ -191,81 +191,116 @@ public class CadastroRestauranteIT {
                 .when()
                         .get();
 
-        System.out.println(response.jsonPath().prettyPrint());
-        Assertions.assertEquals(response.getStatusCode(), HttpStatus.OK.value());
-        List<RestauranteModel> restaurantes = response.jsonPath().getList("$", RestauranteModel.class);
+        response.jsonPath().prettyPrint();
+        assertEquals(response.getStatusCode(), HttpStatus.OK.value());
 
+        List<RestauranteModel> restaurantes = response.jsonPath().getList("$", RestauranteModel.class);
         assertEquals(2, restaurantes.size());
-        assertEquals("Casa da Feijoada", restaurantes.get(0).getNome());
-        assertEquals("Burger Top", restaurantes.get(1).getNome());
+
+        RestauranteModel restauranteCasaDaFeijoada = restaurantes.get(0);
+        assertEquals("Casa da Feijoada", restauranteCasaDaFeijoada.getNome());
+        assertEquals(1L, restauranteCasaDaFeijoada.getId());
+
+        RestauranteModel restauranteBurguerTop = restaurantes.get(1);
+        assertEquals("Burger Top", restauranteBurguerTop.getNome());
+        assertEquals(2L, restauranteBurguerTop.getId());
+
+        Assertions.assertThat(restauranteCasaDaFeijoada).hasAllNullFieldsOrPropertiesExcept("id", "nome");
     }
 
     @Test
-    public void deveRetornarStatus204SemResponseBody_QuandoAtivarUmRestaurante() {
+    void deveRetornarStatus204SemResponseBody_QuandoAtivarUmRestaurante() {
         Long restauranteId = restauranteCasaDaFeijoda.getId();
         Response response =
                 given()
                         .pathParam("restauranteId", restauranteId)
-                        .param("projecao","apenas-nome")
                         .accept(ContentType.JSON)
                 .when()
                         .put("/{restauranteId}/ativo");
 
         Optional<Restaurante> restauranteAtivado = restauranteRepository.findById(restauranteId);
         assertEquals(response.getStatusCode(), HttpStatus.NO_CONTENT.value());
-        assertEquals(restauranteAtivado.get().getAtivo(), Boolean.TRUE);
+        assertEquals(Boolean.TRUE, restauranteAtivado.get().getAtivo());
     }
 
     @Test
-    public void deveRetornarStatus204SemResponseBody_QuandoInativarUmRestaurante() {
+    void deveRetornarStatus204SemResponseBody_QuandoAtivarListaDeRestaurantes() {
+        Long restauranteId = restauranteCasaDaFeijoda.getId();
+        Response response =
+                given()
+                        .body(List.of(1L,2L))
+                        .contentType(ContentType.JSON)
+                        .accept(ContentType.JSON)
+                .when()
+                        .put("/ativacoes");
+
+        restauranteRepository.findAll()
+                .forEach(e -> assertEquals(Boolean.TRUE, e.getAtivo()));
+    }
+
+    @Test
+    void deveRetornarStatus204SemResponseBody_QuandoInativarUmRestaurante() {
         Long restauranteId = burgerTopRestaurante.getId();
         Response response =
                 given()
                         .pathParam("restauranteId", restauranteId)
-                        .param("projecao","apenas-nome")
                         .accept(ContentType.JSON)
                 .when()
                         .delete("/{restauranteId}/ativo");
 
         Optional<Restaurante> restauranteAtivado = restauranteRepository.findById(restauranteId);
         assertEquals(response.getStatusCode(), HttpStatus.NO_CONTENT.value());
-        assertEquals(restauranteAtivado.get().getAtivo(), Boolean.FALSE);
+        assertEquals(Boolean.FALSE, restauranteAtivado.get().getAtivo());
     }
 
     @Test
-    public void deveRetornarStatus204SemResponseBody_QuandoAbrirUmRestaurante() {
+    void deveRetornarStatus204SemResponseBody_QuandoInativarListaDeRestaurantes() {
+        Long restauranteId = restauranteCasaDaFeijoda.getId();
+        Response response =
+                given()
+                        .body(List.of(1L,2L))
+                        .contentType(ContentType.JSON)
+                        .accept(ContentType.JSON)
+                        .when()
+                        .delete("/ativacoes");
+
+        restauranteRepository.findAll()
+                .forEach(e -> assertEquals(Boolean.FALSE, e.getAtivo()));
+    }
+
+    @Test
+    void deveRetornarStatus204SemResponseBody_QuandoAbrirUmRestaurante() {
+
         Long restauranteId = burgerTopRestaurante.getId();
         Response response =
                 given()
                         .pathParam("restauranteId", restauranteId)
-                        .param("projecao","apenas-nome")
                         .accept(ContentType.JSON)
                 .when()
                         .put("/{restauranteId}/abertura");
 
         Optional<Restaurante> restauranteAtivado = restauranteRepository.findById(restauranteId);
         assertEquals(response.getStatusCode(), HttpStatus.NO_CONTENT.value());
-        assertEquals(restauranteAtivado.get().getAberto(), Boolean.TRUE);
+        assertEquals(Boolean.TRUE, restauranteAtivado.get().getAberto());
     }
 
     @Test
-    public void deveRetornarStatus204SemResponseBody_QuandoFecharUmRestaurante() {
+    void deveRetornarStatus204SemResponseBody_QuandoFecharUmRestaurante() {
         Long restauranteId = burgerTopRestaurante.getId();
         Response response =
                 given()
                         .pathParam("restauranteId", restauranteId)
-                        .param("projecao","apenas-nome")
                         .accept(ContentType.JSON)
                 .when()
                         .put("/{restauranteId}/fechamento");
 
         Optional<Restaurante> restauranteAtivado = restauranteRepository.findById(restauranteId);
         assertEquals(response.getStatusCode(), HttpStatus.NO_CONTENT.value());
-        assertEquals(restauranteAtivado.get().getAberto(), Boolean.FALSE);
+        assertEquals(Boolean.FALSE, restauranteAtivado.get().getAberto());
     }
 
     @Test
-    public void deveRetornarQuantidadeCorretaDeRestaurantes_QuandoConsultarRestaurantes() {
+    void deveRetornarQuantidadeCorretaDeRestaurantes_QuandoConsultarRestaurantes() {
         given()
                 .accept(ContentType.JSON)
         .when()
@@ -276,7 +311,7 @@ public class CadastroRestauranteIT {
     }
 
     @Test
-    public void deveRetornarStatus400_QuandoCadastrarRestauranteSemTaxaFrete() {
+    void deveRetornarStatus400_QuandoCadastrarRestauranteSemTaxaFrete() {
         given()
                 .body(jsonRestauranteSemFrete)
                 .contentType(ContentType.JSON)
@@ -290,7 +325,7 @@ public class CadastroRestauranteIT {
     }
 
     @Test
-    public void deveRetornarStatus400_QuandoCadastrarRestauranteSemCozinha() {
+    void deveRetornarStatus400_QuandoCadastrarRestauranteSemCozinha() {
         given()
                 .body(jsonRestauranteSemCozinha)
                 .contentType(ContentType.JSON)
@@ -304,7 +339,7 @@ public class CadastroRestauranteIT {
     }
 
     @Test
-    public void deveRetornarStatus400_QuandoCadastrarRestauranteComCozinhaInexistente() {
+    void deveRetornarStatus400_QuandoCadastrarRestauranteComCozinhaInexistente() {
         given()
                 .body(jsonRestauranteComCozinhaInexistente)
                 .contentType(ContentType.JSON)
@@ -318,7 +353,7 @@ public class CadastroRestauranteIT {
     }
 
     @Test
-    public void deveRetornarStatus404_QuandoConsultarRestauranteInexistente() {
+    void deveRetornarStatus404_QuandoConsultarRestauranteInexistente() {
         given()
                 .pathParams("restauranteId", RESTAURANTE_ID_INEXISTENTE)
                 .accept(ContentType.JSON)
@@ -330,47 +365,66 @@ public class CadastroRestauranteIT {
     }
 
     private void prepararDados() {
-        Cozinha cozinhaBrasileira = new Cozinha();
-        cozinhaBrasileira.setNome("Brasileira");
-        cozinhaBrasileira= cozinhaRepository.save(cozinhaBrasileira);
-
-        Cozinha cozinhaAmericana = new Cozinha();
-        cozinhaAmericana.setNome("Americana");
-        cozinhaAmericana= cozinhaRepository.save(cozinhaAmericana);
-
-        estadoSP = new Estado();
-        estadoSP.setNome("São Paulo");
-        estadoRepository.save(estadoSP);
-
-        cidadeBarueri = new Cidade();
-        cidadeBarueri.setNome("Barueri");
-        cidadeBarueri.setEstado(estadoSP);
+        Cozinha cozinhaBrasileira = CozinhaTestData
+                .umaCozinhaNova()
+                .build();
+        cozinhaRepository.save(cozinhaBrasileira);
+        Cozinha cozinhaAmericada = CozinhaTestData
+                .umaCozinhaNova()
+                .nome("Americada")
+                .build();
+        cozinhaRepository.save(cozinhaAmericada);
+        Estado estadoSaoPaulo = EstadoTestData
+                .umEstadoNovo()
+                .build();
+        estadoRepository.save(estadoSaoPaulo);
+        Cidade cidadeBarueri = CidadeTestData
+                .umaCidadeNova()
+                .estado(estadoSaoPaulo)
+                .build();
         cidadeRepository.save(cidadeBarueri);
-
-        Endereco endereco = new Endereco();
-        endereco.setCidade(cidadeBarueri);
-        endereco.setCep("06192-070");
-        endereco.setBairro("Jd. Tupancy");
-        endereco.setLogradouro("Rua João Pinheiro");
-        endereco.setNumero("1000");
-
-        restauranteCasaDaFeijoda = new Restaurante();
-        restauranteCasaDaFeijoda.setNome("Casa da Feijoada");
-        restauranteCasaDaFeijoda.setTaxaFrete(BigDecimal.TEN);
-        restauranteCasaDaFeijoda.setCozinha(cozinhaBrasileira);
-        restauranteCasaDaFeijoda.setEndereco(endereco);
-        restauranteCasaDaFeijoda.setAberto(Boolean.FALSE);
-        restauranteCasaDaFeijoda.setAtivo(Boolean.FALSE);
+        FormaPagamento credito = FormaPagamentoTestData
+                .umaFormaPagamentoNova()
+                .build();
+        formaPagamentoRepository.save(credito);
+        Permissao permissaoTotal = PermissaoTestData
+                .umaPermissaoNova()
+                .build();
+        permissaoRepository.save(permissaoTotal);
+        Grupo grupoDev = GruposTestData
+                .umGrupoNovo()
+                .permissoes(Set.of(permissaoTotal))
+                .build();
+        grupoRepository.save(grupoDev);
+        Usuario responsavel = UsuarioTestData.umUsuarioNovo()
+                .grupos(Set.of(grupoDev))
+                .build();
+        usuarioRepository.save(responsavel);
+        restauranteCasaDaFeijoda = RestauranteTestData
+                .umRestauranteNovo()
+                .endereco(EnderecoTestData
+                        .umEndereco()
+                        .cidade(cidadeBarueri)
+                        .build())
+                .cozinha(cozinhaBrasileira)
+                .formasPagamento(Set.of(credito))
+                .responsaveis(Set.of(responsavel))
+                .build();
         restauranteRepository.save(restauranteCasaDaFeijoda);
-
-        burgerTopRestaurante = new Restaurante();
-        burgerTopRestaurante.setNome("Burger Top");
-        burgerTopRestaurante.setTaxaFrete(new BigDecimal(10));
-        burgerTopRestaurante.setCozinha(cozinhaAmericana);
-        burgerTopRestaurante.setAberto(Boolean.TRUE);
-        burgerTopRestaurante.setAtivo(Boolean.TRUE);
+        burgerTopRestaurante = RestauranteTestData
+                .umRestauranteNovo()
+                .nome("Burger Top")
+                .aberto(Boolean.TRUE)
+                .ativo(Boolean.TRUE)
+                .endereco(EnderecoTestData
+                        .umEndereco()
+                        .cidade(cidadeBarueri)
+                        .build())
+                .cozinha(cozinhaAmericada)
+                .formasPagamento(Set.of(credito))
+                .responsaveis(Set.of(responsavel))
+                .build();
         restauranteRepository.save(burgerTopRestaurante);
-
         quantidadeRestaurantesCadastrados = (int) restauranteRepository.count();
     }
 }
