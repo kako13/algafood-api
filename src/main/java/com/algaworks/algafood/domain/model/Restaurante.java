@@ -79,9 +79,7 @@ public class Restaurante {
     }
 
     public boolean adicionarFormaPagamento(FormaPagamento formaPagamento) {
-        if (!getFormasPagamento().contains(formaPagamento))
-            return getFormasPagamento().add(formaPagamento);
-        return false;
+        return getFormasPagamento().add(formaPagamento);
     }
 
     public void abrir() {

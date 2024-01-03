@@ -17,7 +17,7 @@ public class RestauranteTestData {
                 .cozinha(CozinhaTestData.umaCozinhaNova().build())
                 .endereco(EnderecoTestData.umEndereco().build())
                 .responsaveis(Set.of(UsuarioTestData.umUsuarioNovo().build()))
-                .formasPagamento(Set.of(FormaPagamentoTestData.umaFormaPagamentoNova().build()))
+                .formasPagamento(Set.of(FormaPagamentoTestData.umaFormaPagamentoNova().id(1L).build()))
                 ;
     }
 }

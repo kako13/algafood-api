@@ -85,16 +85,16 @@ class RestauranteTest {
 
     @Test
     void naoAceitaFormaPagamento() {
-        boolean naoAceitaFormaPagamento = restauranteCasaDaFeijoda.naoAceitaFormaPagamento(credito);
+        boolean naoAceitaFormaPagamento = restauranteCasaDaFeijoda.naoAceitaFormaPagamento(debito);
         assertEquals(Boolean.TRUE, naoAceitaFormaPagamento);
     }
 
     private void prepararRestaurante() {
         restauranteCasaDaFeijoda = RestauranteTestData.umRestauranteNovo().build();
 
-        credito = FormaPagamentoTestData.umaFormaPagamentoNova().build();
+        credito = FormaPagamentoTestData.umaFormaPagamentoNova().id(1L).build();
 
-        debito = FormaPagamentoTestData.umaFormaPagamentoNova().descricao("Débito").build();
+        debito = FormaPagamentoTestData.umaFormaPagamentoNova().id(2L).descricao("Débito").build();
 
 //        restauranteCasaDaFeijoda.getFormasPagamento().add(credito);
 //
