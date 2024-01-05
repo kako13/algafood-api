@@ -9,4 +9,10 @@ public class FormaPagamentoTestData {
                 .descricao("Crédito")
                 ;
     }
+    public static FormaPagamento.FormaPagamentoBuilder umaFormaPagamentoExistente () {
+        return FormaPagamento.builder()
+                .id(1L)
+                .descricao("Crédito")
+                ;
+    }
 }

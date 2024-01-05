@@ -42,8 +42,7 @@ public class Usuario {
         return getSenha().equals(senhaAtual);
     }
 
-
-    public boolean getSenhaNaoCoincideCom(String senhaAtual) {
+    public boolean senhaNaoCoincideCom(String senhaAtual) {
         return !senhaCoincideCom(senhaAtual);
     }
 

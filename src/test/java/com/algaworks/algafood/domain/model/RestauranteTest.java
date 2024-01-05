@@ -2,6 +2,7 @@ package com.algaworks.algafood.domain.model;
 
 import com.algaworks.algafood.util.data.FormaPagamentoTestData;
 import com.algaworks.algafood.util.data.RestauranteTestData;
+import com.algaworks.algafood.util.data.UsuarioTestData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -38,16 +39,16 @@ class RestauranteTest {
 
     @Test
     void testarRemoverFormaPagamento() {
-//        restauranteCasaDaFeijoda.removerFormaPagamento(credito);
-//        Set<FormaPagamento> formasPagamento = restauranteCasaDaFeijoda.getFormasPagamento();
-//        assertEquals(Boolean.FALSE, formasPagamento.contains(credito));
+        assertTrue(restauranteCasaDaFeijoda.removerFormaPagamento(credito));
+        Set<FormaPagamento> formasPagamento = restauranteCasaDaFeijoda.getFormasPagamento();
+        assertEquals(Boolean.FALSE, formasPagamento.contains(credito));
     }
 
     @Test
     void testarAdicionarFormaPagamento() {
-//        restauranteCasaDaFeijoda.adicionarFormaPagamento(debito);
-//        Set<FormaPagamento> formasPagamento = restauranteCasaDaFeijoda.getFormasPagamento();
-//        assertEquals(Boolean.TRUE, formasPagamento.contains(debito));
+        assertTrue(restauranteCasaDaFeijoda.adicionarFormaPagamento(debito));
+        Set<FormaPagamento> formasPagamento = restauranteCasaDaFeijoda.getFormasPagamento();
+        assertEquals(Boolean.TRUE, formasPagamento.contains(debito));
     }
 
     @Test
@@ -64,17 +65,17 @@ class RestauranteTest {
 
     @Test
     void removerResponsavel() {
-//        restauranteCasaDaFeijoda.removerResponsavel(usuarioResponsavel);
-//        Set<Usuario> responsaveis = restauranteCasaDaFeijoda.getResponsaveis();
-//        assertEquals(Boolean.FALSE, responsaveis.contains(usuarioResponsavel));
+        assertTrue(restauranteCasaDaFeijoda.removerResponsavel(usuarioResponsavel));
+        Set<Usuario> responsaveis = restauranteCasaDaFeijoda.getResponsaveis();
+        assertEquals(Boolean.FALSE, responsaveis.contains(usuarioResponsavel));
     }
 
     @Test
     void adicionarResponsavel() {
-//        restauranteCasaDaFeijoda.getResponsaveis().clear();
-//        restauranteCasaDaFeijoda.adicionarResponsavel(usuarioResponsavel);
-//        Set<Usuario> responsaveis = restauranteCasaDaFeijoda.getResponsaveis();
-//        assertEquals(Boolean.TRUE, responsaveis.contains(usuarioResponsavel));
+        restauranteCasaDaFeijoda.getResponsaveis().clear();
+        assertTrue(restauranteCasaDaFeijoda.adicionarResponsavel(usuarioResponsavel));
+        Set<Usuario> responsaveis = restauranteCasaDaFeijoda.getResponsaveis();
+        assertEquals(Boolean.TRUE, responsaveis.contains(usuarioResponsavel));
     }
 
     @Test
@@ -91,19 +92,8 @@ class RestauranteTest {
 
     private void prepararRestaurante() {
         restauranteCasaDaFeijoda = RestauranteTestData.umRestauranteNovo().build();
-
-        credito = FormaPagamentoTestData.umaFormaPagamentoNova().id(1L).build();
-
+        credito = FormaPagamentoTestData.umaFormaPagamentoNova().build();
         debito = FormaPagamentoTestData.umaFormaPagamentoNova().id(2L).descricao("Débito").build();
-
-//        restauranteCasaDaFeijoda.getFormasPagamento().add(credito);
-//
-//        usuarioResponsavel = new Usuario();
-//        usuarioResponsavel.setId(1L);
-//        usuarioResponsavel.setNome("Pedro Henrique");
-//        usuarioResponsavel.setEmail("pedro.henrique.adm@algafoods.com");
-//        usuarioResponsavel.setSenha("123456");
-//
-//        restauranteCasaDaFeijoda.getResponsaveis().add(usuarioResponsavel);
+        usuarioResponsavel = restauranteCasaDaFeijoda.getResponsaveis().stream().findFirst().get();
     }
 }
