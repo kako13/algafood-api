@@ -3871,7 +3871,7 @@ Isso permite que o repositótio possa operar a specification em qualquer método
 E no `PedidoController` a spec é passada como parâmetro no método do `findAll()` mesmo que no repository não esteja declarado
 o parâmetro:
 ```findAll
-List<Pedido> pedidos = pedidoRepository.(PedidoSpecs.usandoFiltro(filtro));
+List<Pedido> pedidos = pedidoRepository.findAll(PedidoSpecs.usandoFiltro(filtro));
 ```
 
 ####
