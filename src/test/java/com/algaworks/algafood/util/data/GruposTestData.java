@@ -1,6 +1,5 @@
 package com.algaworks.algafood.util.data;
 
-import ch.qos.logback.classic.spi.LoggingEventVO;
 import com.algaworks.algafood.domain.model.Grupo;
 import com.algaworks.algafood.domain.model.Permissao;
 
@@ -23,14 +22,14 @@ public class GruposTestData {
         permissoes = prepararPermissoes();
         return Grupo.builder()
                 .id(1L)
-                .nome("Desenvolvedor")
+                .nome("Gerente")
                 .permissoes(permissoes)
                 ;
     }
 
     private static Set<Permissao> prepararPermissoes() {
         Set<Permissao> permissoes = new HashSet<>();
-        permissoes.add(PermissaoTestData.umaPermissaoNova().build());
+        permissoes.add(PermissaoTestData.umaPermissaoExistente().build());
         return permissoes;
     }
 }

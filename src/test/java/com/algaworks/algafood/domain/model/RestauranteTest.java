@@ -2,15 +2,14 @@ package com.algaworks.algafood.domain.model;
 
 import com.algaworks.algafood.util.data.FormaPagamentoTestData;
 import com.algaworks.algafood.util.data.RestauranteTestData;
-import com.algaworks.algafood.util.data.UsuarioTestData;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.math.BigDecimal;
 import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
 class RestauranteTest {
@@ -93,7 +92,7 @@ class RestauranteTest {
     private void prepararRestaurante() {
         restauranteCasaDaFeijoda = RestauranteTestData.umRestauranteNovo().build();
         credito = FormaPagamentoTestData.umaFormaPagamentoNova().build();
-        debito = FormaPagamentoTestData.umaFormaPagamentoNova().id(2L).descricao("Débito").build();
+        debito = FormaPagamentoTestData.umaFormaPagamentoExistente().build();
         usuarioResponsavel = restauranteCasaDaFeijoda.getResponsaveis().stream().findFirst().get();
     }
 }

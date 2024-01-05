@@ -6,13 +6,13 @@ public class FormaPagamentoTestData {
 
     public static FormaPagamento.FormaPagamentoBuilder umaFormaPagamentoNova () {
         return FormaPagamento.builder()
-                .descricao("Crédito")
+                .descricao("Pix")
                 ;
     }
     public static FormaPagamento.FormaPagamentoBuilder umaFormaPagamentoExistente () {
         return FormaPagamento.builder()
                 .id(1L)
-                .descricao("Crédito")
+                .descricao("Cartão de crédito")
                 ;
     }
 }

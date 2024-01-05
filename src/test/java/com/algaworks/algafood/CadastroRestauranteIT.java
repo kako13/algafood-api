@@ -16,14 +16,15 @@ import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.propertyeditors.StringArrayPropertyEditor;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.TestPropertySource;
 
 import java.math.RoundingMode;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import static io.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.*;
@@ -388,7 +389,7 @@ public class CadastroRestauranteIT {
                 .build();
         formaPagamentoRepository.save(credito);
         Permissao permissaoTotal = PermissaoTestData
-                .umaPermissaoNova()
+                .umaPermissaoExistente()
                 .build();
         permissaoRepository.save(permissaoTotal);
         Grupo grupoDev = GruposTestData
