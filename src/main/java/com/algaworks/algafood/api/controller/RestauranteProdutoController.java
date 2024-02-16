@@ -6,6 +6,7 @@ import com.algaworks.algafood.api.model.ProdutoModel;
 import com.algaworks.algafood.api.model.input.ProdutoInput;
 import com.algaworks.algafood.domain.model.Produto;
 import com.algaworks.algafood.domain.model.Restaurante;
+import com.algaworks.algafood.domain.repository.ProdutoRepository;
 import com.algaworks.algafood.domain.service.CadastroProdutoService;
 import com.algaworks.algafood.domain.service.CadastroRestauranteService;
 import jakarta.validation.Valid;
@@ -14,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/restaurantes/{restauranteId}/produtos")
@@ -30,11 +32,25 @@ public class RestauranteProdutoController {
     @Autowired
     private ProdutoInputDisassembler produtoInputDisassembler;
 
+    @Autowired
+    private ProdutoRepository produtoRepository;
+
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<ProdutoModel> listar(@PathVariable Long restauranteId) {
+    public List<ProdutoModel> listar(@PathVariable Long restauranteId,
+                                     @RequestParam(name = "incluirinativos", required = false) Boolean incluirInativos) {
         Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
-        return produtoModelAssembler.toCollectionModel(restaurante.getProdutos());
+
+        List<Produto> produtos;
+        Optional<Boolean> incluirOptional = Optional.ofNullable(incluirInativos);
+
+        if (incluirOptional.isPresent() && incluirOptional.get().equals(Boolean.TRUE)) {
+            produtos = produtoRepository.findByRestaurante(restaurante);
+        } else {
+            produtos = produtoRepository.findAtivosByRestaurante(restaurante);
+        }
+
+        return produtoModelAssembler.toCollectionModel(produtos);
     }
 
     @GetMapping("/{produtoId}")

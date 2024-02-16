@@ -3623,11 +3623,11 @@ commit seguinte, por quebrarem o projeto.
 Caso este comportamento na API seja mantido até o fim do módulo, ele será feito com `@JsonView`, `@JsonFilter`
 ou DTO (Representation Model) de um model/entidade resumida.
 
-Foi desenvolvido um componente que possui um método `wrapFilter(String filterName, String fields, List<?> modelsList)` 
+Foi desenvolvido um componente `CustomRestFilter` que possui um método `wrapFilter(String filterName, String fields, List<?> modelsList)` 
 que recebe um nome de filter (que deve ser o mesmo da anotação `@JsonFilter` no model), os campos intercalados por `,` passados 
-no parametro da requisição e a lista de models contendo a anotação.
-Não foi possível replicar o comportamento aceitando colchetes, pois a configuração do Tomcat para permitir colchetes já 
-não existe desta versão do Spring (3.1.3) devido RFC 7230 e RFC 3986 que aborda vulnerabilidades nesta prática. 
+no parametro da requisição e a lista de models contendo a anotação; então devolve MappingJacksonValue.
+Não foi possível replicar o comportamento aceitando colchetes, a configuração do Tomcat até permite os colchetes, mas 
+existem as RFCs que definiem o protocolo, RFC 7230 e RFC 3986, que abordam vulnerabilidades nesta prática. 
 
 
 <div align="center">_______________________________________________________________________________</div>
