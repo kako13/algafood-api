@@ -2489,7 +2489,7 @@ Tomando como exemplo o endereço do restaurante, nos casos de:
    - Não precisa tratar ao consultar ou atualizar um Restaurante 
    - **Permite inconsistência no estado o recurso**
    ex: 
-      - Se endereço for obrigatório, e separamos em recurso restaurante e subrecurso endereço, pode ser que o consumidor 
+      - Se endereço for obrigatório, e separamos em recurso restaurante e sub-recurso endereço, pode ser que o consumidor 
    cadastre um restaurante sem endereço. 
       - Se o produto só puder ser cadastrado num restaurante que possua endereço. Isso obriga a estabelecer uma ordem de 
    cadastro: cadastro de endereço -> cadastro de restaurante -> finalmente cadastro de produto. 
@@ -2987,13 +2987,6 @@ O campo `aberto` foi adicionado nas classes de modelo de domínio e de represent
 controller e ao service, o comportamento de abrir e fechar foi encapsulado na classe de domínio. O modelo foi alterado
 criando a migration V009 para a inclusão do novo campo além da inclusão nos scripts do afterMigrate para testes.
 
-Até o momento subrecursos de **processos** (ativo, abertura e fechamento) foram implementados no controller principal (CRUD),
-enquanto os subrecursos de **CRUD e associação** foram implementados em controllers separados. 
-
-_Por enquanto não criamos um controller para permissões._
-
-
-
 ###
 </details></li>
 
@@ -3368,8 +3361,8 @@ Na classe `Pedido` criamos um método privado para gerar o `UUID` a partir do Ja
 <div align="center">_______________________________________________________________________________</div>
 
 
-Até o momento subrecursos de **processos "coisificados"** (ativo, abertura e fechamento) foram implementados no controller principal (CRUD),
-enquanto os subrecursos de **CRUD e associação** foram implementados em controllers separados.
+Até o momento sub-recursos de **processos "coisificados"** (ativo, abertura e fechamento) foram implementados no controller principal (CRUD),
+enquanto os sub-recursos de **CRUD e associação** foram implementados em controllers separados.
 
 _Por enquanto não criamos um controller para permissões._
 
@@ -3614,12 +3607,157 @@ public class SquigglyConfig {
 ####
 </details></li>
 
+<li><details>
+   <summary>Implementando pesquisas simples na API ⭐ ⭐ </summary>
+
+Aqui a pesquisa foi feita por **parâmetro** num **collection resource**.
+
+Foi necessário criar/alterar as seguintes classes:
+
+- RestauranteProdutoController
+- ProdutoRepository
+- afterMigrate.sql
+
+No controller incluí o ` @RequestParam(name = "incluirinativos", required = false) Boolean incluirInativos)` para pegar o
+parametro, e utilizei um Wrapper de tipo primitivo devido sugestão do Sonar, e isso possibilita o objeto vir nulo,
+fiz o tratamento e ficou da seguinte forma:
+
+```
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    public List<ProdutoModel> listar(@PathVariable Long restauranteId,
+                                     @RequestParam(name = "incluirinativos", required = false) Boolean incluirInativos) {
+        Restaurante restaurante = cadastroRestaurante.buscarOuFalhar(restauranteId);
+
+        List<Produto> produtos;
+        Optional<Boolean> incluirOptional = Optional.ofNullable(incluirInativos);
+
+        if (incluirOptional.isPresent() && incluirOptional.get().equals(Boolean.TRUE)) {
+            produtos = produtoRepository.findByRestaurante(restaurante);
+        } else {
+            produtos = produtoRepository.findAtivosByRestaurante(restaurante);
+        }
+
+        return produtoModelAssembler.toCollectionModel(produtos);
+    }
+```
+
+No `ProdutoRepository` incluí o método `findByRestaurante`, já que antes conseguia o mesmo comportamento usando o próprio 
+"gerenciamento" do JPA, apenas pegando a coleção com `restaurante.getProdutos()`. E o método `findAtivosByRestaurante`
+fazendo a consulta apenas dos produtos ativos.
+
+####
+</details></li>
+
+
+<li><details>
+   <summary>Modelando pesquisas complexas na API ⭐ ⭐ ⭐ ⭐</summary>
+
+Conceituando algumas abordagens na modelagem de pesquisas.
+
+### Solução 1. Receber os parâmetros de URL no recurso de coleção
+
+```
+GET /pedidos?dataCriacaoInicio=2019-10-20T14:00:00Z&dataCriacaoFim=2019-08-31T33:00:00Z&restauranteId=1&clienteId=4
+200 - OK - coleção com resultado do filtro
+```
+
+### Solução 2. Considerar a própria pesquisa como um recurso
+**_Uma prática não recomendada, muito quebra a constraint de cache do REST, e possibilita a "consulta" via POST polêmica:_**
+
+```
+POST /pedidos/filtros passando um payload/objeto com as propriedades de filtro
+200 - OK - coleção com resultado do filtro
+```
+-- -
+###
+E uma terceira abordagem com variações:
+
+### Soluções 3. Considerar a própria pesquisa como um recurso de verdade, real oficial!
+Considerando um sub-recurso específico para filtros. 
+Necessita persistencia De forma que seja possível criar e consultá-lo: 
+
+```
+POST /pedidos/filtros passando um payload de filtro
+201 - CREATED - payload do recurso filtro com id, efetivamente criado, sem o resultado do filtro
+```
+```
+GET /pedidos/filtros/{idFiltro} consultando um singleton subresource da pesquisa
+200 - OK - payload do recurso filtro efetivamente criado com a propriedade "resultado" com a coleção do resultado do filtro 
+```
+
+### Solução 3.1
+Enquanto um sub-recurso singleton apenas de filtros
+
+```
+GET /pedidos/filtros/{idFiltro} consultando um singleton subresource da pesquisa
+200 - OK - payload do recurso filtro efetivamente criado, sem o resultado do filtro
+```
+```
+GET /pedidos?filtro={idFiltro} "filtrando" os pedidos pelo id do recurso filtro (pode até sem em memória ou cache)
+200 - OK - coleção com resultado do filtro 
+```
+
+**O tutor recomenda como melhores abordagens as soluções 1 ou a 3.1 caso seja necessário reaproveitamento de filtro em cache 
+ou no futuro.**
+-- ---
+###
+Para fins de aprofundamento segue mais outra:
+
+#### Solução 3.2
+Considerando um sub-recurso específico para filtros.
+Necessita persistencia De forma que seja possível criar e consultá-lo, passando um payload de um filtro verdadeiramente 
+complexo:
+```
+POST /pedidos/filtros
+[
+    {
+        "operadorLogico": "||",
+        "criterios": {
+            "dataInicio": {
+                "operadorIgualdade": ">",
+                "valor": "2020-12-11T14:00:00Z"
+            },
+            "dataFim": {
+                "operadorIgualdade": "<",
+                "valor": "2021-10-30T14:00:00Z"
+            }
+        }
+    },
+    {
+        "operadorLogico": "&&",
+        "criterios": {
+            "restauranteId": {
+                "operadorIgualdade": "==",
+                "valor": 3,
+                "clienteId": {
+                    "operadorIgualdade": "==",
+                    "valor": 34
+                }
+            }
+        }
+    }
+]
+
+
+201 - OK - payload do recurso efetivamente criado com id, sem a coleção de resultados
+```
+```
+GET /pedidos?filtro={idFiltro} "filtrando" os pedidos pelo id do recurso filtro (pode até sem em memória ou cache)
+200 - OK - Coleção de resultados do filtro
+```
+O caso acima demandaria muita complexidade na impementação
+
+
+####
+</details></li>
+
 <div align="center">_______________________________________________________________________________</div>
 
 
 Como considerado no curso, infelizmente Squiggly é uma biblioteca terceira e descontinuada. Mas fica o aprendizado
-sobre trade-off ao optar por uma tecnologia em detrimento de outra. As classes serão comitadas, mas logo corrigidas no
-commit seguinte, por quebrarem o projeto.
+sobre trade-off ao optar por uma tecnologia ou qualquer outra decisão no projeto. As classes serão comitadas, mas logo 
+corrigidas no commit seguinte, por quebrarem o projeto.
 Caso este comportamento na API seja mantido até o fim do módulo, ele será feito com `@JsonView`, `@JsonFilter`
 ou DTO (Representation Model) de um model/entidade resumida.
 
@@ -3627,7 +3765,8 @@ Foi desenvolvido um componente `CustomRestFilter` que possui um método `wrapFil
 que recebe um nome de filter (que deve ser o mesmo da anotação `@JsonFilter` no model), os campos intercalados por `,` passados 
 no parametro da requisição e a lista de models contendo a anotação; então devolve MappingJacksonValue.
 Não foi possível replicar o comportamento aceitando colchetes, a configuração do Tomcat até permite os colchetes, mas 
-existem as RFCs que definiem o protocolo, RFC 7230 e RFC 3986, que abordam vulnerabilidades nesta prática. 
+existem as RFCs que definiem o protocolo, RFC 7230 e RFC 3986, que abordam vulnerabilidades nesta prática, além da complexidade
+em simular por completo o comportamento da Squiggly.
 
 
 <div align="center">_______________________________________________________________________________</div>
