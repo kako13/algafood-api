@@ -1,6 +1,7 @@
 package com.algaworks.algafood.domain.model;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -8,6 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
+@Builder
 @Data
 @Entity
 public class Grupo {

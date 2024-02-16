@@ -2728,7 +2728,7 @@ e poderá estar presente dentro de algum outro objeto.
 <li><details>
 <summary>Desafio: implementando os endpoints de usuarios ⭐ ⭐ ⭐</summary>
 
-Foi necessário criar/alterar as seguintes classes:
+Foi necessário criar/alterar as seguintes classes/arquivos:
 
 - Utilizamos herança para compor as classes de modelo de entrada, `UsuarioInput` e `UsuarioComSenhaInput`.
 - Model de saída `UsuarioModel`
@@ -2925,7 +2925,7 @@ E utilizamos o **`Set`** ao invés de `List` para não inserir restaurante_forma
 <li><details>
 <summary>Desafio: implementando os endpoints de produtos ⭐ ⭐ ⭐</summary>
 
-Para o desafio foi necessário criar/alterar as seguintes classes:
+Para o desafio foi necessário criar/alterar as seguintes classes/arquivos:
 
 - CadastroProdutoService
 - Produto (deixei o restaurante como (fetch = FetchType.LAZY) para evitar consulta desnecessária ao listar produtos)
@@ -2947,7 +2947,7 @@ Para o desafio foi necessário criar/alterar as seguintes classes:
 <li><details>
 <summary>Desafio: Implementando os endpoints de abertura e fechamento de restaurantes ⭐ ⭐ ⭐</summary>
 
-Para o desafio foi necessário criar/alterar as seguintes classes:
+Para o desafio foi necessário criar/alterar as seguintes classes/arquivos:
 
 - Restaurante
 - RestauranteModel
@@ -2970,7 +2970,7 @@ criando a migration V009 para a inclusão do novo campo além da inclusão nos s
 
 Da mesma forma que associamos as formas de pagamento aos restaurantes, agora associamos as permissões aos grupos. 
 
-Para o desafio foi necessário criar/alterar as seguintes classes:
+Para o desafio foi necessário criar/alterar as seguintes classes/arquivos:
 
 - PermissaoModelAssembler
 - GrupoPermissoesController
@@ -2996,7 +2996,7 @@ criando a migration V009 para a inclusão do novo campo além da inclusão nos s
 
 Da mesma forma que associamos as permissões aos grupos, agora associamos os grupos aos usuários. 
 
-Para o desafio foi necessário criar/alterar as seguintes classes:
+Para o desafio foi necessário criar/alterar as seguintes classes/arquivos:
 
 - CadastroUsuarioService
 - GrupoModelAssembler
@@ -3014,7 +3014,7 @@ Para o desafio foi necessário criar/alterar as seguintes classes:
 
 Da mesma forma que associamos os grupos aos usuários, agora associamos os usuários responsáveis aos restuarantes. 
 
-Para o desafio foi necessário criar/alterar as seguintes classes:
+Para o desafio foi necessário criar/alterar as seguintes classes/arquivos:
 
 - Restaurante
 - CadastroRestauranteService
@@ -3045,7 +3045,7 @@ inexistente. Pois retornar 404 estaria incorreto vez que o recurso "/restaurante
 <li><details>
 <summary>Desafio: Implementando os endpoints de consulta de pedidos ⭐ ⭐ ⭐</summary>
 
-Para o desafio foi necessário criar/alterar as seguintes classes:
+Para o desafio foi necessário criar/alterar as seguintes classes/arquivos:
 
 - ItemPedidoModelAssembler
 - PedidoModelAssembler
@@ -3081,7 +3081,7 @@ Foi necessário criar/alterar as seguintes classes:
 <li><details>
 <summary>Desafio: Implementando o endpoint de emissão de pedidos ⭐ ⭐ ⭐ ⭐</summary>
 
-Para o desafio foi necessário criar/alterar as seguintes classes:
+Para o desafio foi necessário criar/alterar as seguintes classes/arquivos:
 
 - messages.properties (mensagens de validação de todos os campos do PedidoInput)
 - ApiExceptionHandler (melhoria na mensagem de validação no Problem Details sobre um campo inexistente numa coleção:
@@ -3612,7 +3612,7 @@ public class SquigglyConfig {
 
 Aqui a pesquisa foi feita por **parâmetro** num **collection resource**.
 
-Foi necessário criar/alterar as seguintes classes:
+Foi necessário criar/alterar as seguintes classes/arquivos/arquivos:
 
 - RestauranteProdutoController
 - ProdutoRepository
@@ -3655,7 +3655,7 @@ fazendo a consulta apenas dos produtos ativos.
 
 Conceituando algumas abordagens na modelagem de pesquisas.
 
-### Solução 1. Receber os parâmetros de URL no recurso de coleção
+### Solução 1. Receber os parâmetros de URL no recurso de coleção <a id="solucao-1"></a>
 
 ```
 GET /pedidos?dataCriacaoInicio=2019-10-20T14:00:00Z&dataCriacaoFim=2019-08-31T33:00:00Z&restauranteId=1&clienteId=4
@@ -3748,6 +3748,131 @@ GET /pedidos?filtro={idFiltro} "filtrando" os pedidos pelo id do recurso filtro 
 ```
 O caso acima demandaria muita complexidade na impementação
 
+
+####
+</details></li>
+
+
+<li><details>
+   <summary>Implementando pesquisas complexas na API ⭐ ⭐ ⭐ ⭐</summary>
+
+Aqui implementamos a [solução 1](#solucao-1) da aula anterior.
+
+Foi necessário criar/alterar as seguintes classes/arquivos:
+
+- PedidoFilter
+- PedidoSpecs
+- PedidoController
+- PedidoRepository
+- afterMigrate.sql
+
+Criamos uma classe `PedidoFilter`, suas propriedades representam os possíveis filtros de consulta:
+```
+@Getter
+@Setter
+public class PedidoFilter {
+
+    private Long clienteId;
+    private Long restauranteId;
+    // Adicionado para forçar aceitar o padrão UTC com 'Z', mas fuciona sem também
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    private OffsetDateTime dataCriacaoInicio;
+    private OffsetDateTime dataCriacaoFim;
+}
+```
+
+A classe `PedidoSpecs` é a specification, ela será baseada numa lista de `Predicate`, que serão os critérios considerados
+ao gerar o da consulta, "o `select`", que vai depender do preenchimento dos campos de filtro da pesquisa representados na classe
+`PedidoFilter`:
+```
+public class PedidoSpecs {
+
+    public static Specification<Pedido> usandoFiltro(PedidoFilter filtro) {
+        return (root, query, builder) -> {
+
+            root.fetch("restaurante").fetch("cozinha");
+            root.fetch("cliente");
+
+            var predicates = new ArrayList<Predicate>();
+            // adicionar predicate no arraylist
+            if (filtro.getClienteId() != null) {
+                predicates.add(builder.equal(root.get("cliente").get("id"), filtro.getClienteId()));
+            }
+            if (filtro.getRestauranteId() != null) {
+                predicates.add(builder.equal(root.get("restaurante").get("id"), filtro.getRestauranteId()));
+            }
+            if (filtro.getDataCriacaoInicio() != null) {
+                predicates.add(builder.greaterThanOrEqualTo(root.get("dataCriacao"), filtro.getDataCriacaoInicio()));
+            }
+            if (filtro.getDataCriacaoFim() != null) {
+                predicates.add(builder.lessThanOrEqualTo(root.get("dataCriacao"), filtro.getDataCriacaoFim()));
+            }
+            return builder.and(predicates.toArray(new Predicate[0]));
+        };
+```
+-- -
+Sobre o uso do `root.fetch`:
+
+Ao consultar os pedidos com ou sem filtro, porém sem as linhas de `root.fetch` temos um número grande de consultas, problema n+1:
+```
+Hibernate: select p1_0.id,p1_0.usuario_cliente_id,p1_0.codigo,p1_0.data_cancelamento,p1_0.data_confirmacao,p1_0.data_criacao,p1_0.data_entrega,p1_0.endereco_bairro,p1_0.endereco_cep,p1_0.endereco_cidade_id,p1_0.endereco_complemento,p1_0.endereco_logradouro,p1_0.endereco_numero,p1_0.forma_pagamento_id,p1_0.restaurante_id,p1_0.status,p1_0.subtotal,p1_0.taxa_frete,p1_0.valor_total from pedido p1_0 where 1=1
+Hibernate: select u1_0.id,u1_0.data_cadastro,u1_0.email,u1_0.nome,u1_0.senha from usuario u1_0 where u1_0.id=?
+Hibernate: select r1_0.id,r1_0.aberto,r1_0.ativo,r1_0.cozinha_id,c1_0.id,c1_0.nome,r1_0.data_atualizacao,r1_0.data_cadastro,r1_0.endereco_bairro,r1_0.endereco_cep,r1_0.endereco_cidade_id,r1_0.endereco_complemento,r1_0.endereco_logradouro,r1_0.endereco_numero,r1_0.nome,r1_0.taxa_frete from restaurante r1_0 join cozinha c1_0 on c1_0.id=r1_0.cozinha_id where r1_0.id=?
+Hibernate: select r1_0.id,r1_0.aberto,r1_0.ativo,r1_0.cozinha_id,c1_0.id,c1_0.nome,r1_0.data_atualizacao,r1_0.data_cadastro,r1_0.endereco_bairro,r1_0.endereco_cep,r1_0.endereco_cidade_id,r1_0.endereco_complemento,r1_0.endereco_logradouro,r1_0.endereco_numero,r1_0.nome,r1_0.taxa_frete from restaurante r1_0 join cozinha c1_0 on c1_0.id=r1_0.cozinha_id where r1_0.id=?
+Hibernate: select u1_0.id,u1_0.data_cadastro,u1_0.email,u1_0.nome,u1_0.senha from usuario u1_0 where u1_0.id=?
+Hibernate: select u1_0.id,u1_0.data_cadastro,u1_0.email,u1_0.nome,u1_0.senha from usuario u1_0 where u1_0.id=?
+```
+Da mesma forma que no JPQL podemos utilizar o `JOIN FETCH` para trazer a coleção de uma entidade consultada, ou seja,
+fazer `JOIN` evitando o problema do n+1, no padrão specification, `(root, query, builder) -> {}`, podemos fazer o 'fetch'
+através do `root.fetch("nome_do_campo_da_entidade")`.
+Isso vai retirar a consulta excedente e incluir a entidade no `JOIN`.
+###
+Para validar este comportamento, rodar o código comentando as linhas de `fetch` da classe `PedidoSpecs` e verificar o
+número de consultas realizadas que aparecem no console seguindo os passos:
+- ao adicionar `root.fetch("cliente");`:
+```
+Hibernate: select p1_0.id,p1_0.usuario_cliente_id,c1_0.id,c1_0.data_cadastro,c1_0.email,c1_0.nome,c1_0.senha,p1_0.codigo,p1_0.data_cancelamento,p1_0.data_confirmacao,p1_0.data_criacao,p1_0.data_entrega,p1_0.endereco_bairro,p1_0.endereco_cep,p1_0.endereco_cidade_id,p1_0.endereco_complemento,p1_0.endereco_logradouro,p1_0.endereco_numero,p1_0.forma_pagamento_id,p1_0.restaurante_id,p1_0.status,p1_0.subtotal,p1_0.taxa_frete,p1_0.valor_total from pedido p1_0 join usuario c1_0 on c1_0.id=p1_0.usuario_cliente_id where 1=1
+Hibernate: select r1_0.id,r1_0.aberto,r1_0.ativo,r1_0.cozinha_id,c1_0.id,c1_0.nome,r1_0.data_atualizacao,r1_0.data_cadastro,r1_0.endereco_bairro,r1_0.endereco_cep,r1_0.endereco_cidade_id,r1_0.endereco_complemento,r1_0.endereco_logradouro,r1_0.endereco_numero,r1_0.nome,r1_0.taxa_frete from restaurante r1_0 join cozinha c1_0 on c1_0.id=r1_0.cozinha_id where r1_0.id=?
+Hibernate: select r1_0.id,r1_0.aberto,r1_0.ativo,r1_0.cozinha_id,c1_0.id,c1_0.nome,r1_0.data_atualizacao,r1_0.data_cadastro,r1_0.endereco_bairro,r1_0.endereco_cep,r1_0.endereco_cidade_id,r1_0.endereco_complemento,r1_0.endereco_logradouro,r1_0.endereco_numero,r1_0.nome,r1_0.taxa_frete from restaurante r1_0 join cozinha c1_0 on c1_0.id=r1_0.cozinha_id where r1_0.id=?
+```
+As consultas isoladas na tabela de clientes/usuários (u1_0) já não existem mais.
+
+###
+- ao adicionar `root.fetch("restaurante");`:
+```
+Hibernate: select p1_0.id,p1_0.usuario_cliente_id,c1_0.id,c1_0.data_cadastro,c1_0.email,c1_0.nome,c1_0.senha,p1_0.codigo,p1_0.data_cancelamento,p1_0.data_confirmacao,p1_0.data_criacao,p1_0.data_entrega,p1_0.endereco_bairro,p1_0.endereco_cep,p1_0.endereco_cidade_id,p1_0.endereco_complemento,p1_0.endereco_logradouro,p1_0.endereco_numero,p1_0.forma_pagamento_id,p1_0.restaurante_id,r1_0.id,r1_0.aberto,r1_0.ativo,r1_0.cozinha_id,r1_0.data_atualizacao,r1_0.data_cadastro,r1_0.endereco_bairro,r1_0.endereco_cep,r1_0.endereco_cidade_id,r1_0.endereco_complemento,r1_0.endereco_logradouro,r1_0.endereco_numero,r1_0.nome,r1_0.taxa_frete,p1_0.status,p1_0.subtotal,p1_0.taxa_frete,p1_0.valor_total from pedido p1_0 join restaurante r1_0 on r1_0.id=p1_0.restaurante_id join usuario c1_0 on c1_0.id=p1_0.usuario_cliente_id where 1=1
+Hibernate: select c1_0.id,c1_0.nome from cozinha c1_0 where c1_0.id=?
+Hibernate: select c1_0.id,c1_0.nome from cozinha c1_0 where c1_0.id=?
+```
+As consultas isoladas na tabela de restaurante (r1_0) já não existem mais. Porém, agora temos consultas n+1 para cozinhas.
+
+###
+- ao adicionar `root.fetch("restaurante").fetch("cozinha")`:
+```
+Hibernate: select p1_0.id,p1_0.usuario_cliente_id,c2_0.id,c2_0.data_cadastro,c2_0.email,c2_0.nome,c2_0.senha,p1_0.codigo,p1_0.data_cancelamento,p1_0.data_confirmacao,p1_0.data_criacao,p1_0.data_entrega,p1_0.endereco_bairro,p1_0.endereco_cep,p1_0.endereco_cidade_id,p1_0.endereco_complemento,p1_0.endereco_logradouro,p1_0.endereco_numero,p1_0.forma_pagamento_id,p1_0.restaurante_id,r1_0.id,r1_0.aberto,r1_0.ativo,r1_0.cozinha_id,c1_0.id,c1_0.nome,r1_0.data_atualizacao,r1_0.data_cadastro,r1_0.endereco_bairro,r1_0.endereco_cep,r1_0.endereco_cidade_id,r1_0.endereco_complemento,r1_0.endereco_logradouro,r1_0.endereco_numero,r1_0.nome,r1_0.taxa_frete,p1_0.status,p1_0.subtotal,p1_0.taxa_frete,p1_0.valor_total from pedido p1_0 join restaurante r1_0 on r1_0.id=p1_0.restaurante_id join cozinha c1_0 on c1_0.id=r1_0.cozinha_id join usuario c2_0 on c2_0.id=p1_0.usuario_cliente_id where 1=1
+```
+Agora a specification realiza apenas uma consulta, com ou sem o uso de filtros.
+-- --
+
+Este comportamento só possível porque a interface `PedidoRepository` estende (herda) a interface SDJ `JpaSpecificationExecutor<Pedido>`:
+```
+@Repository
+public interface PedidoRepository extends JpaRepository<Pedido, Long>, JpaSpecificationExecutor<Pedido> {
+
+    Optional<Pedido> findByCodigo(String codigo);
+
+    @Query("from Pedido p join fetch p.cliente join fetch p.restaurante r join fetch r.cozinha ")
+    List<Pedido> findAll();
+}
+```
+
+Isso permite que o repositótio possa operar a specification em qualquer método de consulta.
+
+E no `PedidoController` a spec é passada como parâmetro no método do `findAll()` mesmo que no repository não esteja declarado
+o parâmetro:
+```findAll
+List<Pedido> pedidos = pedidoRepository.findAll(PedidoSpecs.usandoFiltro(filtro));
+```
 
 ####
 </details></li>

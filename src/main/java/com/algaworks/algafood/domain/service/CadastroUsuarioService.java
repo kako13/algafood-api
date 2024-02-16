@@ -40,7 +40,7 @@ public class CadastroUsuarioService {
     @Transactional
     public void alterarSenha(Long idUsuario, String senhaAtual, String novaSenha) {
         Usuario usuario = buscarOuFalhar(idUsuario);
-        if (usuario.getSenhaNaoCoincideCom(senhaAtual))
+        if (usuario.senhaNaoCoincideCom(senhaAtual))
             throw new NegocioException(MSG_USUARIO_SENHA_INVALIDA);
         usuario.setSenha(novaSenha);
     }

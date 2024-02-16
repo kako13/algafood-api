@@ -12,7 +12,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Component
-public class CustomRestFilter {
+public class CustomRepresentationModelFilter {
 
     public MappingJacksonValue wrapFilter(String filterName, String fields, List<?> modelsList) {
 

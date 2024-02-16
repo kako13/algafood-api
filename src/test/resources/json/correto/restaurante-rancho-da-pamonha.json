@@ -1,7 +1,17 @@
 {
   "nome": "Rancho da Pamonha",
-  "taxaFrete": 21,
+  "taxaFrete": 21.50,
   "cozinha": {
     "id": 1
+  },
+  "endereco": {
+    "cep": "38400-999",
+    "logradouro": "Rua João Pinheiro",
+    "numero": "1000",
+    "complemento": null,
+    "bairro": "Centro",
+    "cidade": {
+      "id": 1
+    }
   }
 }

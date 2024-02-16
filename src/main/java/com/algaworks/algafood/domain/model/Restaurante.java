@@ -2,8 +2,7 @@ package com.algaworks.algafood.domain.model;
 
 import com.algaworks.algafood.core.validation.ValorZeroIncluiDescricao;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -13,6 +12,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 @ValorZeroIncluiDescricao(valorField = "taxaFrete", descricaoField = "nome", descricaoObrigatoria = "Frete Grátis")
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Data
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @Entity
@@ -35,9 +37,9 @@ public class Restaurante {
     @Embedded
     private Endereco endereco;
 
-    private Boolean ativo;
+    private Boolean ativo = Boolean.TRUE;
 
-    private Boolean aberto;
+    private Boolean aberto = Boolean.FALSE;
 
     @CreationTimestamp
     @Column(nullable = false, columnDefinition = "datetime")
@@ -71,7 +73,9 @@ public class Restaurante {
     }
 
     public boolean removerFormaPagamento(FormaPagamento formaPagamento) {
-        return getFormasPagamento().remove(formaPagamento);
+        if (getFormasPagamento().contains(formaPagamento))
+            return getFormasPagamento().remove(formaPagamento);
+        return false;
     }
 
     public boolean adicionarFormaPagamento(FormaPagamento formaPagamento) {
@@ -99,6 +103,6 @@ public class Restaurante {
     }
 
     public boolean naoAceitaFormaPagamento(FormaPagamento formaPagamento) {
-        return !getFormasPagamento().contains(formaPagamento);
+        return !aceitaFormaPagamento(formaPagamento);
     }
 }
